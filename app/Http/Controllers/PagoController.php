@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pago;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePagoRequest;
 use App\Http\Requests\UpdatePagoRequest;
 use App\Repositories\CabanaRepository;
@@ -79,7 +80,7 @@ class PagoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePagoRequest $request)
+    public function store(Request $request)
     {
         $validacion=$request->validate([
             'codigo'=>'required|unique:pafos|max:50',            
