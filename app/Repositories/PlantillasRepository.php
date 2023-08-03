@@ -22,8 +22,7 @@ class PlantillasRepository{
         $printer->text("Codigo:".$ordenservicio->orden_encabezado->codigo  .  "\n");
         $printer->text("Fecha/hora:".$ordenservicio->orden_encabezado->fecha." ". $ordenservicio->orden_encabezado->hora."\n");
         $printer->text("Hora entrega:".$ordenservicio->orden_encabezado->hora_entrega ."\n");
-        $printer->text("Estado:".$ordenservicio->orden_encabezado->estado->nombre. "\n");
-        
+        $printer->text("Estado:".$ordenservicio->orden_encabezado->estado->nombre. "\n");        
         if($ordenservicio->orden_encabezado->cliente!=null)
         {
             $printer->setJustification(Printer::JUSTIFY_CENTER);                    
@@ -36,7 +35,6 @@ class PlantillasRepository{
             $printer->text("Nombre:\n");
             $printer->text("Direccion:\n");
             $printer->text("Telefono:\n");
-
         }          
         if($ordenservicio->orden_encabezado->cabaña!=null)
         {
