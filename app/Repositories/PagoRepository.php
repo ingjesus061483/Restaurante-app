@@ -24,10 +24,11 @@ class PagoRepository implements IRepository{
         $pago->  impuesto =$request->impuesto;
         $pago-> descuento =$request->descuento;
         $pago-> total_pagar=$request->total_pagar;
-        $pago->  recibido =$request-> cambio;
+        $pago->recibido=$request->recibido;
+        $pago->  cambio =$request-> cambio;
         $pago->  observaciones =$request->observaciones;
         $pago-> orden_id=$request->orden_id;
-        $pago->  forma_pago_id =$request->forma_pago_id;
+        $pago->  forma_pago_id =$request->forma_pago;
         $pago->save();
 
     }

@@ -15,7 +15,7 @@
                 </div>
                 @endif
                 <form action="{{url('/pagos')}}" enctype="multipart/form-data" autocomplete="off" method="post">
-                    <input type="hidden" name="id_orden" value="{{$ordenServicio->id}}">
+                    <input type="hidden" name="orden_id" value="{{$ordenServicio->id}}">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label" for="codigo">
@@ -28,20 +28,19 @@
                         <label class="form-label" for="codigo">
                             Fecha hora
                         </label>
-                        <input type="datetime" name="fechahora" value="{{date('Y-m-d h:i:s')}}"  class="form-control" id="fechahora">
+                        <input type="datetime" name="fecha_hora" value="{{date('Y-m-d h:i:s')}}"  class="form-control" id="fechahora">
                     </div>  
                     <div class="mb-3">
                         <label class="form-label" for="categoria">
                             Forma pago                
                         </label>
-                        <select type="text" name="'forma_pago'" class="form-select"
-                         id="categoria">
+                        <select type="text" name="forma_pago" class="form-select"
+                         id="forma_pago">
                          <option value="">seleccione una forma pago</option>
                          @foreach($forma_pago as $item)
                          <option value="{{$item->id}}">{{$item->nombre}}</option>
                          @endforeach
-                        </select>
-              
+                        </select>              
                     </div>                 
                     <div class="mb-3">
                         <label class="form-label" for="unidad_medida">
@@ -54,8 +53,8 @@
                         <label class="form-label" for="unidad_medida">
                             Impuestos                
                         </label>
-                        <input type="text" name="impuestos" value="{{$impuesto}}" class="form-control"
-                        id="impuestos">
+                        <input type="text" name="impuesto" value="{{$impuesto}}" class="form-control"
+                        id="impuesto">
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="unidad_medida">
@@ -68,7 +67,7 @@
                         <label class="form-label" for="unidad_medida">
                             Total a pagar                
                         </label>
-                        <input type="text" name="Total_pagar"  class="form-control"
+                        <input type="text" name="total_pagar"  class="form-control"
                         id="total_pagar">
                     </div>
                     <div class="mb-3">

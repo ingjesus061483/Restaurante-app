@@ -11,4 +11,9 @@ class FormaPago extends Model
     public function facturas(){
         return $this->hasMany(FacturaEncabezado::class,'forma_pago_id');
     }
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class,'forma_pago_id');
+
+    }
 }

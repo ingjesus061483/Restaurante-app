@@ -82,8 +82,12 @@ class PagoController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');   
+        }
         $validacion=$request->validate([
-            'codigo'=>'required|unique:pafos|max:50',            
+            'codigo'=>'required|unique:pagos|max:50',            
             'fecha_hora'=>'required|max:255|min:3',                        
             'subtotal'=>'required|numeric',                        
             'impuesto'=>'required|numeric',                        
@@ -91,8 +95,17 @@ class PagoController extends Controller
             'total_pagar'=>'required|numeric',                     
             'recibido'=>'required|numeric',                      
             'forma_pago'=>'required' ,                      
-        ]);             
-        $ordenServicio=$this->_ordenServicioRepository->Find($request->input('orden_id'));
+        ]);  
+        $recibido =$request->input('recibido');
+        $total_pagar= $request->input('total_pagar');
+        settype($recibido,"double");
+        settype($total_pagar,"double");
+        if($total_pagar>$recibido){
+            return back()->withErrors('No se ha recibido el mototo total de pago');
+        }
+
+               
+        $ordenServicio=$this->_ordenServicioRepository->Find($request->input('orden_id'));       
         $this->_pagoRepository->Store((object)$request->all());
         $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);
         $cabana_id=$ordenServicio->cabaña==null?0:$ordenServicio->cabaña->id;

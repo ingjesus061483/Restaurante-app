@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('total_pagar',10,2);
             $table->decimal('recibido',10,2);
             $table->decimal('cambio',10,2);
-            $table->string('observaciones',255);
+            $table->string('observaciones',255)->nullable();
 
             $table->foreignId('orden_id')            
             ->constrained('orden_encabezados')

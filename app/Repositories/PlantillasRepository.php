@@ -67,17 +67,38 @@ class PlantillasRepository{
         }
         $printer ->setTextSize(3,3);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
-        $printer->text("================\n");
-        $printer->text("==Observaciones=\n");
-        $printer->setJustification(Printer::JUSTIFY_LEFT);        
-        $printer ->setTextSize(1,1);              
-        $printer->text($ordenservicio->orden_encabezado->observaciones."\n");
-        
-        $printer ->setTextSize(3,3);              
-        $printer->setJustification(Printer::JUSTIFY_CENTER);          
-        $printer->text("================\n");
-        $printer->text("=====Totales====\n");
-        $printer->text("================\n");
-
+        $printer->text("================\n");      
+        if($ordenservicio->orden_encabezado->observaciones!="")
+        {
+              
+            $printer->text("==Observaciones=\n");
+            $printer->setJustification(Printer::JUSTIFY_LEFT);        
+            $printer ->setTextSize(1,1);              
+            $printer->text($ordenservicio->orden_encabezado->observaciones."\n");
+            $printer ->setTextSize(3,3);              
+            $printer->setJustification(Printer::JUSTIFY_CENTER);        
+            $printer->text("================\n");   
+        }        
+        if(count($ordenservicio->orden_encabezado->pagos)>0)
+        {
+            $printer->text("=====Totales====\n");
+            $printer->setJustification(Printer::JUSTIFY_LEFT);        
+            $printer ->setTextSize(1,1);     
+            foreach($ordenservicio->orden_encabezado->pagos as $item)
+            {
+                $printer->text("Codigo: ".$item->codigo."\n");
+                $printer->text("Fecga / hora: ".$item->fecha_hora."\n");
+                $printer->text("Subtotal: ".$item->subtotal."\n");
+                $printer->text("Impuesto: ". $item->impuesto."\n");
+                $printer->text("Deswcuento: ".$item->descuento."\n");
+                $printer->text("Total a pagar: ".$item->total_pagar."\n");
+                $printer->text("Recibido: ".$item->recibido."\n");  
+                $printer->text("Cambio: ".$item->cambio."\n");
+                $printer->text("Observaciones: ".$item->observaciones."\n");                
+            }  
+            $printer ->setTextSize(3,3);              
+            $printer->setJustification(Printer::JUSTIFY_CENTER);        
+            $printer->text("================\n");
+        }        
     }
 }

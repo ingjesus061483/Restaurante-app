@@ -96,24 +96,25 @@
                         @endif
                     </td>
                     <td>
-                        @if($item->estado_id==1)
-                        <form action="{{url('/ordenservicio')}}/{{$item->id}}" 
-                            onsubmit="return validar('Desea entregaar estad orden?');" method="post">
-                            @csrf
-                            @method('patch')
-                            <button class="btn btn-success" type="submit"> Entregar</button>
-                        </form>
-                        @else
-                        <form action="{{url('pagos/create')}}" method="get">
-                            <input type="hidden" value="{{$item->id}}" name="id">
-                            <button type="submit" class="btn btn-success" > Cobrar</button>                                                   
+                        @switch($item->estado_id)
+                            @case(1)                            
+                                <form action="{{url('/ordenservicio')}}/{{$item->id}}" 
+                                    onsubmit="return validar('Desea entregaar estad orden?');" method="post">
+                                    @csrf
+                                    @method('patch')
+                                    <button class="btn btn-success" type="submit"> Entregar</button>
+                                </form>                                
+                                @break
+                            @case(2)
+                                <form action="{{url('pagos/create')}}" method="get">
+                                    <input type="hidden" value="{{$item->id}}" name="id">
+                                    <button type="submit" class="btn btn-success" > Cobrar</button>                                
+                                </form>                           
+                                @break
+                            @default
+                            
 
-                        
-                        </form>
-
-                        
-                        @endif
-
+                        @endswitch              
                     </td>
                 </tr>
                 @endforeach   

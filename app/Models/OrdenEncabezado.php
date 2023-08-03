@@ -23,6 +23,12 @@ class OrdenEncabezado extends Model
     public function orden_detalles(){
         return $this->hasMany(OrdenDetalle::class,'orden_encabezado_id');
     }
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class,'orden_id');
+
+    }
+    
     protected $fillable=[
         'codigo','tipo_documento_id','fecha','hora','hora_entrega','observaciones','total',
         'cabaña_id','cliente_id','empleado_id','estado_id',
