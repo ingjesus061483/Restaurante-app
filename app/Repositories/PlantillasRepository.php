@@ -86,6 +86,7 @@ class PlantillasRepository{
             {
                 $printer->text("Codigo: ".$item->codigo."\n");
                 $printer->text("Fecga / hora: ".$item->fecha_hora."\n");
+                $printer->text("Forma de pago: ".$item->forma_pago->nombre."\n");
                 $printer->text("Subtotal: ".$item->subtotal."\n");
                 $printer->text("Impuesto: ". $item->impuesto."\n");
                 $printer->text("Deswcuento: ".$item->descuento."\n");
