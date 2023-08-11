@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Configuracion;
 use App\Models\OrdenEncabezado;
 use App\Repositories\ExistenciaRepository;
 use App\Repositories\FileRepository;
@@ -34,10 +35,20 @@ class ReportesController extends Controller
             {
                 return redirect()->to('login');            
             }
+
+            $nombrepos=Configuracion::where('nombre','impresora_pos')->
+                                            select('valor')->first()==null?"":
+                                            Configuracion::where('nombre','impresora_pos')
+                                            ->select('valor')->first()->valor;
+            if($nombrepos=="")
+            {
+                throw new Exception("Debe configurar una impresora" );
+
+            }
             $empresa=Auth::user()->empresa; 
             $ordenEncabezado=OrdenEncabezado::find($id) ;
             $ordenservicio=(object)["empresa"=>$empresa,"orden_encabezado"=>$ordenEncabezado ];
-            $conector=new WindowsPrintConnector("pos2");
+            $conector=new WindowsPrintConnector($nombrepos);
             $printer =new Printer($conector);        
             $printer ->initialize();
             $this->_plantillaRepository->ImprimirPlantillaOrdenServicio($printer,$ordenservicio);

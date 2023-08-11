@@ -66,7 +66,6 @@ class PagoController extends Controller
         {
             $impuesto=$this->_impuestoRepository->CalcularImpuestos($subtotal);
         }
-
         $data=[   
             'forma_pago'=>$this->_formapagoRepository->GetAll(),    
             'ordenServicio'=>$ordenServicio,  
@@ -102,9 +101,7 @@ class PagoController extends Controller
         settype($total_pagar,"double");
         if($total_pagar>$recibido){
             return back()->withErrors('No se ha recibido el mototo total de pago');
-        }
-
-               
+        }               
         $ordenServicio=$this->_ordenServicioRepository->Find($request->input('orden_id'));       
         $this->_pagoRepository->Store((object)$request->all());
         $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);

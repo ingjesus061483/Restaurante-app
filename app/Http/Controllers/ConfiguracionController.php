@@ -6,14 +6,23 @@ use App\Models\configuracion;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreconfiguracionRequest;
 use App\Http\Requests\UpdateconfiguracionRequest;
-
+use App\Repositories\ConfiguracionRepository;
+use Illuminate\Http\Request;
 class ConfiguracionController extends Controller
 {
+    protected ConfiguracionRepository $_configuracionRepository;
+    public function __construct(ConfiguracionRepository $configuracionRepository) {
+        $this->_configuracionRepository = $configuracionRepository;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $configuraciones=$this->_configuracionRepository->GetAll();
+        $data=['configuraciones'=>$configuraciones];
+        return view('Configuracion.index',$data);
+
         //
     }
 
@@ -44,16 +53,22 @@ class ConfiguracionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(configuracion $configuracion)
+    public function edit( $id)
     {
+        $configuracion=$this->_configuracionRepository->Find($id);
+        $data=['configuracion'=>$configuracion];
+        return view('Configuracion.edit',$data);
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateconfiguracionRequest $request, configuracion $configuracion)
+    public function update(Request $request,$id)
     {
+        $validacion=$request->validate(['nombre'=>'required|max:50']);
+        $this->_configuracionRepository->Update($id,(object)$request->all());  
+        return redirect()->to("configuracion");
         //
     }
 
