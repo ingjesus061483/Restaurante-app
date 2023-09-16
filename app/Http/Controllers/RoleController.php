@@ -40,7 +40,11 @@ class RoleController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }                  
         return view ('Role.create');
         //
     }
@@ -53,7 +57,11 @@ class RoleController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $validacion=$request->validate(['nombre'=>'required|max:50']);
         $this->_repository->Store((object)$request->all());        
         return redirect()->to(url('/roles'));       
@@ -76,7 +84,11 @@ class RoleController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $data=[            
             'role'=>$this->_repository->Find($id)
         ];
@@ -92,7 +104,11 @@ class RoleController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $this->_repository->Update($id , (object)$request->all());
         return redirect()->to(url('/roles'));       
         //
@@ -106,7 +122,11 @@ class RoleController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $this->_repository->delete($id);
         return redirect()->to(url('/roles'));       
         //

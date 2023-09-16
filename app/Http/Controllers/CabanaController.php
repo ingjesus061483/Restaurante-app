@@ -23,7 +23,7 @@ class CabanaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
+        }        
         $data=[       
             'cabanas'=>$this->_repository->GetAll(),
         ];
@@ -40,6 +40,10 @@ class CabanaController extends Controller
         {
             return redirect()->to('login');
         }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
        
         return view('Cabana.create');
         //
@@ -54,7 +58,10 @@ class CabanaController extends Controller
         {
             return redirect()->to('login');
         }
-       
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
         $validacion=$request->validate([
             'codigo'=>'required|unique:cabañas|max:50',            
             'nombre'=>'required|max:50',           
@@ -82,6 +89,10 @@ class CabanaController extends Controller
         {
             return redirect()->to('login');
         }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
        
         $data=[       
             'cabana'=>$this->_repository->Find($id),
@@ -99,6 +110,10 @@ class CabanaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
        
         $validacion=$request->validate([
@@ -120,7 +135,11 @@ class CabanaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }       
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
         $this->_repository->Delete($id);
         return redirect()->to(url('/cabañas'));      
 

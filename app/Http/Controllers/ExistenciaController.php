@@ -62,6 +62,17 @@ class ExistenciaController extends Controller
             ]);
 
         }
+        if(!$this->autorizar(Auth::user()))
+        {
+            return json_encode([
+                'aut'=>false,
+                "id"=>null,
+                "tipo"=>'',
+                "mensaje"=>"El usuario no ha sido autorizado para esta operacion",
+            ]);
+
+        }
+
         $tipo=$request->input('tipo');     
         $this->_existenciaRepository->Store((object)$request->all());           
         return json_encode([

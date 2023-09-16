@@ -41,7 +41,11 @@ class PreparacionController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }                     
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $producto_id=request()->input('producto');
         $preparacions=$this->_productoRepository->ingredientes($producto_id);// Preparacion::select('materia_prima_id')->where('producto_id',$producto_id)->get();        
         $materiaprimas=$this->_materiaprimaRepository->BuscarMateriaPrimaEnIgrediente($preparacions);
@@ -61,6 +65,15 @@ class PreparacionController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
+
         $materia_prima_id=$request->input('materia_prima_id');        
         $producto_id =$request->input('producto_id');
                       
@@ -98,6 +111,14 @@ class PreparacionController extends Controller
      */
     public function update(Request $request, $id)
     {    
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $this ->_ingredienteRepository->    Update($id,$request);
         return json_encode(['message'=>'Se ha actualizado um ingrediente']);        //
     }
@@ -107,6 +128,14 @@ class PreparacionController extends Controller
      */
     public function destroy( $id)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $this->_ingredienteRepository->Delete($id);
         return back();
 

@@ -8,6 +8,7 @@ use App\Http\Requests\StoreconfiguracionRequest;
 use App\Http\Requests\UpdateconfiguracionRequest;
 use App\Repositories\ConfiguracionRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 class ConfiguracionController extends Controller
 {
     protected ConfiguracionRepository $_configuracionRepository;
@@ -19,6 +20,14 @@ class ConfiguracionController extends Controller
      */
     public function index()
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
         $configuraciones=$this->_configuracionRepository->GetAll();
         $data=['configuraciones'=>$configuraciones];
         return view('Configuracion.index',$data);
@@ -55,6 +64,14 @@ class ConfiguracionController extends Controller
      */
     public function edit( $id)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
         $configuracion=$this->_configuracionRepository->Find($id);
         $data=['configuracion'=>$configuracion];
         return view('Configuracion.edit',$data);
@@ -66,6 +83,14 @@ class ConfiguracionController extends Controller
      */
     public function update(Request $request,$id)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
         $validacion=$request->validate(['nombre'=>'required|max:50']);
         $this->_configuracionRepository->Update($id,(object)$request->all());  
         return redirect()->to("configuracion");

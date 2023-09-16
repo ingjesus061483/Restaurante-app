@@ -38,6 +38,10 @@ class ImpuestoController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
         }        
         $data=[            
             'impuestos'=> $this->_impuestoRepository->GetAll()
@@ -55,6 +59,10 @@ class ImpuestoController extends Controller
         {
             return redirect()->to('login');
         }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }
         return view ('Impuesto.create');      
      
         //
@@ -68,7 +76,11 @@ class ImpuestoController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }      
         $validacion=$request->validate(
             ['nombre'=>'required|max:50',
             'valor'=>'required|numeric',
@@ -100,6 +112,10 @@ class ImpuestoController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
         }        
         $data=[            
             'impuesto'=>$this-> _impuestoRepository-> Find($id),
@@ -117,6 +133,10 @@ class ImpuestoController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
         }        
         $validacion=$request->validate(
             ['nombre'=>'required|max:50',
@@ -142,9 +162,11 @@ class ImpuestoController extends Controller
         {
             return redirect()->to('login');
         }        
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }
         $this->_impuestoRepository->Delete($id);
-/*        $impuesto= Impuesto::find($id);
-        $impuesto->delete();*/
         return redirect()->to(url('/impuestos'));       
         //
     }

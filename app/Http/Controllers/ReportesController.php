@@ -27,7 +27,7 @@ class ReportesController extends Controller
         $this->_existenciaRepository = $existenciaRepository;
 
     }
-    public function print($id)
+    function printComanda($id)
     {
         try
         {
@@ -43,7 +43,40 @@ class ReportesController extends Controller
             if($nombrepos=="")
             {
                 throw new Exception("Debe configurar una impresora" );
+            }
+            $empresa=Auth::user()->empresa; 
+            $ordenEncabezado=OrdenEncabezado::find($id) ;
+            $ordenservicio=(object)["empresa"=>$empresa,"orden_encabezado"=>$ordenEncabezado ];
+            $conector=new WindowsPrintConnector($nombrepos);
+            $printer =new Printer($conector);        
+            $printer ->initialize();
+            $this->_plantillaRepository->ImprimirPlantillaComanda($printer,$ordenservicio);
+            $printer -> cut();                
+            $printer->close();            
+            return redirect()->to('ordenservicio');        
+        }
+        catch(Exception $ex)
+        {
+            return back()->withErrors($ex->getMessage());
+        }     
 
+    }
+   public function printOorenServicio($id)
+    {
+        try
+        {
+            if(!Auth::check())            
+            {
+                return redirect()->to('login');            
+            }
+
+            $nombrepos=Configuracion::where('nombre','impresora_pos')->
+                                            select('valor')->first()==null?"":
+                                            Configuracion::where('nombre','impresora_pos')
+                                            ->select('valor')->first()->valor;
+            if($nombrepos=="")
+            {
+                throw new Exception("Debe configurar una impresora" );
             }
             $empresa=Auth::user()->empresa; 
             $ordenEncabezado=OrdenEncabezado::find($id) ;

@@ -35,6 +35,7 @@
                     <th>Estado</th>
                     <th></th>                    
                     <th></th>                    
+                    <th></th>                    
                     <th></th>
                     <th></th>
                 </tr>
@@ -54,6 +55,7 @@
                     <th>Observaciones</th>       
                     <th>Estado</th>
                     <th></th>                                 
+                    <th></th>                    
                     <th></th>                    
                     <th></th>
                     <th></th>
@@ -81,8 +83,13 @@
                         </a>
                     </td>
                     <td>
-                        <a class="btn btn-warning" href="{{url('/reportes/print/'.$item->id)}}">
-                            Imprimir
+                        <a class="btn btn-warning" href="{{url('/reportes/printordenservicio/'.$item->id)}}">
+                            Imprimir orden servicio
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" href="{{url('/reportes/printComanda/'.$item->id)}}">
+                            Imprimir comnanda
                         </a>
                     </td>
                     <td>                
@@ -111,10 +118,8 @@
                                     <button type="submit" class="btn btn-success" > Cobrar</button>                                
                                 </form>                           
                                 @break
-                            @default
-                            
-
-                        @endswitch              
+                            @default                            
+                    @endswitch              
                     </td>
                 </tr>
                 @endforeach   

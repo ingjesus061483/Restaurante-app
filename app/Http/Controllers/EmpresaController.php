@@ -32,6 +32,10 @@ class EmpresaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
         $data=[         
             'empresas'=> $this->_empresaRepository->GetAll()
@@ -49,6 +53,10 @@ class EmpresaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
        
 
@@ -69,6 +77,10 @@ class EmpresaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
         $validacion=$request->validate([
             'nit'=>'required|unique:empresas|max:50',
@@ -102,6 +114,10 @@ class EmpresaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
         $data=[         
             'tipo_regimen'=>$this->_tipoRegimenRepository->GetAll(),
@@ -117,10 +133,13 @@ class EmpresaController extends Controller
      */
     public function update(request $request, $id)
     {
-        
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
         $validacion=$request->validate([
             'nit'=>'required|max:50|unique:empresas,nit,'.$id,
@@ -149,6 +168,10 @@ class EmpresaController extends Controller
             if(!Auth::check())
             {
                 return redirect()->to('login');
+            }  
+            if(!$this-> autorizar(Auth::user()))
+            {
+                return back();            
             }
             $this-> _empresaRepository->Delete($id);
             return redirect()->to(url('/empresas'));        

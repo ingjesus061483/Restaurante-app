@@ -67,7 +67,11 @@ class ProductosController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
        $categoria= $this->_categoriaRepository->GetAll();
        $unidadmedida=$this->_unidadMedidaRepository->GetAll();
        $data=[        
@@ -87,7 +91,11 @@ class ProductosController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $foraneo=$request->input('foraneo')==null?0:(bool)$request->input('foraneo');       
         if($foraneo==1)
         {
@@ -122,8 +130,11 @@ class ProductosController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
-             
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }                 
         $entradas=$this->_productoRepository->existencias($id,1); //Existencia:: where('entrada',1)->where('producto_id',$id)->get();
         $salidas=$this->_productoRepository->existencias($id);//Existencia:: where('entrada',0)->where('producto_id',$id)->get();
         $total_entrada= $this->_productoRepository->totalizarExistencia($id,1);//$entradas!=null? $this->totalizar($entradas):0;
@@ -147,7 +158,11 @@ class ProductosController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
        $categoria= $this-> _categoriaRepository->GetAll();
        $unidadmedida=$this-> _unidadMedidaRepository->GetAll();
        $data=[        
@@ -168,7 +183,11 @@ class ProductosController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $foraneo=$request->input('foraneo')==null?0:(bool)$request->input('foraneo');       
         if($foraneo==1)
         {
@@ -207,6 +226,14 @@ class ProductosController extends Controller
         {
             return redirect()->to('login');
         }
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $this->_productoRepository->Delete($id);
         return redirect()->to(url('/productos'));//       
     }

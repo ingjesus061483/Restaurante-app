@@ -34,10 +34,13 @@ class EmpleadoController extends Controller
      */
     public function index()
     {
-        
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
         $data=[         
             'empleados'=>$this->_empleadoRepository->GetAll()
@@ -50,10 +53,13 @@ class EmpleadoController extends Controller
      */
     public function create()
     {
-        
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
         $data=[
             
@@ -151,7 +157,11 @@ class EmpleadoController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }    
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }  
         $this-> _empleadoRepository->Delete($id);
         return redirect()->to(url('/empleados'));
         //

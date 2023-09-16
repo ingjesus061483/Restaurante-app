@@ -49,19 +49,19 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Inventario
                             </a>
-                            <a class="nav-link" href="{{url('/')}}">
+                   <!--         <a class="nav-link" href="{{url('/')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Alquiler
-                            </a>
+                            </a>-->
                             <a class="nav-link" href="{{url('/ordenservicio')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Orden de servicio
                             </a>                            
-                            <a class="nav-link" href="{{url('/facturacion')}}">
+                           <!-- <a class="nav-link" href="{{url('/facturacion')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Ventas
-                            </a>                           
-                            <div class="sb-sidenav-menu-heading">Configuracion del sistema</div>
+                            </a>        -->                   
+                            <div class="sb-sidenav-menu-heading">Administracion del sistema</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Administrador

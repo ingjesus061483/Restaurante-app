@@ -41,7 +41,11 @@ class UnidadMedidaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }                   
         return view('UnidadMedida.create');
         //
     }
@@ -54,7 +58,11 @@ class UnidadMedidaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $validacion=$request->validate(['nombre'=>'required|max:50']);
         $this->_repository->Store($request);
         return redirect()->to(url('/unidad_medida'));   
@@ -77,7 +85,11 @@ class UnidadMedidaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $unidadMedida=$this->_repository->Find($id);
         $data=[            
             'unidadMedida'=>$unidadMedida
@@ -94,7 +106,11 @@ class UnidadMedidaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $validacion=$request->validate(['nombre'=>'required|max:50']);
         $this->_repository->Update($id,$request);
         return redirect()->to(url('/unidad_medida'));       
@@ -109,7 +125,11 @@ class UnidadMedidaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
+        }         
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }            
         $this->_repository->Delete($id);        
         return redirect()->to(url('/unidad_medida'));       
         //

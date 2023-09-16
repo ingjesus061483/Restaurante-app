@@ -61,7 +61,11 @@ class MateriaPrimaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }      
        $categoria=$this->_categoriaRepository->GetAll();
        $unidadmedida=$this->_unidadMedidaRepository->GetAll();
        $data=[        
@@ -81,6 +85,10 @@ class MateriaPrimaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
         }        
         $validacion=$request->validate([
             'codigo'=>'required|unique:materia_primas|max:50',            
@@ -89,19 +97,7 @@ class MateriaPrimaController extends Controller
             'unidad_medida'=>'required',
             'categoria'=>'required' ,            
         ]); 
-        $this->_materiaPrimaRepositry->Store($request);
-        /*$codigo=$request->input('codigo');
-        $nombre =$request->input('nombre');  
-        $nombreimagen=$this->getImage($request, $codigo.' '.$nombre);       
-        materiaprima::create([
-            'codigo'=>$request->input('codigo'),
-            'nombre' =>$request->input('nombre'),
-            'descripcion'=>$request->input('descripcion'),
-            'costo_unitario'=>$request->input('costo_unitario'),                                   
-            'imagen'=>$nombreimagen,
-            'unidad_medida_id' =>$request->input('unidad_medida') ,
-            'categoria_id'=>$request->input('categoria'),
-        ]);*/      
+        $this->_materiaPrimaRepositry->Store($request);        
         return redirect()->to(url('/materiaprimas'));        
       
 
@@ -124,6 +120,10 @@ class MateriaPrimaController extends Controller
         {
             return redirect()->to('login');
         }        
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
+        }
         $materiaprima=$this->_materiaPrimaRepositry->Find($id); //materiaprima::find($id);
         $entradas=$this->_materiaPrimaRepositry->existencias($id,1); //Existencia:: where('entrada',1)->where('materia_prima_id',$id)->get();
         $salidas=$this->_materiaPrimaRepositry->existencias($id);// Existencia:: where('entrada',0)->where('materia_prima_id',$id)->get();
@@ -149,6 +149,10 @@ class MateriaPrimaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
         }        
         $materiaprima=$this-> _materiaPrimaRepositry->Find($id);
         $categoria=$this->_categoriaRepository->GetAll();
@@ -170,6 +174,10 @@ class MateriaPrimaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();
         }        
         $validacion=$request->validate([
             'codigo'=>'required|max:50|unique:materia_primas,codigo,'.$id,            
@@ -179,18 +187,7 @@ class MateriaPrimaController extends Controller
             'categoria'=>'required' 
         ]);    
         $this->_materiaPrimaRepositry->Update($id ,$request);    
-        /*$codigo=$request->input('codigo');
-        $nombre =$request->input('nombre');          
-        $nombreimagen=$this->getImage($request,$codigo.' '.$nombre);
-        $materiaprima= materiaprima ::find($id);
-        $materiaprima->codigo=$request->input('codigo');
-        $materiaprima->nombre =$request->input('nombre');        
-        $materiaprima->imagen=$nombreimagen!=null?$nombreimagen:$materiaprima->imagen;        
-        $materiaprima->descripcion=$request->input('descripcion');
-        $materiaprima->costo_unitario=$request->input('costo_unitario');        
-        $materiaprima-> unidad_medida_id =$request->input('unidad_medida') ;
-        $materiaprima->categoria_id=$request->input('categoria');
-        $materiaprima->save();*/
+        
         return redirect()->to(url('/materiaprimas'));                
         //
     }
@@ -204,14 +201,12 @@ class MateriaPrimaController extends Controller
         {
             return redirect()->to('login');
         }        
-      $this->_materiaPrimaRepositry->Delete($id);
-      /*  $materiaprima=materiaprima::find($id);
-        if ($materiaprima->imagen!=null)
+        if(!$this-> autorizar(Auth::user()))
         {
-            $ruta=public_path("img/");
-            unlink($ruta.$materiaprima->imagen);
+            return back();
         }
-        $materiaprima->delete();*/
+      $this->_materiaPrimaRepositry->Delete($id);
+
         return redirect()->to(url('/materiaprimas'));        
 
 

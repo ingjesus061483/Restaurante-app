@@ -43,6 +43,10 @@ class ClienteController extends Controller
         {
             return redirect()->to('login');
         }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
         return view ('Cliente.create');
         //
     }
@@ -56,6 +60,10 @@ class ClienteController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
         $validacion=$request->validate([
             'identificacion'=>'required|unique:clientes|max:50',
@@ -90,6 +98,10 @@ class ClienteController extends Controller
         {
             return redirect()->to('login');
         }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
         $data=[          
             'cliente'=>$this->_reposotory->Find($id),
         ];
@@ -106,6 +118,10 @@ class ClienteController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
         $validacion=$request->validate([
             'identificacion'=>'required|max:50|unique:clientes,identificacion,'.$id,
@@ -130,6 +146,10 @@ class ClienteController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
+        }
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
         }
         $this->_reposotory->Delete($id);       
         return redirect()->to(url('/clientes'));
