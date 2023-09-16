@@ -2,7 +2,7 @@
 @section('title','')
 @section('content') 
 <div class="jumbotron">
-    <h1 class="display-4">AlquiFacturar</h1>
+    <h1 class="display-4">Restaurant-Master</h1>
     <p class="lead">bienvenido </p>
     <hr class="my-4">
     <p>Aplicacion para restaurantes con inventario y facturacion de comidas y alquiler de cabañas</p>
