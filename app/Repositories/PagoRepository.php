@@ -8,7 +8,23 @@ class PagoRepository implements IRepository{
     public function __construct(impuestorepository $impuestoRepository = null) {
         $this->_impuestoRepository = $impuestoRepository;
     }
+    public function TotalesPagos($formapago)
+    {
+        $pagos=$formapago!=null? $this->GetbyFormaPago($formapago): $pagos=$this->GetAll();
     
+        
+        $sum=0;
+        foreach($pagos as $item){
+            $sum=$sum+$item->total_pagar;
+        }
+        return $sum;
+    }
+    public function GetbyFormaPago($forma_pago)
+    {
+        $pagos=Pago::where('forma_pago_id',$forma_pago)->get();
+        return $pagos;
+    }
+
     public function GetAll()
     {
         return Pago::All();

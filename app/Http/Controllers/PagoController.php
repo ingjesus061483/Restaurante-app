@@ -44,6 +44,27 @@ class PagoController extends Controller
      */
     public function index()
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');   
+        }
+     
+        $user=Auth::user();                
+        if(! $this->autorizar($user))        
+        {
+            return  back();        
+        }
+        $forma_pago=request()->input('forma_pago');
+        $pagos=$forma_pago!=null?$this->_pagoRepository->GetbyFormaPago($forma_pago):
+                                 $this->_pagoRepository-> GetAll();
+       
+        $data=[  
+            'forma_pago'=>$this->_formapagoRepository->GetAll(),    
+                     'formaPago'=>$this->_formapagoRepository->Find($forma_pago),
+            'totales'=>$this->_pagoRepository-> TotalesPagos($forma_pago),
+            'pagos'=>$pagos
+        ];
+        return view('Pagos.index',$data);
         //
     }
 
@@ -57,7 +78,11 @@ class PagoController extends Controller
             return redirect()->to('login');   
         }
         $id=request()->input('id');   
-        $user=Auth::user();        
+        $user=Auth::user();                
+        if(! $this->autorizar($user))        
+        {
+            return  back();        
+        }
         $empresa= $this->_empresaRepository->Find( $user->empresa_id);        
         $ordenServicio=$this->_ordenServicioRepository->Find($id);        
         $subtotal=$this->_ordenServicioRepository-> totalizarOrden( $ordenServicio->orden_detalles) ;

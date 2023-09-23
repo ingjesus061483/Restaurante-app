@@ -11,7 +11,7 @@ class FormaPagoRepository implements IRepository{
     }
     public function Find($id)
     {
-        
+        return FormaPago::find($id);
     }
     public function Store($request)
     {

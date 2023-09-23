@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repositories\CategoriaRepository;
+use App\Repositories\ImpresoraRepository;
 use App\Repositories\ProductoRepository;
 use App\Repositories\UnidadMedidaRepository;
 use Illuminate\Http\Request;
@@ -14,14 +15,17 @@ class ProductosController extends Controller
     protected ProductoRepository $_productoRepository;
     protected UnidadMedidaRepository $_unidadMedidaRepository;
     protected CategoriaRepository $_categoriaRepository;
+    protected ImpresoraRepository  $_impresoraRepository;
     public function __construct(ProductoRepository $productoRepository,
                                 UnidadMedidaRepository $unidadMedidaRepository,
-                                CategoriaRepository $categoriaRepository)
+                                CategoriaRepository $categoriaRepository,
+                                ImpresoraRepository $impresoraRepository)
                                 
     {
         $this->_productoRepository =$productoRepository;
         $this->_categoriaRepository=$categoriaRepository;
         $this->_unidadMedidaRepository=$unidadMedidaRepository;
+        $this->_impresoraRepository=$impresoraRepository;
     }
     public function loadProduct($search){
         $query="SELECT * FROM( SELECT productos.id,CONCAT( codigo,' - ',productos.nombre) AS nombre,
@@ -74,8 +78,10 @@ class ProductosController extends Controller
         }            
        $categoria= $this->_categoriaRepository->GetAll();
        $unidadmedida=$this->_unidadMedidaRepository->GetAll();
+       $impresora=$this->_impresoraRepository->GetAll();
        $data=[        
         'categorias'=>$categoria,
+        'impresoras'=>$impresora,
         'unidad_medida'=>$unidadmedida,
         ];
         return view('Producto.create',$data);
@@ -104,7 +110,8 @@ class ProductosController extends Controller
                 'nombre'=>'required|max:255|min:3',            
                 'costo_unitario'=>'required|numeric',            
                 'precio'=>'required|numeric',            
-                'categoria'=>'required' ,              
+                'categoria'=>'required' ,   
+                'impresora'=>'required' ,              
             ]); 
         }
         else{
@@ -115,7 +122,8 @@ class ProductosController extends Controller
                 'precio'=>'required|numeric',            
                 'categoria'=>'required' ,            
                 'preparacion'=>'required',
-                'tiempo_coccion'=>'required|numeric'
+                'tiempo_coccion'=>'required|numeric',
+                'impresora'=>'required' ,  
             ]); 
         }
         $this->_productoRepository->Store($request);      
@@ -165,10 +173,12 @@ class ProductosController extends Controller
         }            
        $categoria= $this-> _categoriaRepository->GetAll();
        $unidadmedida=$this-> _unidadMedidaRepository->GetAll();
+       $impresora=$this->_impresoraRepository->GetAll();
        $data=[        
         'categorias'=>$categoria,
         'unidad_medida'=>$unidadmedida,
         'producto'=>$this->_productoRepository->Find($id),
+        'impresoras'=>$this->_impresoraRepository->GetAll(),
         ];
         return view('Producto.edit',$data);
 
@@ -197,7 +207,7 @@ class ProductosController extends Controller
                 'costo_unitario'=>'required|numeric',            
                 'precio'=>'required|numeric',            
                 'categoria'=>'required' ,            
-                
+                'impresora'=>'required' ,  
             ]); 
         }
         else{
@@ -208,7 +218,8 @@ class ProductosController extends Controller
                 'precio'=>'required|numeric',            
                 'categoria'=>'required' ,            
                 'preparacion'=>'required',
-                'tiempo_coccion'=>'required|numeric'
+                'tiempo_coccion'=>'required|numeric',
+                'impresora'=>'required' ,  
             ]); 
         }
         $this->_productoRepository->Update($id,$request);

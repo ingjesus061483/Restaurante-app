@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-4">
                 <a href=" {{url('/ordendetalles/create')}}"  class="btn btn-primary">
-                    Crear detalle de Orden servicio 
+                    Crear detalle de Orden
                 </a>
             </div>
             <div class="col-4">               

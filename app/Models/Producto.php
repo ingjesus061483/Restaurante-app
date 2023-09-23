@@ -18,6 +18,11 @@ class Producto extends Model
     public function unidad_medida(){
         return $this->belongsTo(UnidadMedida::class,'unidad_medida_id');    
     }
+    public  function impresora()
+    {       
+        return $this->belongsTo(impresora::class,'impresora_id');        
+    }
+
     public function factura_detalles(){
         return $this->hasMany(FacturaDetalle::class,'producto_id');
     } 
@@ -31,7 +36,8 @@ class Producto extends Model
     protected $fillable=[  'codigo','nombre','preparacion',
                            'costo_unitario','precio','descripcion',
                            'foraneo','imagen','unidad_medida_id',
-                           'categoria_id','materia_prima','tiempo_coccion'];
+                           'impresora_id','categoria_id',
+                           'materia_prima','tiempo_coccion'];
 
 
 }

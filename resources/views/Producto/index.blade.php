@@ -19,6 +19,7 @@
                     <th>Unidad medida</th>
                     <th>Categoria</th>
                     <th>Foraneo</th>
+                    <th>impresora</th>
                     <th></th>
                     <th></th>                    
                     <th></th>
@@ -37,6 +38,7 @@
                     <th>Unidad medida</th>
                     <th>Categoria</th>
                     <th>Foraneo</th>
+                    <th>impresora</th>
                     <th></th>
                     <th></th>                    
                     <th></th>
@@ -56,6 +58,7 @@
                     <td>{{$item->unidad_medida!=null?$item->unidad_medida->nombre:''}}</td>
                     <td>{{$item->categoria->nombre}}</td>
                     <td>{{$item->foraneo==1?'Si':'No'}}</td>
+                    <td>{{$item->impresora->nombre}}</td>
                     <td>
                         @if($item->foraneo)
                         <button onclick="existencias(this,'producto');" class="btn btn-info" >Existencias </button>

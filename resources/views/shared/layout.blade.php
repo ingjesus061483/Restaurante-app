@@ -70,6 +70,8 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{url('/configuracion')}}">Configuracion</a>
+                                    <a class="nav-link" href="{{url('/pagos')}}">Pagos</a>
+                                    <a class="nav-link" href="{{url('/impresoras')}}">Impresoras</a>
                                     <a class="nav-link" href="{{url('/categorias')}}">Categorias</a>
                                     <a class="nav-link" href="{{url('/unidad_medida')}}">Unidades de medida</a>
                                     <a class="nav-link" href="{{url('/materiaprimas')}}">Materia primas</a>
@@ -219,7 +221,7 @@
                                     <label class="form-label" for="cantidad">
                                         Cantidad
                                     </label>
-                                    <input type="text" class="form-control" name="cantidad" id="cantidad">
+                                    <input type="text" class="form-control"value="1" name="cantidad" id="cantidad">
                                 </div>                                   
                             </form>
                         </div>
@@ -239,7 +241,7 @@
                                     <label class="form-label" for="cantidad">
                                         Cantidad
                                     </label>
-                                    <input type="text" class="form-control" name="cantidad" id="cantidadDetalleOrden">
+                                    <input type="text" class="form-control" value="1" name="cantidad" id="cantidadDetalleOrden">
                                 </div>                
                                 <div class="mb-3">
                                     <label class="form-label" for="codigo">
@@ -274,6 +276,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="{{url('/')}}/js/datatables-simple-demo.js"></script>
         <script src="{{url('/')}}/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+        <script src="{{ url('/')}}/alertifyjs/alertify.min.js"></script>        
+        <link href="{{ url('/')}}/alertifyjs/css/alertify.min.css" rel="stylesheet">     
         <script src="{{url('/')}}/js/agendamiento.js">                       
         </script>  
         <script type="text/javascript">          
@@ -296,6 +300,15 @@
                 }
 
             
+            });
+
+            $("#cantidadDetalleOrden").keyup(function(event){
+                //console.log(event.which);
+                if(event.which==13)
+                {
+                    GuardarDetalle();
+                }
+
             });
             $("#chkcliente").change( function(){
                 //alert(this.checked);
@@ -360,7 +373,7 @@
                 var producto_id=document.getElementById('producto_id').value;
                 var cantidad=document.getElementById('cantidadDetalleOrden').value;
                 if(cantidad==""){
-                    alert('este campo no puede ser nulo');
+                    alertify.error("este campo no puede ser nulo");
                     return;
                 }
                 $.ajax({
@@ -373,7 +386,7 @@
                         cantidad:cantidad,                    
                     },
                     success: function (result){
-                        alert(result.message);
+                        alertify.success(result.message);
                         if(result.encontrado)
                         {
                             window.location.href="{{url('/ordendetalles')}}";
@@ -440,12 +453,12 @@
                var materia_prima_id= document.getElementById('materia_prima_id').value
                 if(materiaprima=="")
                 {
-                    alert('este campo no puede ser vacio');
+                    alertify.error('este campo no puede ser vacio');
                     return;
                 }
                 if(cantidad=="")
                 {
-                    alert('este campo no puede ser vacio');
+                    alertify.error('este campo no puede ser vacio');
                     return;                    
                 }
                 if(ingrediente_id=="")
@@ -462,7 +475,7 @@
                         cantidad:cantidad                
                     },
                     success: function (result){
-                        alert(result.message);
+                        alertify.success(result.message);
                         window.location.href="{{url('/')}}/productos/"+producto_id;
                     }
                 });             
@@ -480,7 +493,7 @@
                         cantidad:cantidad                       
                     },
                     success: function (result){
-                        alert(result.message);
+                        alertify.success(result.message);
                         window.location.href="{{url('/')}}/productos/"+producto_id;
                     }
                 });             
@@ -497,12 +510,12 @@
             var cantidad=document.getElementById('cantidad_ex').value;            
             if(fecha=="")            
             {            
-                alert("El campo fecha es requerido");            
+                alertify.error("El campo fecha es requerido");            
                 return;            
             }            
             if(cantidad=="")            
             {            
-                alert("El campo cantidad es requerido");            
+                alertify.error("El campo cantidad es requerido");            
                 return;            
             }            
             $.ajax({
@@ -519,7 +532,7 @@
                     cantidad:cantidad,                    
                 },               
                 success: function (result){                        
-                    alert(result.mensaje);          
+                    alertify.success(result.mensaje);          
                     var modulo=result.tipo=="materia_prima"?"materiaprimas":"productos";   
                     window.location.href="{{url('/')}}/"+modulo+"/"+result.id;                    
                 }

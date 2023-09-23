@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             UnidadMedidaSeeder::class,
             TipoDocumentoSeeder::class,
             FormaPagoSeeder::class,
+            ImpresoraSeeder::class,
         ]);
     }
 }

@@ -21,6 +21,11 @@
         <table id="datatablesSimple">
             <thead>
                 <tr>
+                    <th></th>                    
+                    <th></th>                    
+                    <th></th>                    
+                    <th></th>
+                    <th></th>
                     <th>Id</th>
                     <th>Codigo </th>                    
                     <th>Fecha </th>                    
@@ -32,16 +37,16 @@
                     <th>Total</th>
                     <th>Cantidad de productos ordenados</th>
                     <th>Observaciones</th>                    
-                    <th>Estado</th>
-                    <th></th>                    
-                    <th></th>                    
-                    <th></th>                    
-                    <th></th>
-                    <th></th>
+                    <th>Estado</th>                    
                 </tr>
             </thead>
             <tfoot>
-                <tr>                   
+                <tr>               
+                    <th></th>                                 
+                    <th></th>                    
+                    <th></th>                    
+                    <th></th>
+                    <th></th>    
                     <th>Id</th>
                     <th>Codigo </th>                    
                     <th>Fecha </th>                    
@@ -53,17 +58,56 @@
                     <th>Total</th>
                     <th>Cantidad de productos ordenados</th>
                     <th>Observaciones</th>       
-                    <th>Estado</th>
-                    <th></th>                                 
-                    <th></th>                    
-                    <th></th>                    
-                    <th></th>
-                    <th></th>
+                    <th>Estado</th>                    
                 </tr>
             </tfoot>
             <tbody>    
                 @foreach($ordenes as $item)
                 <tr style="{{$item->estado_id==2?'color:green':'color:black'}}">
+                    <td>
+                        <a class="btn btn-info" style="font-size: 10px" href="{{url('/ordenservicio')}}/{{$item->id}}">
+                            Ver detalles
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" style="font-size: 10px" href="{{url('/reportes/printordenservicio/'.$item->id)}}">
+                            Imprimir orden 
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" style="font-size: 10px" href="{{url('/reportes/printComanda/'.$item->id)}}">
+                            Imprimir comanda
+                        </a>
+                    </td>
+                    <td>                
+                        @if($item->estado_id==1)
+                        <form action="{{url('/ordenservicio')}}/{{$item->id}}" 
+                            onsubmit="return validar('Desea eliminar este registro?');" method="post">
+                            @csrf
+                            @method('delete')
+                            <button class="btn btn-danger" style="font-size: 10px" type="submit"> Cancelar</button>
+                        </form>
+                        @endif
+                    </td>
+                    <td>
+                        @switch($item->estado_id)
+                            @case(1)                            
+                                <form action="{{url('/ordenservicio')}}/{{$item->id}}" 
+                                    onsubmit="return validar('Desea entregaar estad orden?');" method="post">
+                                    @csrf
+                                    @method('patch')
+                                    <button class="btn btn-success" style="font-size: 10px" type="submit"> Entregar</button>
+                                </form>                                
+                                @break
+                            @case(2)
+                                <form action="{{url('pagos/create')}}" method="get">
+                                    <input type="hidden" value="{{$item->id}}" name="id">
+                                    <button type="submit" class="btn btn-success" style="font-size: 10px" > Cobrar</button>                                
+                                </form>                           
+                                @break
+                            @default                            
+                        @endswitch              
+                    </td>
                     <td>{{$item->id}}</td>
                     <td>{{$item->codigo}}</td>                    
                     <th>{{$item->fecha}} </th>                    
@@ -75,52 +119,7 @@
                     <th>{{number_format($item->total)}}</th>
                     <th>{{$item->orden_detalles->count()}}</th>
                     <th>{{$item->observaciones}}  </th>                    
-                    <td>{{$item->estado->nombre}}</td>
-
-                    <td>
-                        <a class="btn btn-info" href="{{url('/ordenservicio')}}/{{$item->id}}">
-                            Ver detalles
-                        </a>
-                    </td>
-                    <td>
-                        <a class="btn btn-warning" href="{{url('/reportes/printordenservicio/'.$item->id)}}">
-                            Imprimir orden servicio
-                        </a>
-                    </td>
-                    <td>
-                        <a class="btn btn-warning" href="{{url('/reportes/printComanda/'.$item->id)}}">
-                            Imprimir comnanda
-                        </a>
-                    </td>
-                    <td>                
-                        @if($item->estado_id==1)
-                        <form action="{{url('/ordenservicio')}}/{{$item->id}}" 
-                            onsubmit="return validar('Desea eliminar este registro?');" method="post">
-                            @csrf
-                            @method('delete')
-                            <button class="btn btn-danger" type="submit"> Cancelar</button>
-                        </form>
-                        @endif
-                    </td>
-                    <td>
-                        @switch($item->estado_id)
-                            @case(1)                            
-                                <form action="{{url('/ordenservicio')}}/{{$item->id}}" 
-                                    onsubmit="return validar('Desea entregaar estad orden?');" method="post">
-                                    @csrf
-                                    @method('patch')
-                                    <button class="btn btn-success" type="submit"> Entregar</button>
-                                </form>                                
-                                @break
-                            @case(2)
-                                <form action="{{url('pagos/create')}}" method="get">
-                                    <input type="hidden" value="{{$item->id}}" name="id">
-                                    <button type="submit" class="btn btn-success" > Cobrar</button>                                
-                                </form>                           
-                                @break
-                            @default                            
-                    @endswitch              
-                    </td>
+                    <td>{{$item->estado->nombre}}</td>                    
                 </tr>
                 @endforeach   
             </tbody>

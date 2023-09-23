@@ -68,7 +68,7 @@
                             Total a pagar                
                         </label>
                         <input type="text" name="total_pagar"  class="form-control"
-                        id="total_pagar">
+                        id="total_pagar" value={{$subtotal+$impuesto}}>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="unidad_medida">

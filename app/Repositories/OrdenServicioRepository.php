@@ -29,6 +29,30 @@ class OrdenServicioRepository implements IRepository
     {
        return OrdenEncabezado ::all();
     }
+    public  function GetTiempoCoccion($detalles)
+    {
+        $productos=[];
+        foreach($detalles as $item)                    
+        {
+            $producto_id=$item->producto_id;
+            $producto=$this->_productoRepository->Find($producto_id);            
+            $foraneo=$producto!=null?$producto->foraneo:0;
+            if($foraneo==0){
+                $productos=[$producto];
+            }
+        }
+        $tiempoCoccion=0;
+        for($i=0;$i<=count($productos)-1;$i++)
+        {
+            if($productos[$i]->tiempo_coccion>$tiempoCoccion)
+            {
+                $tiempoCoccion=$productos[$i]->tiempo_coccion;
+            }
+
+        }
+        return $tiempoCoccion;
+
+    } 
     public function ComprobarExistenciaProductoDetalle($detalles){
         $errors=[];
         foreach($detalles as $item)                    

@@ -73,6 +73,21 @@
                 </select>
             </div>            
             <div class="mb-3">
+                <label class="form-label" for="categoria">
+                    Impresora               
+                </label>
+                <select type="text" name="impresora" class="form-select"
+                 id="categoria">
+                 <option value="">seleccione una impresora</option>
+                 @foreach($impresoras as $item)
+                 <option value="{{$item->id}}"
+                    @if($item->id==$producto->impresora->id)
+                    {{'selected'}}
+                    @endif>{{$item->nombre}}</option>
+                 @endforeach
+                </select>
+            </div>            
+            <div class="mb-3">
                 <label class="form-label" for="unidad_medida">
                     Unidad medida                
                 </label>

@@ -3,7 +3,8 @@ namespace App\Repositories;
 
 use Mike42\Escpos\Printer;
 
-class PlantillasRepository{
+class PlantillasRepository
+{
     public function ImprimirPlantillaOrdenServicio(Printer $printer,$ordenservicio)
     {
         $printer ->setTextSize(3,3);      
@@ -53,8 +54,9 @@ class PlantillasRepository{
         $printer->text("================\n");
         $printer->text("=====Detalle====\n");
         $printer->setJustification(Printer::JUSTIFY_LEFT);        
-        $printer ->setTextSize(1,1);              
-        foreach( $ordenservicio->orden_encabezado->orden_detalles as $item)
+        $printer ->setTextSize(1,1);   
+        $detalles=$ordenservicio->detalles;         
+        foreach( $detalles as $item)
         {   
             $printer->text("**************\n");         
             $printer->text("Cantidad:".$item->cantidad."\n");
@@ -100,7 +102,7 @@ class PlantillasRepository{
             $printer->text("================\n");
         }        
     }
-    public function ImprimirPlantillaComanda(Printer $printer,$ordenservicio)
+    public function ImprimirPlantillaComanda(Printer $printer,$ordenservicio )
     {
         $printer ->setTextSize(3,3);      
         $printer -> text("================\n");    
@@ -114,8 +116,9 @@ class PlantillasRepository{
         $printer->text("================\n");
         $printer->text("=====Detalle====\n");
         $printer->setJustification(Printer::JUSTIFY_LEFT);        
-        $printer ->setTextSize(1,1);              
-        foreach( $ordenservicio->orden_encabezado->orden_detalles as $item)
+        $printer ->setTextSize(1,1);    
+        $detalles=$ordenservicio->detalles;          
+        foreach( $detalles as $item)
         {   
             $printer->text("**************\n");         
             $printer->text("Cantidad:".$item->cantidad."\n");

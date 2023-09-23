@@ -11,6 +11,7 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\ExistenciaController;
 use App\Http\Controllers\FacturaEncabezadoController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImpresoraController;
 use App\Http\Controllers\materiaprimaController;
 use App\Http\Controllers\OrdenDetalleController;
 use App\Http\Controllers\OrdenEncabezadoController;
@@ -38,6 +39,7 @@ use Illuminate\Support\Facades\Route;
     $data=['empresa_nombre'=>'los girasoles'];
     return view('Home.index',$data);
 });*/
+Route::resource('impresoras',ImpresoraController::class);
 Route::resource('pagos', PagoController::class);
 Route::get('impuestos/calcularImpuestos/{subtotal}',[ImpuestoController::class,'CalcularImpuestos']);
 Route::get('/',[HomeController::class,'index']);

@@ -52,6 +52,7 @@ class ProductoRepository implements IRepository{
             'descripcion'=>$request->input('descripcion'),
             'costo_unitario'=>$request->input('costo_unitario'),                                   
             'precio'=>$request->input('precio'),
+            'impresora_id'=>$request->input('impresora'),
             'foraneo'=>$foraneo,
             'imagen'=>$nombreimagen,
             'tiempo_coccion'=>$request->input('tiempo_coccion'),
@@ -73,6 +74,7 @@ class ProductoRepository implements IRepository{
         $producto->precio=$request->input('precio');
         $producto->foraneo=$foraneo;
         $producto->descripcion=$request->input('descripcion');
+        $producto->impresora_id=$request->input('impresora');
         $producto->tiempo_coccion= $request->input('tiempo_coccion');
         $producto-> imagen=$nombreimagen;
         $producto->unidad_medida_id =$request->input('unidad_medida') ;

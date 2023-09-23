@@ -20,8 +20,8 @@
                         <label class="form-label" for="codigo">
                             Tipo documento
                         </label>
-                        <select name="tipo_documento" id="tipo_documento">
-                            <option value="">Seleccione un tipode documento</option>
+                        <select name="tipo_documento" class="form-select" id="tipo_documento">
+                            <option value="">Seleccione un tipo de documento</option>
                             @foreach($tipo_documento as $item)
                             <option value="{{$item->id}}">{{$item->nombre}}</option>
                             @endforeach
@@ -86,7 +86,7 @@
                         <label class="form-label" for="unidad_medida">
                             Hora entrega                
                         </label>
-                        <input type="time" name="hora_entrega" value="{{old('hora')}}" class="form-control"
+                        <input type="time" name="hora_entrega" value="{{$tiempo_entrega}}" class="form-control"
                         id="hora">
                     </div>
                     <div class ="mb-3">                    

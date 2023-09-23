@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Configuracion;
+use App\Models\Impresora;
 use App\Models\OrdenEncabezado;
 use App\Repositories\ExistenciaRepository;
 use App\Repositories\FileRepository;
@@ -18,6 +19,20 @@ class ReportesController extends Controller
     protected ExistenciaRepository  $_existenciaRepository;
     protected FileRepository $_fileRepository;
     protected PlantillasRepository $_plantillaRepository;
+    private function Detalles_impresora($orden_detalles,$impresora ){
+
+        $detalles=$orden_detalles;
+        $detalles_impresora=[];
+        foreach($detalles as $detalle){
+            $impresora_id=$detalle->producto->impresora_id;
+            if ($impresora_id==$impresora->id)
+            {
+                $detalles_impresora[]=$detalle;
+            }                
+        }
+        return $detalles_impresora;
+
+    }
     public function __construct(ExistenciaRepository $existenciaRepository,
                                 PlantillasRepository $plantillasRepository,
                                 FileRepository $fileRepository)
@@ -35,24 +50,43 @@ class ReportesController extends Controller
             {
                 return redirect()->to('login');            
             }
-
-            $nombrepos=Configuracion::where('nombre','impresora_pos')->
-                                            select('valor')->first()==null?"":
-                                            Configuracion::where('nombre','impresora_pos')
-                                            ->select('valor')->first()->valor;
-            if($nombrepos=="")
-            {
-                throw new Exception("Debe configurar una impresora" );
-            }
             $empresa=Auth::user()->empresa; 
             $ordenEncabezado=OrdenEncabezado::find($id) ;
-            $ordenservicio=(object)["empresa"=>$empresa,"orden_encabezado"=>$ordenEncabezado ];
-            $conector=new WindowsPrintConnector($nombrepos);
-            $printer =new Printer($conector);        
-            $printer ->initialize();
-            $this->_plantillaRepository->ImprimirPlantillaComanda($printer,$ordenservicio);
-            $printer -> cut();                
-            $printer->close();            
+            $impresoras=Impresora::all();
+            $ordenservicio=(object)["empresa"=>$empresa,
+                                    "orden_encabezado"=>$ordenEncabezado ,
+                                    "detalles"=>[],
+                                    "impresora"=>null
+                                   ];
+            $err=[];
+            foreach( $impresoras as $item )            
+            {   
+                try
+                {              
+                    $detalles=$ordenEncabezado->orden_detalles;
+                    $detalles_impresora=$this->Detalles_impresora($detalles,$item);               
+                    if(count( $detalles_impresora)>0)
+                    {
+                        $ordenservicio->detalles=(object)$detalles_impresora;                    
+                        $ordenservicio->impresora=$item;
+                        $conector=new WindowsPrintConnector($item->recurso_compartido);                    
+                        $printer =new Printer($conector);                            
+                        $printer ->initialize();                    
+                        $this->_plantillaRepository->ImprimirPlantillaComanda($printer,$ordenservicio);                    
+                        $printer -> cut();                    
+                        $printer->close();                                    
+                    }                
+                }                
+                catch(Exception $ex)
+                {
+                    $err[]=$ex->getMessage();
+                }
+            }
+            if (count($err)>0)
+            {
+                return back()->withErrors($err);
+
+            }            
             return redirect()->to('ordenservicio');        
         }
         catch(Exception $ex)
@@ -68,31 +102,52 @@ class ReportesController extends Controller
             if(!Auth::check())            
             {
                 return redirect()->to('login');            
-            }
-
-            $nombrepos=Configuracion::where('nombre','impresora_pos')->
-                                            select('valor')->first()==null?"":
-                                            Configuracion::where('nombre','impresora_pos')
-                                            ->select('valor')->first()->valor;
-            if($nombrepos=="")
-            {
-                throw new Exception("Debe configurar una impresora" );
-            }
+            }     
             $empresa=Auth::user()->empresa; 
             $ordenEncabezado=OrdenEncabezado::find($id) ;
-            $ordenservicio=(object)["empresa"=>$empresa,"orden_encabezado"=>$ordenEncabezado ];
-            $conector=new WindowsPrintConnector($nombrepos);
-            $printer =new Printer($conector);        
-            $printer ->initialize();
-            $this->_plantillaRepository->ImprimirPlantillaOrdenServicio($printer,$ordenservicio);
-            $printer -> cut();                
-            $printer->close();            
+            $impresoras=Impresora::all();
+            $ordenservicio=(object)["empresa"=>$empresa,
+                                    "orden_encabezado"=>$ordenEncabezado ,
+                                    "detalles"=>[],
+                                    "impresora"=>null
+                                   ];
+            $err=[];
+            foreach( $impresoras as $item )            
+            {   
+                try
+                {              
+                    $detalles=$ordenEncabezado->orden_detalles;
+                    $detalles_impresora=$this->Detalles_impresora($detalles,$item);               
+                    if(count( $detalles_impresora)>0)
+                    {
+                        $ordenservicio->detalles=(object)$detalles_impresora;                    
+                        $ordenservicio->impresora=$item;
+                        $conector=new WindowsPrintConnector($item->recurso_compartido);                    
+                        $printer =new Printer($conector);                            
+                        $printer ->initialize();                    
+                        $this->_plantillaRepository->ImprimirPlantillaOrdenServicio($printer,$ordenservicio);                    
+                        $printer -> cut();                    
+                        $printer->close();                                    
+                    }                
+                }                
+                catch(Exception $ex)
+                {
+                    $err[]=$ex->getMessage();
+                }
+            }
+            if (count($err)>0)
+            {
+                return back()->withErrors($err);
+
+            }            
             return redirect()->to('ordenservicio');        
         }
-        catch(Exception $ex){
-          return back()->withErrors($ex->getMessage());
-        }
+        catch(Exception $ex)
+        {
+            return back()->withErrors($ex->getMessage());
+        }   
         
+ 
     }
     public function inventarioPdf()
     {

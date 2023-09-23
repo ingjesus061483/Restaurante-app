@@ -74,12 +74,17 @@ class OrdenEncabezadoController extends Controller
         if (count($errors)>0){
             return back()->withErrors($errors);
         }
+     $tiempoCoccion=   $this->_ordenServicioRepository-> GetTiempoCoccion($detalles);
+     $now=date_create();
+     date_add($now,date_interval_create_from_date_string($tiempoCoccion.' minutes'));     
+     $time=date_format($now, 'H:i:s');
         $user=Auth::user();
         $empleado=$this->_empleadoRepository->GetEmpleadoByUser($user);
         $cliente=$this->_clienteRepository->GetclienteByUser($user);
         $data=[
              'tipo_documento'=>$this->_tipoDocumentoRepository->GetAll(),   
-            'cabañas'=>$cabañas,            
+            'cabañas'=>$cabañas,  
+            'tiempo_entrega'=>$time,          
             'empleado'=>$empleado,
             'cliente'=>$cliente,
             'orden_detalle'=>$detalles
