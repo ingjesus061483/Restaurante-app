@@ -114,7 +114,7 @@
                     <th>{{$item->hora}}</th>                    
                     <th>{{$item->hora_entrega}}</th>
                     <th>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</th>
-                    <th><a onmouseover="mostrar( {{$item->cliente!=null?$item->cliente->id:'0'}})" href="{{url('/clientes')}}/{{$item->cliente!=null?$item->cliente->id:"0"}}">{{$item->cliente!=null?$item->cliente->nombre.' '.$item->cliente->apellido:""}}</a></th>
+                    <th><a onmouseover="mostrar( {{$item->cliente!=null?$item->cliente->identificacion:'0'}})" href="{{url('/clientes')}}/{{$item->cliente!=null?$item->cliente->id:"0"}}">{{$item->cliente!=null?$item->cliente->nombre.' '.$item->cliente->apellido:""}}</a></th>
                     <th>{{$item->empleado->nombre. ' '.$item->empleado->apellido}}</th>                    
                     <th>{{number_format($item->total)}}</th>
                     <th>{{$item->orden_detalles->count()}}</th>

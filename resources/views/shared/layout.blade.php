@@ -301,7 +301,14 @@
 
             
             });
+            $("#cliente").change(function(event){
+                var identificacion=this.value;
+                if(identificacion.length>=7)
+                {
 
+                    mostrar(identificacion);
+                }
+             });
             $("#cantidadDetalleOrden").keyup(function(event){
                 //console.log(event.which);
                 if(event.which==13)
@@ -377,6 +384,20 @@
                     dataType: "json",                    
                     success: function (result){
                         var cliente =result.cliente;
+                        if(cliente ==null)
+                        {
+                            if(confirm("Guardar cliente?"))                            
+                            {
+                                window.location.href="{{url('/clientes/create')}}";                                
+                                return;  
+                            }
+                            else                            
+                            {
+                                return ;
+                            
+                            }     
+                            
+                        }
                         alertify.success     (cliente.nombre+' '+cliente.apellido+"</br>"+cliente.direccion+"</br>"+cliente.telefono );
                         
                         

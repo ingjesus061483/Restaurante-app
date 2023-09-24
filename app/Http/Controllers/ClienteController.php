@@ -90,7 +90,7 @@ class ClienteController extends Controller
     public function showClient( $id)    
     {
         $data=[
-            "cliente"=>$this-> _reposotory->Find($id)
+            "cliente"=>$this-> _reposotory->Getcliente($id)
         ];
         return json_encode($data);
     }
