@@ -14,6 +14,7 @@
         @endif    
         <form action="{{url('/clientes')}}" autocomplete="off" method="post">
             @csrf
+            <input type="hidden" name="empresa"value="{{$empresa->id}}" >
             <div class="mb-3">
                 <label class="form-label" for="identificacion">
                     Identificacion

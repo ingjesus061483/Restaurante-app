@@ -129,7 +129,7 @@ class ImpresoraController extends Controller
             'recurso_compartido'=>'required|max:50',
             'anchura_papel'=>'required|numeric',
             'tamaño_fuente'=>'required|numeric',                    
-            'codigo'=>'required|max:50|unique:impresoras,nit,'.$id,
+            'codigo'=>'required|max:50|unique:impresoras,codigo,'.$id,
         ]);
         $this->_impresoraRepository->Update( $id,(object)$request->all());
 

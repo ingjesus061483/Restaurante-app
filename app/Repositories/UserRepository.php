@@ -15,7 +15,7 @@ class UserRepository implements IRepository
         $user=  User::create([
             'name'=>$request->name,
             'email'=>$request->email,   
-            'role_id'=>$request->role,
+            'role_id'=>property_exists($request, "role")? $request->role:null,
             'empresa_id'=>$request->empresa,                 
             'password'=>hash::make( $request->password),        
         ]);         

@@ -47,7 +47,11 @@ class ClienteController extends Controller
         {
             return back();            
         }
-        return view ('Cliente.create');
+        $empresa=Auth::user()->empresa;
+        $data=[
+            "empresa"=>$empresa
+        ];
+        return view ('Cliente.create',$data);
         //
     }
 
@@ -83,8 +87,16 @@ class ClienteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Cliente $cliente)
+    public function show( $id)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        $data=[
+            "cliente"=>$this-> _reposotory->Find($id)
+        ];
+        return view('Cliente.show',$data);
         //
     }
 
