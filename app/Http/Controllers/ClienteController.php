@@ -87,6 +87,13 @@ class ClienteController extends Controller
     /**
      * Display the specified resource.
      */
+    public function showClient( $id)    
+    {
+        $data=[
+            "cliente"=>$this-> _reposotory->Find($id)
+        ];
+        return json_encode($data);
+    }
     public function show( $id)
     {
         if(!Auth::check())

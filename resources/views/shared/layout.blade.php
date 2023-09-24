@@ -369,6 +369,20 @@
                     }
                 }
             });   
+            function mostrar(id){
+                console.log(id);
+                $.ajax({
+                    url:"{{url('/clientes/showClient')}}/"+id,
+                    type: "get",
+                    dataType: "json",                    
+                    success: function (result){
+                        var cliente =result.cliente;
+                        alertify.success     (cliente.nombre+' '+cliente.apellido+"</br>"+cliente.direccion+"</br>"+cliente.telefono );
+                        
+                        
+                    }
+                });             
+            }
             function GuardarDetalle(){
                 var producto_id=document.getElementById('producto_id').value;
                 var cantidad=document.getElementById('cantidadDetalleOrden').value;

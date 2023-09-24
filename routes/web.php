@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\Route;
 });*/
 Route::resource('impresoras',ImpresoraController::class);
 Route::resource('pagos', PagoController::class);
+Route::get('clientes/showClient/{id}',[ClienteController::class,'showClient']);
 Route::get('impuestos/calcularImpuestos/{subtotal}',[ImpuestoController::class,'CalcularImpuestos']);
 Route::get('/',[HomeController::class,'index']);
 Route::get('login',[LoginController::class,'show']);
