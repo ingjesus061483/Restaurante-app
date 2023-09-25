@@ -15,7 +15,7 @@ class EmpresaSeeder extends Seeder
     {
         DB::table('empresas')->insert([
             'nit'=>'11111-1',
-            'nombre'=>'empresa ficticia',
+            'nombre'=>'Empresa de prueba ',
             'camara_de_comercio'=>'0001',
             'direccion'=>'b/quilla',
             'telefono'=>'5444555',
