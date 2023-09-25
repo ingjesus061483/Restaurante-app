@@ -16,10 +16,11 @@ class ObservacionController extends Controller
     public function __construct(ObservacionRepository $observacionRepository) {
         $this->_observacionRepository = $observacionRepository;
     }
-    public function GetObservacions()
+    public function GetObservacions($codigo)
     {
+        $observacions=$this->_observacionRepository->GetObservacions($codigo);
         $data=[
-            "observaciones"=>$this->_observacionRepository->GetAll()
+            "observaciones"=>count($observacions)>0?$observacions:$this->_observacionRepository->GetAll()
         ];
         return json_encode($data);
     }

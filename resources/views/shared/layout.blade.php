@@ -284,7 +284,7 @@
         <script type="text/javascript">    
            var observacions=[];               
            $.ajax({
-                url: {{url("/observaciones/GetObservacions")}} ,
+                url: "{{url('/observaciones/GetObservacions/null')}}",
                 type: "GET",
                 dataType: "json",
                 success: function (result) 

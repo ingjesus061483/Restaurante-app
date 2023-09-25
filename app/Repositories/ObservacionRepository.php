@@ -5,6 +5,10 @@ use App\Contracts\IRepository;
 use App\Models\Observacion;
 
 class ObservacionRepository implements IRepository{
+    public function GetObservacions($codigo)
+    {
+        return Observacion::where('codigo',$codigo) ->get();
+    }
     public function GetAll()
     {
         return  Observacion::all();

@@ -43,7 +43,7 @@ use Illuminate\Support\Facades\Route;
 Route::resource('observaciones',ObservacionController::class);
 Route::resource('impresoras',ImpresoraController::class);
 Route::resource('pagos', PagoController::class);
-Route::get('observaciones/GetObservacions',[ObservacionController::class,'GetObservacions']);
+Route::get('observaciones/GetObservacions/{codigo}',[ObservacionController::class,'GetObservacions']);
 Route::get('clientes/showClient/{id}',[ClienteController::class,'showClient']);
 Route::get('impuestos/calcularImpuestos/{subtotal}',[ImpuestoController::class,'CalcularImpuestos']);
 Route::get('/',[HomeController::class,'index']);
