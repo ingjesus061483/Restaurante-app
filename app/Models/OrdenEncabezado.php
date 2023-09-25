@@ -19,7 +19,7 @@ class OrdenEncabezado extends Model
     }
     public function estado(){
         return $this->belongsTo(Estado::class,'estado_id');        
-    }
+    }  
     public function orden_detalles(){
         return $this->hasMany(OrdenDetalle::class,'orden_encabezado_id');
     }

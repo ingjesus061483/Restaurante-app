@@ -81,7 +81,8 @@
                                     <a class="nav-link" href="{{url('/empresas')}}">Empresas</a>
                                     <a class="nav-link" href="{{url('/clientes')}}">Clientes</a>
                                     <a class="nav-link" href="{{url('/roles')}}">Roles</a>
-                                    <a class="nav-link" href="{{url('/impuestos')}}">Impuestos</a>                                    
+                                    <a class="nav-link" href="{{url('/impuestos')}}">Impuestos</a> 
+                                    <a class="nav-link" href="{{url('/observaciones')}}">Observaciones</a> 
                                 </nav>
                             </div>                         
                         </div>
@@ -280,7 +281,26 @@
         <link href="{{ url('/')}}/alertifyjs/css/alertify.min.css" rel="stylesheet">     
         <script src="{{url('/')}}/js/agendamiento.js">                       
         </script>  
-        <script type="text/javascript">          
+        <script type="text/javascript">    
+           var observacions=[];               
+           $.ajax({
+                url: {{url("/observaciones/GetObservacions")}} ,
+                type: "GET",
+                dataType: "json",
+                success: function (result) 
+                {
+                    var observaciones=result.observaciones
+                    var cont=0;
+                    for(i=0;i<=observaciones.length-1;i++)
+                    {
+                        observacions[cont]=observaciones[i].descripcion
+                        cont++;
+                    }
+                }            
+            });        
+            $("#observaciones").autocomplete({                
+                source:observacions             
+            });  
             if($("#foraneo")!=null&&$("#foraneo").checked)
             {
                 $("#coccion").fadeOut();                

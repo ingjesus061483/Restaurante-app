@@ -93,7 +93,7 @@
                         <label class="form-label" for="descripcion">                        
                             Observaciones                    
                         </label>                    
-                        <textarea name="observaciones" id="ovservaciones"  class="form-control"
+                        <textarea name="observaciones" id="observaciones"  class="form-control"
                             cols="30" rows="10">                        
                             {{old('observaciones')}}                    
                         </textarea>                
