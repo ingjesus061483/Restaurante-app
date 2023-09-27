@@ -270,6 +270,36 @@
                     
                 </div>                                   
         </div>
+        <div id="formasPagos" class="container">
+            <div class="mb-3">
+                <label class="form-label" for="categoria">
+                    Forma pago                
+                </label>
+                @if(isset($forma_pago))
+                <select type="text" name="forma_pago" class="form-select"
+                 id="forma_pago">
+                 <option value="">seleccione una forma pago</option>
+                 @foreach($forma_pago as $item)
+                 <option value="{{$item->id}}">{{$item->nombre}}</option>
+                 @endforeach
+                </select>            
+                @endif  
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="unidad_medida">
+                    Detalle pago                
+                </label>
+                <input type="text" name="detallepago"  class="form-control"
+                id="detallepago">
+            </div>                 
+            <div class="mb-3">
+                <label class="form-label" for="unidad_medida">
+                    Valor recibido                
+                </label>
+                <input type="text" name="valorRecibido"  class="form-control"
+                id="valorRecibido">
+            </div>            
+        </div>
         <!-- fin dialog -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="{{url('/')}}/js/scripts.js"></script>        
@@ -321,6 +351,24 @@
 
             
             });
+            $("#forma_pago").change(function(){
+               var detallepago=document.getElementById('detallepago');
+               var valorRecibido=document.getElementById('valorRecibido');
+               var total_pagar=document.getElementById('total_pagar').value;
+               var faltante={{isset($faltante)? $faltante:0}}              
+                if (this.value==1)
+                {
+                    detallepago.value="Pago de contado";
+                    valorRecibido.value=total_pagar;                
+                    return;
+                }
+                detallepago.value="";                
+                valorRecibido.value=faltante; 
+                detallepago.focus();                
+
+
+
+            })
             $("#cliente").change(function(event){
                 var identificacion=this.value;
                 if(identificacion.length>=7)
@@ -337,6 +385,16 @@
                 }
 
             });
+            $("#detalle").click(function(){  
+                var faltante={{isset($faltante)? $faltante:0}}              
+                if(faltante<=0)
+                {
+                    alertify.error('');
+                    return;
+                }
+                dialogformasPagos.dialog("open");                
+                
+            })
             $("#chkcliente").change( function(){
                 //alert(this.checked);
                 if(this.checked)
@@ -353,6 +411,20 @@
 
             
             });
+            var dialogformasPagos=$("#formasPagos").dialog({
+                autoOpen: false,
+                height:450,
+                width: 600,
+                modal: true,
+                buttons: 
+                {
+                    "Guardar": function(){GuardarformaPago()},
+                    "Cerrar": function() 
+                    {
+                        dialogformasPagos.dialog( "close" );                    
+                    }
+                }
+            });   
             var dialogDetalleOrden=$("#DetalleOrden").dialog({
                 autoOpen: false,
                 height:450,
@@ -396,6 +468,7 @@
                     }
                 }
             });   
+
             function mostrar(id){
                 console.log(id);
                 $.ajax({
@@ -421,6 +494,53 @@
                         alertify.success     (cliente.nombre+' '+cliente.apellido+"</br>"+cliente.direccion+"</br>"+cliente.telefono );
                         
                         
+                    }
+                });             
+            }
+            function GuardarformaPago()
+            {
+                var orden_id={{isset( $ordenServicio)?$ordenServicio->id:0}}
+                var detallepago=document.getElementById('detallepago').value;
+               var valorRecibido=document.getElementById('valorRecibido').value;
+               var total_pagar=document.getElementById('total_pagar').value;
+               var forma_pago=document.getElementById('forma_pago').value;
+               if(detallepago=="")
+               {
+                alertify.error('');
+                return; 
+               }
+               if(valorRecibido==""){
+                alertify.error('');
+                return ;
+
+               }
+               if(forma_pago=="")
+               {
+                alertify.error('');
+                return ;
+               }
+               $.ajax({
+                    url:"{{url('/pagodetalle')}}",
+                    type: "POST",
+                    dataType: "json",
+                    data: {   
+                        _token:"{{csrf_token()}}",     
+                        detallepago:detallepago,
+                        valorRecibido:valorRecibido,
+                        totalpagar:total_pagar,
+                        forma_pago:forma_pago
+            
+                    },
+                    success: function (result){
+                        if(result.error){
+                            alertify.error(result.message);   
+                        }
+                        else
+                        {
+                            alertify.success(result.message);   
+                        }
+                        var url="{{url('/')}}/pagos/create?id="+orden_id
+                        window.location.href=url
                     }
                 });             
             }

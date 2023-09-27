@@ -28,10 +28,10 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
 
-            $table->foreignId('forma_pago_id')            
+     /*       $table->foreignId('forma_pago_id')            
             ->constrained('forma_pagos')
             ->onUpdate('cascade')
-            ->onDelete('cascade');
+            ->onDelete('cascade');*/
 
 
             $table->timestamps();

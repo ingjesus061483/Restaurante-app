@@ -5,35 +5,14 @@
 <div class="card mb-4">     
     <div class ="card-header" >
         <div class="row">
-            <div class="col-7"> 
-                <form  action="{{url('/pagos')}}"method="get" >
-                    <div class="row">                    
-                        <div class="col-9">
-                            <label class="form-label" for="categoria">
-                                Forma pago                
-                            </label>
-                            <select type="text" name="forma_pago" class="form-select"
-                             id="forma_pago">
-                             <option value="">seleccione una forma pago</option>
-                             @foreach($forma_pago as $item)
-                             <option value="{{$item->id}}">{{$item->nombre}}</option>
-                             @endforeach
-                            </select>              
-                        </div>        
-                        <div class="col-3" >
-                            <br>                        
-                            <button type="submit" class="btn btn-primary" >Buscar  </button>
-
-                        </div>
-    
-                    </div>
-    
-                </form>
-                                
+            <div class="col-4" > 
+            <a class="btn btn-primary" href="{{url('/pagodetalle')}} ">Totalizar </a>                               
+            </div>     
+            <div class="col-4" >                
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <label class="form-label" for="categoria">
-                    Total de venta por   {{$formaPago!=null?$formaPago->nombre:""}}
+                    Total de venta    
                 </label>
                 {{$totales}}              
             </div>
@@ -57,7 +36,7 @@
                     <th>Total pagar</th>
                     <th>Recibido</th>
                     <th>Cambio</th>
-                    <th>Forma pago</th>
+                    <th></th>
                 </tr>
             </thead>
             <tfoot>
@@ -74,7 +53,7 @@
                     <th>Total pagar</th>
                     <th>Recibido</th>
                     <th>Cambio</th>
-                    <th>Forma pago</th>
+                    <th></th>
                 
                 </tr>
             </tfoot>
@@ -92,10 +71,10 @@
                     <td>{{$item->descuento}}  </td>                    
                     <td>{{$item->total_pagar}}</td>
                     <td>{{$item->recibido}}</td>
-                    <td>{{$item->cambio}}</td>
-                    <td>{{$item->forma_pago->nombre}}</td>
-
-            
+                    <td>{{$item->cambio}}</td>  
+                    <td>
+                        <a href="{{url('/pagos')}}/{{$item->id}}" class="btn btn-success"> Ver detalles</a>
+                    </td>
                 </tr>
                 @endforeach   
             </tbody>

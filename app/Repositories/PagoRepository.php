@@ -2,15 +2,19 @@
 namespace App\Repositories;
 
 use App\Contracts\IRepository;
-use App\models\Pago;
+use App\Models\Pago;
+use App\Models\PagoDetalle;
 class PagoRepository implements IRepository{
     protected impuestoRepository $_impuestoRepository;
-    public function __construct(impuestorepository $impuestoRepository = null) {
+    protected PagoDetalleRepository $_pagoDetalleRepository ;
+    public function __construct(impuestorepository $impuestoRepository ,PagoDetalleRepository $pagoDetalleRepository) 
+    {
+        $this->_pagoDetalleRepository=$pagoDetalleRepository;
         $this->_impuestoRepository = $impuestoRepository;
     }
-    public function TotalesPagos($formapago)
+    public function TotalesPagos()
     {
-        $pagos=$formapago!=null? $this->GetbyFormaPago($formapago): $pagos=$this->GetAll();
+        $pagos= $pagos=$this->GetAll();
     
         
         $sum=0;
@@ -33,19 +37,24 @@ class PagoRepository implements IRepository{
         return Pago::find($id);
     }
     public function Store($request){
-        $pago=new Pago();
-        $pago->codigo=$request->codigo;
-        $pago->fecha_hora=$request->fecha_hora;
-        $pago->  subtotal=$request->subtotal;
-        $pago->  impuesto =$request->impuesto;
-        $pago-> descuento =$request->descuento;
-        $pago-> total_pagar=$request->total_pagar;
-        $pago->recibido=$request->recibido;
-        $pago->  cambio =$request-> cambio;
-        $pago->  observaciones =$request->observaciones;
-        $pago-> orden_id=$request->orden_id;
-        $pago->  forma_pago_id =$request->forma_pago;
-        $pago->save();
+        $pago= Pago::create ([
+            'codigo'=>$request->codigo,
+            'fecha_hora'=>$request->fecha_hora,
+            'subtotal'=>$request->subtotal,
+            'impuesto'=>$request->impuesto,
+            'descuento'=>$request->descuento,
+            'total_pagar'=>$request->total_pagar,
+            'recibido'=>$request->acumulado,
+            'cambio'=>-1*$request-> faltante,  
+            'observaciones'=>$request->observaciones,
+            'orden_id'=>$request->orden_id
+        ]);
+        $pagoDetalles=session('pagodetalles');
+        foreach($pagoDetalles as $item){
+            $item->pago_id=$pago->id;
+            $this->_pagoDetalleRepository->Store($item);
+           
+        }
 
     }
     public function Update($id,$request ){

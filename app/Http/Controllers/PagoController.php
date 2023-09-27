@@ -55,13 +55,11 @@ class PagoController extends Controller
             return  back();        
         }
         $forma_pago=request()->input('forma_pago');
-        $pagos=$forma_pago!=null?$this->_pagoRepository->GetbyFormaPago($forma_pago):
-                                 $this->_pagoRepository-> GetAll();
+        $pagos=$this->_pagoRepository-> GetAll();
        
         $data=[  
-            'forma_pago'=>$this->_formapagoRepository->GetAll(),    
-                     'formaPago'=>$this->_formapagoRepository->Find($forma_pago),
-            'totales'=>$this->_pagoRepository-> TotalesPagos($forma_pago),
+            'forma_pago'=>$this->_formapagoRepository->GetAll(),                         
+            'totales'=>$this->_pagoRepository-> TotalesPagos(),
             'pagos'=>$pagos
         ];
         return view('Pagos.index',$data);
@@ -77,11 +75,22 @@ class PagoController extends Controller
         {
             return redirect()->to('login');   
         }
-        $id=request()->input('id');   
+      
         $user=Auth::user();                
         if(! $this->autorizar($user))        
         {
             return  back();        
+        }
+        $id=request()->input('id');   
+        $pagoDetalles=[];
+        if(session()->has('pagodetalles'))
+        {
+            $pagoDetalles=session('pagodetalles');
+        }
+        $acum=0;        
+        foreach($pagoDetalles as $item)
+        {
+            $acum=$acum+ $item->valor_recibido;                   
         }
         $empresa= $this->_empresaRepository->Find( $user->empresa_id);        
         $ordenServicio=$this->_ordenServicioRepository->Find($id);        
@@ -91,12 +100,17 @@ class PagoController extends Controller
         {
             $impuesto=$this->_impuestoRepository->CalcularImpuestos($subtotal);
         }
+        $totalpagar=$subtotal+$impuesto;
+        $faltante=$totalpagar-$acum;
         $data=[   
             'forma_pago'=>$this->_formapagoRepository->GetAll(),    
             'ordenServicio'=>$ordenServicio,  
             'orden_detalle'=>   $ordenServicio->orden_detalles,
             'subtotal'=>$subtotal,
-            'impuesto'=>$impuesto
+            'impuesto'=>$impuesto,            
+            'pagoDetalles'=>$pagoDetalles,
+            'acumulado'=>$acum,
+            'faltante'=>$faltante
         ];
         return view ('Pagos.create',$data);    
     }
@@ -117,21 +131,20 @@ class PagoController extends Controller
             'impuesto'=>'required|numeric',                        
             'descuento'=>'required|numeric',                      
             'total_pagar'=>'required|numeric',                     
-            'recibido'=>'required|numeric',                      
-            'forma_pago'=>'required' ,                      
         ]);  
-        $recibido =$request->input('recibido');
+        $recibido =$request->input('acumulado');
         $total_pagar= $request->input('total_pagar');
         settype($recibido,"double");
         settype($total_pagar,"double");
         if($total_pagar>$recibido){
             return back()->withErrors('No se ha recibido el mototo total de pago');
-        }               
+        }   
         $ordenServicio=$this->_ordenServicioRepository->Find($request->input('orden_id'));       
         $this->_pagoRepository->Store((object)$request->all());
         $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);
         $cabana_id=$ordenServicio->cabaña==null?0:$ordenServicio->cabaña->id;
         $this->_cabanaRepository->desocuparCabana($cabana_id);
+        session()->forget('pagodetalles');
         return redirect()->to(url('/ordenservicio'));  
         //
     }
@@ -139,8 +152,25 @@ class PagoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pago $pago)
+    public function show($id)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');   
+        }
+      
+        $user=Auth::user();                
+        if(! $this->autorizar($user))        
+        {
+            return  back();        
+        }
+     
+        $pago=     $this->_pagoRepository->Find($id);
+        $data =[
+           'pagosdetalles'=> $pago->pago_detalle,
+          
+        ];
+        return view('Pagos.show',$data);
         //
     }
 

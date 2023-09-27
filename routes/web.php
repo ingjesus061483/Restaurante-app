@@ -17,13 +17,16 @@ use App\Http\Controllers\ObservacionController;
 use App\Http\Controllers\OrdenDetalleController;
 use App\Http\Controllers\OrdenEncabezadoController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\PagoDetalleController;
 use App\Http\Controllers\PreparacionController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\UserController;
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +46,7 @@ use Illuminate\Support\Facades\Route;
 Route::resource('observaciones',ObservacionController::class);
 Route::resource('impresoras',ImpresoraController::class);
 Route::resource('pagos', PagoController::class);
+Route::resource('pagodetalle',PagoDetalleController::class);
 Route::get('observaciones/GetObservacions/{codigo}',[ObservacionController::class,'GetObservacions']);
 Route::get('clientes/showClient/{id}',[ClienteController::class,'showClient']);
 Route::get('impuestos/calcularImpuestos/{subtotal}',[ImpuestoController::class,'CalcularImpuestos']);

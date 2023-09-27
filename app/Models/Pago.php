@@ -11,7 +11,11 @@ class Pago extends Model
     public function orden_encabezado(){
         return $this->belongsTo(OrdenEncabezado::class,'orden_id');
     }
-    public function forma_pago(){
-        return $this->belongsTo(FormaPago::class,'forma_pago_id');
+    public function pago_detalle(){
+        return $this->hasMany(PagoDetalle::class,'pago_id');
     }
+    protected $fillable=[
+        'codigo','fecha_hora', 'subtotal','impuesto','descuento','total_pagar',
+        'recibido','cambio',  'observaciones','orden_id'
+    ];
 }

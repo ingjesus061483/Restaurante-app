@@ -12,14 +12,15 @@ class ImpresoraSeeder extends Seeder
      */
     public function run(): void
     {   
-        DB::table('impresoras')->insert([
-        [ 
-            'codigo'=>'001',
-            'nombre'=>'Impresora1',
-            'recurso_compartido'=>'pos',
-            'anchura_papel'=>3,
-            'tamaño_fuente'=>1,
-        ],]);
+        DB::table('impresoras')->insert([            
+            [                
+                'codigo'=>'001',
+                'nombre'=>'Impresora1',
+                'recurso_compartido'=>'pos',
+                'anchura_papel'=>3,
+                'tamaño_fuente'=>1,
+            ],        
+        ]);
                 //
     }
 }
