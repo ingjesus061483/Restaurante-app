@@ -10,6 +10,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\ExistenciaController;
 use App\Http\Controllers\FacturaEncabezadoController;
+use App\Http\Controllers\FormaPagoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImpresoraController;
 use App\Http\Controllers\materiaprimaController;
@@ -43,6 +44,7 @@ use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
     $data=['empresa_nombre'=>'los girasoles'];
     return view('Home.index',$data);
 });*/
+Route::resource('formapagos', FormaPagoController::class);
 Route::resource('observaciones',ObservacionController::class);
 Route::resource('impresoras',ImpresoraController::class);
 Route::resource('pagos', PagoController::class);

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('forma_pagos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre',50);
+            $table->text('descripcion')->nullable();
             $table->timestamps();
         });
     }

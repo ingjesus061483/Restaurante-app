@@ -69,6 +69,7 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{url('/formapagos')}}">Formas de pagos</a>
                                     <a class="nav-link" href="{{url('/configuracion')}}">Configuracion</a>
                                     <a class="nav-link" href="{{url('/pagos')}}">Pagos</a>
                                     <a class="nav-link" href="{{url('/impresoras')}}">Impresoras</a>

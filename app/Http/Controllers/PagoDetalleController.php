@@ -59,6 +59,15 @@ class PagoDetalleController extends Controller
      */
     public function store(Request $request)
     {      
+        if(!Auth::check())
+        {
+            return redirect()->to('login');   
+        }      
+        $user=Auth::user();                
+        if(! $this->autorizar($user))        
+        {
+            return  back();        
+        }   
         $detalles=[];                
         $id=1;                       
         if(session()->has('pagodetalles'))                
