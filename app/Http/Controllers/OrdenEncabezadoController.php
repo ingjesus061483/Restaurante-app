@@ -65,24 +65,24 @@ class OrdenEncabezadoController extends Controller
             return back()->withErrors('Escoje un producto antes de ordenar!');
         }
         $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();
-        if(count($cabañas)==0)
+        /*if(count($cabañas)==0)
         {
             return back()->withErrors('No hay cabañas disponibles en en elmomento!');
-        }
+        }*/
         $detalles=session('detalles');
         $errors=$this->_ordenServicioRepository->ComprobarExistenciaProductoDetalle($detalles);
         if (count($errors)>0){
             return back()->withErrors($errors);
         }
-     $tiempoCoccion=   $this->_ordenServicioRepository-> GetTiempoCoccion($detalles);
-     $now=date_create();
-     date_add($now,date_interval_create_from_date_string($tiempoCoccion.' minutes'));     
-     $time=date_format($now, 'H:i:s');
+        $tiempoCoccion=   $this->_ordenServicioRepository-> GetTiempoCoccion($detalles);        
+        $now=date_create();        
+        date_add($now,date_interval_create_from_date_string($tiempoCoccion.' minutes'));     
+        $time=date_format($now, 'H:i:s');
         $user=Auth::user();
         $empleado=$this->_empleadoRepository->GetEmpleadoByUser($user);
         $cliente=$this->_clienteRepository->GetclienteByUser($user);
         $data=[
-             'tipo_documento'=>$this->_tipoDocumentoRepository->GetAll(),   
+            'tipo_documento'=>$this->_tipoDocumentoRepository->GetAll(),   
             'cabañas'=>$cabañas,  
             'tiempo_entrega'=>$time,          
             'empleado'=>$empleado,

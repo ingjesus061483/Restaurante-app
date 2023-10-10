@@ -352,6 +352,9 @@
 
             
             });
+            $("#forma-pago").change(function(){
+                window.location.href="{{url('/pagodetalle')}}?forma_pago="+this.value; 
+            })
             $("#forma_pago").change(function(){
                var detallepago=document.getElementById('detallepago');
                var valorRecibido=document.getElementById('valorRecibido');

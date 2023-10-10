@@ -36,11 +36,28 @@ class PagoDetalleController extends Controller
         if(! $this->autorizar($user))        
         {
             return  back();        
-        }   
+        }
+        $fechaini=request()->fechaIni;
+        $fechafin=request()->fechaFin;
+        $forma_pago= request()->forma_pago;
+        if($fechaini==null&&$fechafin==null)
+        {
+            $pagos= $this->_pagoDetalleRepository->Totalizar($forma_pago);
+        }
+        else
+        {
+            $fechaini=$fechaini!=null?$fechaini:date('yyyy-MM-dd');
+            $fechafin=$fechafin!=null?$fechafin:date('yyyy-MM-dd');
+            $pagos=$this->_pagoDetalleRepository->TotalizarPeriodo($forma_pago,$fechaini,$fechafin);
 
-        $pagos=$this->_pagoDetalleRepository->Totalizar();                 
+        }
+
         $data=[
-            'pagosdetalles'=>$pagos,           
+            'pagosdetalles'=>$pagos, 
+            'fechaIni'=>$fechaini,
+            'fechaFin'=>$fechafin,
+            'formaPagos'=>$this->_formaPagoRepository->GetAll() ,
+            'formaPago'=> $forma_pago         
         ];
         return  view('PagoDetalle.index',$data);      
         //
