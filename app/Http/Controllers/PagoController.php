@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StorePagoRequest;
 use App\Http\Requests\UpdatePagoRequest;
 use App\Repositories\CabanaRepository;
+use App\Repositories\CajaMovimientoRepository;
+use App\Repositories\CajaRepository;
 use App\Repositories\EmpresaRepository;
 use App\Repositories\FormaPagoRepository;
 use App\Repositories\ImpuestoRepository;
@@ -23,22 +25,27 @@ class PagoController extends Controller
     protected OrdenServicioRepository $_ordenServicioRepository;
     protected ImpuestoRepository $_impuestoRepository;
     protected EmpresaRepository $_empresaRepository;
+    protected CajaRepository $_cajaRepository;
+    protected CajaMovimientoRepository $_cajaMovimientoRepository;
     public function __construct(
                                 CabanaRepository $cabanaRepository,
                                 PagoRepository $pagoRepository,    
                                 ImpuestoRepository $impuestoRepository,
                                EmpresaRepository $empresaRepository,
                                FormaPagoRepository $formaPagoRepository,
-                               OrdenServicioRepository $ordenServicioRepository)
-   {
-    $this->_cabanaRepository=$cabanaRepository;
-    $this->_pagoRepository=$pagoRepository;
-    $this->_formapagoRepository=$formaPagoRepository;
-    $this->_empresaRepository=$empresaRepository;
-    $this->_impuestoRepository=$impuestoRepository;
-    $this->_ordenServicioRepository=$ordenServicioRepository;
-    
-   }   
+                               OrdenServicioRepository $ordenServicioRepository,
+                               CajaRepository $cajaRepository,
+                               CajaMovimientoRepository $cajaMovimientoRepository)                               
+    {
+        $this->_cabanaRepository=$cabanaRepository;        
+        $this->_pagoRepository=$pagoRepository;        
+        $this->_formapagoRepository=$formaPagoRepository;        
+        $this->_empresaRepository=$empresaRepository;        
+        $this->_impuestoRepository=$impuestoRepository;        
+        $this->_ordenServicioRepository=$ordenServicioRepository;        
+        $this->_cajaRepository=$cajaRepository;                
+        $this->_cajaMovimientoRepository=$cajaMovimientoRepository;    
+    }   
     /**
      * Display a listing of the resource.
      */
@@ -47,8 +54,7 @@ class PagoController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');   
-        }
-     
+        }     
         $user=Auth::user();                
         if(! $this->autorizar($user))        
         {
@@ -74,13 +80,17 @@ class PagoController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');   
-        }
-      
+        }      
         $user=Auth::user();                
-        if(! $this->autorizar($user))        
-        {
-            return  back();        
+        $caja=$user->caja;
+        if($caja==null){
+            return back()->withErrors('El usuario no tiene una caja asignada');
         }
+        if(!$this->_cajaRepository->EsAbierta($caja))
+        {
+            $this->_cajaRepository->Abrir($caja->id);
+        }
+
         $id=request()->input('id');   
         $pagoDetalles=[];
         if(session()->has('pagodetalles'))
@@ -124,26 +134,48 @@ class PagoController extends Controller
         {
             return redirect()->to('login');   
         }
+        $user=Auth::user();                   
+        $caja=$user->caja;
         $validacion=$request->validate([
             'codigo'=>'required|unique:pagos|max:50',            
             'fecha_hora'=>'required|max:255|min:3',                        
             'subtotal'=>'required|numeric',                        
-            'impuesto'=>'required|numeric',                        
+            'impuesto'=>'required|numeric',                         
             'descuento'=>'required|numeric',                      
             'total_pagar'=>'required|numeric',                     
-        ]);  
+        ]);
+        $pagoDetalles=[];  
+        if(session()->has('pagodetalles'))
+        {
+            $pagoDetalles=session('pagodetalles');
+        }
         $recibido =$request->input('acumulado');
         $total_pagar= $request->input('total_pagar');
         settype($recibido,"double");
         settype($total_pagar,"double");
         if($total_pagar>$recibido){
             return back()->withErrors('No se ha recibido el mototo total de pago');
-        }   
+        }           
         $ordenServicio=$this->_ordenServicioRepository->Find($request->input('orden_id'));       
         $this->_pagoRepository->Store((object)$request->all());
+        foreach($pagoDetalles as $item)
+        {
+            if($item->forma_pago_id==1)            
+            {                
+                $CajaMovimiento =(object)[                
+                            "fecha_hora"=>date("Y-m-d H:i:s"),                                            
+                            "concepto"=>'Ingreso de pago', 
+                            "valor"=>$item->valor_recibido,                                            
+                            "ingreso"=>1,                                               
+                            "caja_id"=>$caja->id                        
+                        ];                        
+                $this->_cajaMovimientoRepository->Store($CajaMovimiento);                
+            }
+        }
         $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);
-        $cabana_id=$ordenServicio->cabaña==null?0:$ordenServicio->cabaña->id;
-        $this->_cabanaRepository->desocuparCabana($cabana_id);
+        $cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;
+        $this->_cabanaRepository->desocuparCabana($cabana->id);
+        $this->_cajaRepository->Cerrar($caja->id);
         session()->forget('pagodetalles');
         return redirect()->to(url('/ordenservicio'));  
         //

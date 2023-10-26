@@ -8,5 +8,4 @@
     <p>Aplicacion para restaurantes con inventario y facturacion de comidas y alquiler de cabañas</p>
     <p> <a class ="btn btn-primary" href="{{url('/ordenservicio')}}">¿Puedo tomar su orden?  </a></p>
 </div>
-
 @endsection

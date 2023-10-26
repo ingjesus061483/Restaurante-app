@@ -39,10 +39,10 @@ class LoginController extends Controller
             return redirect()->to('/login')->withErrors('auth.failed');
         }
         $user =Auth::getProvider()
-                    ->retrieveByCredentials([
-                        'email'=>$request->input('email'),
-                         'password'=>$request->input('password')
-                ]);
+                   ->retrieveByCredentials([
+                            'email'=>$request->input('email'),
+                            'password'=>$request->input('password')                        
+                    ]);
         Auth::login($user);
         return redirect()->to('/');      
         //

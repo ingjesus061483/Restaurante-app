@@ -1,5 +1,5 @@
 @extends('shared/layout')
-@section('title','Crear cabaña')
+@section('title','Editar cabaña')
 
 @section('content')  
 <div class="card mb-4">
@@ -62,7 +62,4 @@
         </form>
     </div>
 </div>
-
-
-
 @endsection

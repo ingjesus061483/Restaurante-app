@@ -15,7 +15,6 @@ class CabanaRepository implements IRepository
             $cabaña->ocupado=0;
             $cabaña->update();
         }
-
     }
     public function GetCabanasDesocupadas(){
        return Cabaña::where('ocupado',0)->get();

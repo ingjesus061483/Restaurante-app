@@ -11,12 +11,10 @@ class ClienteRepository implements IRepository{
     }
     public function GetclienteByUser($user){
         return Cliente::where('user_id',$user->id)->first();
-     }
- 
+    } 
     public function Getcliente($identificacion){
        return Cliente::where('identificacion',$identificacion)->first();
     }
-
     public function GetAll()
     {
         return Cliente::all();
@@ -50,7 +48,6 @@ class ClienteRepository implements IRepository{
     public function Delete($id)
     {
         $cliente=$this->Find($id);
-        $this-> _UserRepository->Delete($cliente->user_id);
-     
+        $this-> _UserRepository->Delete($cliente->user_id);     
     }
 }

@@ -10,6 +10,5 @@ class TipoDocumento extends Model
     use HasFactory;
     public function facturas(){
         return $this->hasMany(FacturaEncabezado::class,'tipo_documento_id');
-    }
-    
+    }    
 }

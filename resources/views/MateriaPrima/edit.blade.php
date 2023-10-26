@@ -51,12 +51,10 @@
                     >{{$item->nombre}}</option>
                  @endforeach
                 </select>
-            </div>
-            
+            </div>            
             <div class="mb-3">
                 <label class="form-label" for="unidad_medida">
-                    Unidad medida
-                
+                    Unidad medida                
                 </label>
                 <select type="text" name="unidad_medida" class="form-select"
                  id="unidad_medida">
@@ -75,9 +73,7 @@
                     Imagen
                 </label>
                 <input type="file" name="imagen" accept="image/*"   class="form-control" id="imagen">
-            </div>            
-            
-            
+            </div>                       
             <div class ="mb-3">
                 <label class="form-label" for="descripcion">
                     Descripcion
@@ -96,7 +92,4 @@
         </form>
     </div>
 </div>
-
-
-
 @endsection

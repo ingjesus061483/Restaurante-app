@@ -31,7 +31,6 @@ class ConfiguracionController extends Controller
         $configuraciones=$this->_configuracionRepository->GetAll();
         $data=['configuraciones'=>$configuraciones];
         return view('Configuracion.index',$data);
-
         //
     }
 

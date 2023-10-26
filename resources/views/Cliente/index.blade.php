@@ -15,8 +15,7 @@
                     <th>Direccion</th>
                     <th>Telefono</th>
                     <th>Email</th>
-                    <th>Usuario</th>
-                  
+                    <th>Usuario</th>                  
                     <th></th>
                     <th></th>
                 </tr>
@@ -29,8 +28,7 @@
                     <th>Direccion</th>
                     <th>Telefono</th>
                     <th>Email</th>
-                    <th>Usuario</th>
-                  
+                    <th>Usuario</th>                  
                     <th></th>
                     <th></th>
                 </tr>        
@@ -44,8 +42,7 @@
                     <td>{{$item->direccion}}</td>
                     <td>{{$item->telefono}}</td>
                     <td>{{$item->usuario->email}}</td>
-                    <td>{{$item->usuario->name}}</td>
-                  
+                    <td>{{$item->usuario->name}}</td>                  
                     <td>
                         <a class="btn btn-warning" href="{{url('/clientes/'.$item->id.'/edit')}}">
                             Editar 

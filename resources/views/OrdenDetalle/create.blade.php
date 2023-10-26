@@ -21,8 +21,7 @@
                         <div class="mb-3">                            
                             <h6 style="text-align: justify">{{$item->descripcion}}</h6>                                                                                                          
                         </div>                                                    
-                        @endif
-                                                            
+                        @endif                                                            
                     </div>
                     <div class="card-footer">
                         <div class="mb-3 embed-responsive" >

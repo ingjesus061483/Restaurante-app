@@ -52,5 +52,4 @@
         {{$total_inventario}}                        
     </div>
 </div>
-
 @endsection

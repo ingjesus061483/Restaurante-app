@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Auth;
 class CategoriaController extends Controller
 {
      protected CategoriaRepository $_repository;
-      public function __construct(CategoriaRepository $repository) {
+      public function __construct(CategoriaRepository $repository) 
+      {        
         $this->_repository=$repository;
-
       }
     /**
      * Display a listing of the resource.
@@ -46,8 +46,7 @@ class CategoriaController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-       
+        }       
         return view('Categoria.create');
         //
     }
@@ -64,11 +63,9 @@ class CategoriaController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-     
+        }     
         $validacion=$request->validate(['nombre'=>'required|max:50']);
         $this->_repository->Store((object)$request->all());
-
         return redirect()->to(url('/categorias'));       
         //
     }
@@ -91,8 +88,7 @@ class CategoriaController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-     
+        }     
         $categoria=$this->_repository->Find($id);
         $data=[    
             'categoria'=>$categoria
@@ -112,8 +108,7 @@ class CategoriaController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-     
+        }     
         $validacion=$request->validate(['nombre'=>'required|max:50']);
         $this->_repository->Update($id,(object)$request->all());
         return redirect()->to(url('/categorias'));        
@@ -132,8 +127,7 @@ class CategoriaController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-     
+        }     
         $this->_repository->Delete($id);
         return redirect()->to(url('/categorias'));    
         //

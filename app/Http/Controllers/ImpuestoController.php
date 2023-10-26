@@ -27,8 +27,7 @@ class ImpuestoController extends Controller
         {            
             return json_encode(['impuestos'=> 0]);
         }
-        return json_encode(['impuestos'=> $this->_impuestoRepository->CalcularImpuestos($subtotal)]);
-    
+        return json_encode(['impuestos'=> $this->_impuestoRepository->CalcularImpuestos($subtotal)]);    
     }
     /**
      * Display a listing of the resource.
@@ -63,8 +62,7 @@ class ImpuestoController extends Controller
         {
             return back();
         }
-        return view ('Impuesto.create');      
-     
+        return view ('Impuesto.create');        
         //
     }
 
@@ -86,13 +84,7 @@ class ImpuestoController extends Controller
             'valor'=>'required|numeric',
         ]);
         $this->_impuestoRepository->Store($request); 
-        /*$impuesto=new Impuesto();
-        $impuesto->nombre=$request->input('nombre');
-        $impuesto->valor=$request->input('valor');
-        $impuesto->descripcion=$request->input('descripcion');
-        $impuesto->save();*/
-        return redirect()->to(url('/impuestos'));       
-
+        return redirect()->to(url('/impuestos'));
         //
     }
 
@@ -120,9 +112,7 @@ class ImpuestoController extends Controller
         $data=[            
             'impuesto'=>$this-> _impuestoRepository-> Find($id),
         ];
-        return view ('Impuesto.edit',$data);      
-
-        //
+        return view ('Impuesto.edit',$data);             //
     }
 
     /**
@@ -143,13 +133,7 @@ class ImpuestoController extends Controller
             'valor'=>'required|numeric',
         ]);
         $this->_impuestoRepository->Update($id,$request); 
-        /*$impuesto= Impuesto::find($id);
-        $impuesto->nombre=$request->input('nombre');
-        $impuesto->valor=$request->input('valor');
-        $impuesto->descripcion=$request->input('descripcion');
-        $impuesto->save();*/
         return redirect()->to(url('/impuestos'));       
-
         //
     }
 

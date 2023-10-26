@@ -1,9 +1,7 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
 use App\Models\Observacion;
-
 class ObservacionRepository implements IRepository{
     public function GetObservacions($codigo)
     {
@@ -15,8 +13,7 @@ class ObservacionRepository implements IRepository{
     }
     public function Find($id)
     {
-        return Observacion::find($id);
-        
+        return Observacion::find($id);        
     }
     public function Store($request)
     {
@@ -37,5 +34,4 @@ class ObservacionRepository implements IRepository{
         $observacion=$this->Find($id);
         $observacion->delete();
     }
-
 }

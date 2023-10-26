@@ -22,10 +22,7 @@ class ConfiguracionRepository implements IRepository{
         $configuracion =$this->Find($id);
         $configuracion->nombre =$request->nombre;
         $configuracion->valor=$request ->valor;
-        $configuracion->Update();
-
-
-        
+        $configuracion->Update();        
     }
     public function Delete($id)
     {

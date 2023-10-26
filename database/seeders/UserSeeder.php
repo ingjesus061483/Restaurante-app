@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
               'name'=>'admin',   
               'email'=>'admin@example.com',
               'password'=>Hash::make('admin1234'),
-                'role_id'=>2,
-                'empresa_id'=>1
+              'role_id'=>2,
+              'empresa_id'=>1
         ]);
         //
     }

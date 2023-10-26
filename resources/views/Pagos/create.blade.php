@@ -15,8 +15,8 @@
                 </div>
                 @endif
                 <form action="{{url('/pagos')}}" enctype="multipart/form-data" autocomplete="off" method="post">
-                <input type="text" name="acumulado"value="{{$acumulado}}" >
-                <input type="text" name="faltante" value="{{$faltante}}">
+                    <input type="hidden" name="acumulado"value="{{$acumulado}}" >
+                    <input type="hidden" name="faltante" value="{{$faltante}}">
                     <input type="hidden" name="orden_id" value="{{$ordenServicio->id}}">
                     @csrf
                     <div class="mb-3">

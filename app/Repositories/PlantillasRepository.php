@@ -1,8 +1,6 @@
 <?php
 namespace App\Repositories;
-
 use Mike42\Escpos\Printer;
-
 class PlantillasRepository
 {
     public function ImprimirPlantillaOrdenServicio(Printer $printer,$ordenservicio)

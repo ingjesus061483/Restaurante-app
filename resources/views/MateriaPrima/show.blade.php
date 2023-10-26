@@ -164,7 +164,6 @@
                 </div>
             </div>
         </div>
-
         <a class="btn btn-primary" href="{{url('/materiaprimas')}}">           
             Regresar
         </a>

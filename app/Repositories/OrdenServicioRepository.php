@@ -1,11 +1,8 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
-
 use App\Models\OrdenDetalle;
 use App\Models\OrdenEncabezado;
-
 class OrdenServicioRepository implements IRepository
 {
     protected ProductoRepository $_productoRepository;
@@ -120,8 +117,7 @@ class OrdenServicioRepository implements IRepository
                     'fecha'=>date('Y-m-d'),
                     'cantidad'=>$cantidad_producto,
                     'esEntrada'=>0,
-                    'materiaprima_id'=>$producto->id                    
-                    
+                    'materiaprima_id'=>$producto->id                   
                 ];
                 $this-> _existenciaRepository->Store($existencia);         
             }
@@ -172,7 +168,8 @@ class OrdenServicioRepository implements IRepository
           "total"=>$this->totalizarOrden($detalles),
           'cabaña_id'=>$request->input('cabaña'),
           'cliente_id'=>$cliente!=null?$cliente->id:null,
-          'empleado_id'=>$empleado!=null?$empleado->id:null,]);           
+          'empleado_id'=>$empleado!=null?$empleado->id:null,
+        ]);           
         foreach($detalles as $item)
         {
             $OrdenDetalle=new OrdenDetalle();

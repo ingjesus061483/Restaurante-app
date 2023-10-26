@@ -17,7 +17,8 @@
                     <th>Email</th>
                     <th>Usuario</th>
                     <th>Role</th>
-                    <th>Empresasa</th>
+                    <th>Caja</th>
+                    <th>Empresa</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -32,7 +33,8 @@
                     <th>Email</th>
                     <th>Usuario</th>
                     <th>Role</th>
-                    <th>Empresasa</th>
+                    <th>Caja</th>
+                    <th>Empresa</th>
                     <th></th>
                     <th></th>
                 </tr>        
@@ -48,6 +50,7 @@
                     <td>{{$item->usuario->email}}</td>
                     <td>{{$item->usuario->name}}</td>
                     <td>{{$item->usuario->role->nombre}}</td>
+                    <td>{{$item->usuario->caja!=null?$item->usuario->caja->nombre:''}}</td>
                     <td>{{$item->usuario->empresa->nombre}}</td>
                     <td>
                         <a class="btn btn-warning" href="{{url('/empleados/'.$item->id.'/edit')}}">

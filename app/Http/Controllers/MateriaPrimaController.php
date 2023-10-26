@@ -68,12 +68,11 @@ class MateriaPrimaController extends Controller
         }      
        $categoria=$this->_categoriaRepository->GetAll();
        $unidadmedida=$this->_unidadMedidaRepository->GetAll();
-       $data=[        
-        'categorias'=>$categoria,
-        'unidad_medida'=>$unidadmedida,
+       $data=[
+           'categorias'=>$categoria,
+           'unidad_medida'=>$unidadmedida,        
         ];
-        return view('MateriaPrima.create',$data);
-   
+        return view('MateriaPrima.create',$data);   
         //
     }
 
@@ -98,9 +97,7 @@ class MateriaPrimaController extends Controller
             'categoria'=>'required' ,            
         ]); 
         $this->_materiaPrimaRepositry->Store($request);        
-        return redirect()->to(url('/materiaprimas'));        
-      
-
+        return redirect()->to(url('/materiaprimas'));                
         //
     }
     public function totalizar($existencias){
@@ -157,7 +154,7 @@ class MateriaPrimaController extends Controller
         $materiaprima=$this-> _materiaPrimaRepositry->Find($id);
         $categoria=$this->_categoriaRepository->GetAll();
         $unidadmedida=$this->_unidadMedidaRepository->GetAll();
-         $data=[            
+        $data=[            
             'categorias'=>$categoria,
             'unidad_medida'=>$unidadmedida,
             'materiaprima'=>$materiaprima
@@ -186,8 +183,7 @@ class MateriaPrimaController extends Controller
             'unidad_medida'=>'required',
             'categoria'=>'required' 
         ]);    
-        $this->_materiaPrimaRepositry->Update($id ,$request);    
-        
+        $this->_materiaPrimaRepositry->Update($id ,$request);            
         return redirect()->to(url('/materiaprimas'));                
         //
     }
@@ -204,12 +200,9 @@ class MateriaPrimaController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();
-        }
-      $this->_materiaPrimaRepositry->Delete($id);
-
-        return redirect()->to(url('/materiaprimas'));        
-
-
+        }        
+        $this->_materiaPrimaRepositry->Delete($id);
+        return redirect()->to(url('/materiaprimas'));                
         //
     }
 }

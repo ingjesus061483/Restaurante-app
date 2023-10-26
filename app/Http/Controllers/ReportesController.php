@@ -95,7 +95,7 @@ class ReportesController extends Controller
         }     
 
     }
-   public function printOorenServicio($id)
+   public function printOrdenServicio($id)
     {
         try
         {

@@ -52,8 +52,7 @@ class ObservacionController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-  
+        }  
         return view("Observaciones.create");
         //
     }
@@ -73,8 +72,7 @@ class ObservacionController extends Controller
         }
         $validacion=$request->validate([
             'codigo'=>'required|max:50|unique:observacions',
-            'descripcion'=>'required'
-    
+            'descripcion'=>'required'    
         ]);
         $this->_observacionRepository->Store((object)$request->all());
         return redirect()->to(url('/observaciones'));
@@ -101,8 +99,7 @@ class ObservacionController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-  
+        }  
         $data=[
             "observacion"=>$this->_observacionRepository->Find($id),
         ];
@@ -125,8 +122,7 @@ class ObservacionController extends Controller
         }  
         $validacion=$request->validate([
             'codigo'=>'required|max:50|unique:observacions,codigo,'.$id,
-            'descripcion'=>'required'
-    
+            'descripcion'=>'required'    
         ]);
         $this->_observacionRepository->Update($id,$request);
         return redirect()->to(url('/observaciones'));
@@ -145,8 +141,7 @@ class ObservacionController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-  
+        }  
         $this->_observacionRepository->Delete($id);
         return redirect()->to(url('/observaciones'));
         //

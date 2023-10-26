@@ -1,9 +1,7 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
 use App\Models\UnidadMedida;
-
 class UnidadMedidaRepository implements IRepository{
     public function GetAll()
     {
@@ -19,8 +17,7 @@ class UnidadMedidaRepository implements IRepository{
         $unidadmedida=new UnidadMedida();
         $unidadmedida->nombre=$request->input('nombre');
         $unidadmedida->descripcion=$request->input('descripcion');
-        $unidadmedida->save();
-    
+        $unidadmedida->save();    
     }
     public function Update($id, $request)
     {

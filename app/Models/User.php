@@ -11,6 +11,9 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    public function caja(){
+       return $this->belongsTo(Caja::class,'caja_id');
+    }
     public function empleados(){
         return $this->hasMany(Empleado::class,'user_id');
     }
@@ -36,7 +39,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'empresa_id'
+        'empresa_id',
+        'caja_id'
     ];
 
     /**

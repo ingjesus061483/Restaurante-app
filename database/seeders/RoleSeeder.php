@@ -17,7 +17,8 @@ class RoleSeeder extends Seeder
             [
                 ['nombre'=>'Gerente'],
                 ['nombre'=>'Administrador'],
-                ['nombre'=>'Cocinero' ],
+                ['nombre'=>'Cajero'],
+                ['nombre'=>'Cocinero'],
                 ['nombre'=>'Mesero'],                
             ]);
         //

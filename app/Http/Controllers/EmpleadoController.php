@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateEmpleadoRequest;
 use App\Models\Empresa;
 use App\Models\Role;
 use App\Models\User;
+use App\Repositories\CajaRepository;
 use App\Repositories\EmpleadoRepository;
 use App\Repositories\EmpresaRepository;
 use App\Repositories\RoleRepository;
@@ -21,13 +22,16 @@ class EmpleadoController extends Controller
     protected RoleRepository $_roleRepository;  
     protected EmpleadoRepository $_empleadoRepository;
     protected EmpresaRepository $_empresaRepository;
+    protected  CajaRepository $_cajaRepository;
     public function __construct(RoleRepository $roleRepository,
                                 EmpleadoRepository $empladoRepository,
-                                EmpresaRepository $empresaRepository) 
+                                EmpresaRepository $empresaRepository,
+                                CajaRepository $cajaRepository) 
     {
         $this->_roleRepository=$roleRepository;
         $this->_empleadoRepository=$empladoRepository;        
         $this->_empresaRepository=$empresaRepository;
+        $this->_cajaRepository=$cajaRepository;
     }
       /**
      * Display a listing of the resource.
@@ -65,6 +69,7 @@ class EmpleadoController extends Controller
             
             'roles'=>$this->_roleRepository->GetAll(),
             'empresas'=>$this-> _empresaRepository->GetAll(),
+            'cajas'=>$this->_cajaRepository->GetAll(),
         ];
         return view ('Empleado.create',$data);
         //
@@ -92,6 +97,9 @@ class EmpleadoController extends Controller
             'email'=>'required|email|max:255|unique:users',
             'password'=>['required','confirmed',Password::default()],            
         ]);  
+        if($request->role==3){
+            $validacion=$request->validate(['caja'=>'required']);
+        }
         $this->_empleadoRepository->Store((object) $request->all());
         return redirect()->to(url('/empleados'));    
         //
@@ -118,7 +126,8 @@ class EmpleadoController extends Controller
         $data=[
          
             'roles'=>$this->_roleRepository->GetAll(),
-            'empleado'=>$this ->  _empleadoRepository-> Find($id)
+            'empleado'=>$this ->  _empleadoRepository-> Find($id),
+            'cajas'=>$this->_cajaRepository->GetAll(),
         ];
         return view ('Empleado.edit',$data);       
         //
@@ -128,8 +137,7 @@ class EmpleadoController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request,  $id)
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -143,6 +151,9 @@ class EmpleadoController extends Controller
             'email'=>'required|email|max:255',
             'role'=>'required'
         ]);
+        if($request->role==3){
+            $validacion=$request->validate(['caja'=>'required']);
+        }
         $this->_empleadoRepository->Update($id,(object)$request->all());
         return redirect()->to(url('/empleados'));
         //

@@ -1,7 +1,6 @@
 @extends('shared/layout')
 @section('title','Listado de pagos')
 @section('content')  
-
 <div class="card mb-4">     
     <div class ="card-header" >
         <div class="row">
@@ -81,5 +80,4 @@
         </table>
     </div>
 </div>
-
 @endsection

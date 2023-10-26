@@ -76,6 +76,7 @@
                                     <a class="nav-link" href="{{url('/categorias')}}">Categorias</a>
                                     <a class="nav-link" href="{{url('/unidad_medida')}}">Unidades de medida</a>
                                     <a class="nav-link" href="{{url('/materiaprimas')}}">Materia primas</a>
+                                    <a class="nav-link" href="{{url('/cajas')}}">Cajas</a>
                                     <a class="nav-link" href="{{url('/cabañas')}}">Cabañas</a>
                                     <a class="nav-link" href="{{url('/productos')}}">Productos</a>
                                     <a class="nav-link" href="{{url('/empleados')}}">Empleados</a>
@@ -96,9 +97,7 @@
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger"  >Cerrar sesion</button>
-
-                        </form>
-                        
+                        </form>                    
                     </div>
                 </nav>
             </div>
@@ -123,7 +122,24 @@
                 </footer>
             </div>
         </div>
-        <!-- dialog-->        
+        <!-- dialog-->   
+        <div id="egreso" class="container">
+            <input type="hidden" id="caja_id" value="{{isset($caja)?$caja->id:''}}">
+            <div class="mb-3">
+                <label class="form-label" for="unidad_medida">
+                    Concepto                
+                </label>
+                <input type="text" name="detallepago"  class="form-control"
+                id="concepto">
+            </div>                 
+            <div class="mb-3">
+                <label class="form-label" for="unidad_medida">
+                    Valor                 
+                </label>
+                <input type="text" name="valor"  class="form-control"
+                id="valor">
+            </div>            
+        </div>     
         <div id="existencias" class="container">
             <div class="card mb-4">                
                 <div class="card-body">
@@ -389,6 +405,9 @@
                 }
 
             });
+            $("#movimiento").click(function(){
+                dialogEgreso.dialog('open');
+            })
             $("#detalle").click(function(){  
                 var faltante={{isset($faltante)? $faltante:0}}              
                 if(faltante<=0)
@@ -423,6 +442,20 @@
                 buttons: 
                 {
                     "Guardar": function(){GuardarformaPago()},
+                    "Cerrar": function() 
+                    {
+                        dialogformasPagos.dialog( "close" );                    
+                    }
+                }
+            });   
+            var dialogEgreso=$("#egreso").dialog({
+                autoOpen: false,
+                height:450,
+                width: 600,
+                modal: true,
+                buttons: 
+                {
+                    "Guardar": function(){GuardarMovimiento()},
                     "Cerrar": function() 
                     {
                         dialogformasPagos.dialog( "close" );                    
@@ -472,7 +505,54 @@
                     }
                 }
             });   
+            function GuardarMovimiento()
+            {
+                total_caja={{isset($ingreso)&&isset($egreso)?$ingreso-$egreso:0}} 
+                var ingreso=0;
+                valor_inicial="{{isset($caja)?$caja->valor_inicial:'0'}}";
+                var caja_id=document.getElementById("caja_id").value;
+                var concepto=document.getElementById( "concepto").value;
+                var valor= document.getElementById("valor").value;
+                if(concepto=='')
+                {
+                    alertify.error('');
+                    return;
 
+
+                }
+                if(valor=='')
+                {
+                    alertify.error('');
+                    return;
+                }
+
+                
+                $.ajax({
+                    url:"{{url('/movimientocaja')}}",
+                    type: "POST",
+                    dataType: "json",
+                    data:{   
+                        _token:"{{csrf_token()}}",     
+                        total_caja:total_caja,
+                        caja_id:caja_id,
+                        concepto:concepto,
+                        valor:valor,
+                        ingreso:ingreso
+                    },
+                    success: function (result){
+                        if(result.error){
+                            alertify.error(result.message);   
+                        }
+                        else
+                        {
+                            alertify.success(result.message);   
+                        }
+                        var url="{{url('/cajas')}}/"+caja_id
+                        window.location.href=url
+                    }
+                });             
+
+            }
             function mostrar(id){
                 console.log(id);
                 $.ajax({

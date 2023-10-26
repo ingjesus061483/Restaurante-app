@@ -46,11 +46,9 @@
     <div class="card-body">
         <table id="datatablesSimple">
             <thead>
-                <tr> 
-            
+                <tr>             
                     <th>Forma  pago</th>                    
-                    <th> Total valor recibido</th>
-                    
+                    <th> Total valor recibido</th>                    
                 </tr>
             </thead>
             <tfoot>
@@ -63,8 +61,7 @@
                 @foreach($pagosdetalles as $item)
                 <tr>               
                     <td>{{$item->forma_pago}}</td>                                     
-                    <td>{{$item->Total_valor_recibido}}</td>            
-                    
+                    <td>{{$item->Total_valor_recibido}}</td>                                
                 </tr>
                 @endforeach   
             </tbody>        

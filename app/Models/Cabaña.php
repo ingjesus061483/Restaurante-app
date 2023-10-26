@@ -10,11 +10,7 @@ class Cabaña extends Model
     use HasFactory;
     public function ordens(){
         return $this->hasMany(OrdenEncabezado::class,'cabaña_id');
-    }
-    public function facturas(){
-        return $this->hasMany(FacturaEncabezado::class,'cabaña_id');
-    }
-    
+    }        
     public function factura_detalles(){
         return $this->hasMany(FacturaDetalle::class,'cabaña_id');
     } 

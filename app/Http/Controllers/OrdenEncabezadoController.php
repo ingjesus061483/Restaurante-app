@@ -51,7 +51,6 @@ class OrdenEncabezadoController extends Controller
         return view('Orden.index',$data);
         //
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -64,7 +63,7 @@ class OrdenEncabezadoController extends Controller
         if(!session()->has('detalles')){
             return back()->withErrors('Escoje un producto antes de ordenar!');
         }
-        $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();
+        $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();        
         /*if(count($cabañas)==0)
         {
             return back()->withErrors('No hay cabañas disponibles en en elmomento!');
@@ -74,7 +73,7 @@ class OrdenEncabezadoController extends Controller
         if (count($errors)>0){
             return back()->withErrors($errors);
         }
-        $tiempoCoccion=   $this->_ordenServicioRepository-> GetTiempoCoccion($detalles);        
+        $tiempoCoccion=$this->_ordenServicioRepository-> GetTiempoCoccion($detalles);        
         $now=date_create();        
         date_add($now,date_interval_create_from_date_string($tiempoCoccion.' minutes'));     
         $time=date_format($now, 'H:i:s');
@@ -133,9 +132,7 @@ class OrdenEncabezadoController extends Controller
         } 
         $this->_ordenServicioRepository->Store($request);
         session()->forget('detalles');
-        return redirect()->to(url('/ordenservicio'));        
-
-        
+        return redirect()->to(url('/ordenservicio'));            
         //
     }
 
@@ -148,8 +145,6 @@ class OrdenEncabezadoController extends Controller
         {
             return redirect()->to('login');
         }        
-
-
         $ordenEncabezado=$this->_ordenServicioRepository-> Find($id);
         $OrdenDetalles=$ordenEncabezado->orden_detalles;
         $data=[

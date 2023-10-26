@@ -73,20 +73,15 @@ class PreparacionController extends Controller
         {
             return back();
         }            
-
         $materia_prima_id=$request->input('materia_prima_id');        
-        $producto_id =$request->input('producto_id');
-                      
-        $preparacion=$this->_ingredienteRepository->BuscarIngredientesMateriaprimaproducto($materia_prima_id,$producto_id) ; //Preparacion::where('materia_prima_id',$materia_prima_id)
-                                //->where('producto_id',$producto_id)->first();
-    
+        $producto_id =$request->input('producto_id');                      
+        $preparacion=$this->_ingredienteRepository->BuscarIngredientesMateriaprimaproducto($materia_prima_id,$producto_id) ; 
         if($preparacion!=null){
             $arr=['message'=>'La materia prima ya se encuentra registrada en estos ingredientes'];
             return json_encode($arr);            
         }
-        $this->_ingredienteRepository->Store($request);   
-       return json_encode(['message'=>'Se ha registrado um ingrediente']);
-
+        $this->_ingredienteRepository->Store($request);           
+        return json_encode(['message'=>'Se ha registrado um ingrediente']);
         //
     }
 
@@ -119,7 +114,7 @@ class PreparacionController extends Controller
         {
             return back();
         }            
-        $this ->_ingredienteRepository->    Update($id,$request);
+        $this ->_ingredienteRepository->Update($id,$request);
         return json_encode(['message'=>'Se ha actualizado um ingrediente']);        //
     }
 
@@ -137,8 +132,7 @@ class PreparacionController extends Controller
             return back();
         }            
         $this->_ingredienteRepository->Delete($id);
-        return back();
-
+        return back();       
         //
     }
 }

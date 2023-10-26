@@ -50,7 +50,8 @@ class PagoRepository implements IRepository{
             'orden_id'=>$request->orden_id
         ]);
         $pagoDetalles=session('pagodetalles');
-        foreach($pagoDetalles as $item){
+        foreach($pagoDetalles as $item)
+        {
             $item->pago_id=$pago->id;
             $this->_pagoDetalleRepository->Store($item);
            

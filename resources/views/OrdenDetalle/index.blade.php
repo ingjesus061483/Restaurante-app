@@ -54,8 +54,7 @@
                         </tr>                
                     </tfoot>
                     <tbody>    
-                        @foreach( $orden_detalle as $item)        
-                            
+                        @foreach( $orden_detalle as $item)                                    
                             <tr>
                                 <td>{{$item->id}}</td>
                                 <td>{{$item->cantidad}}</td>
@@ -93,6 +92,5 @@
         </div>       
     </div>
 </div>
-
 @endsection
 

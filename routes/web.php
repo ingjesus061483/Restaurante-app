@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CabanaController;
+use App\Http\Controllers\CajaController;
+use App\Http\Controllers\CajaMovimientoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ImpuestoController;
@@ -44,6 +46,8 @@ use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
     $data=['empresa_nombre'=>'los girasoles'];
     return view('Home.index',$data);
 });*/
+Route::resource('movimientocaja',CajaMovimientoController::class);
+Route::resource('cajas',CajaController::class);
 Route::resource('formapagos', FormaPagoController::class);
 Route::resource('observaciones',ObservacionController::class);
 Route::resource('impresoras',ImpresoraController::class);
@@ -77,6 +81,6 @@ Route::get('/',[HomeController::class,'index']);
 Route::get('login',[LoginController::class,'show']);
 Route::delete('login/{id}',[LoginController::class,'destroy']);
 Route::post('login',[LoginController::class,'store']);
-Route::get('reportes/printordenservicio/{id}',[ReportesController::class,'printOorenServicio']);
+Route::get('reportes/printordenservicio/{id}',[ReportesController::class,'printOrdenServicio']);
 Route::get('reportes/printComanda/{id}',[ReportesController::class,'printComanda']);
 Route::get('reportes/inventario',[ReportesController::class,'inventarioPdf']);

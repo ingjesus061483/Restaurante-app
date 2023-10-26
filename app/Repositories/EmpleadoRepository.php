@@ -48,12 +48,12 @@ class EmpleadoRepository implements IRepository
         $empleado->telefono=$request->telefono;
         $empleado->save();
         $user->role_id=$request->role;
+        $user->caja_id=$request->caja;
         $user->save();    
     }
     public function Delete($id)
     {
         $empleado=$this->Find($id);        
         $this->_UserRepository->Delete($empleado->user_id);        
-    }
- 
+    } 
 }

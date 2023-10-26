@@ -1,17 +1,14 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
 use App\Models\Empresa;
 use App\Repositories\FileRepository;
 use Exception;
-
 class EmpresaRepository implements IRepository{
     protected FileRepository $_filerepository;
     public function __construct(FileRepository $fileRepository) {
         $this->_filerepository = $fileRepository;
-    }
-    
+    }    
     public function GetAll()
     {
         return  Empresa::all();
@@ -63,8 +60,6 @@ class EmpresaRepository implements IRepository{
         if(count($users)>0){
             throw new Exception("No se puede eliminar esta empresa ,ya posee muchos empleados");
         }
-        $empresa->delete();
-        
+        $empresa->delete();        
     }
-
 }

@@ -1,9 +1,7 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
 use App\Models\FormaPago;
-
 class FormaPagoRepository implements IRepository{
     public function GetAll()
     {
@@ -18,8 +16,7 @@ class FormaPagoRepository implements IRepository{
         $formapago=new FormaPago();
         $formapago->nombre=$request->nombre;
         $formapago->descripcion=$request->descripcion;
-        $formapago->save();
-        
+        $formapago->save();        
     }
     public function Update($id, $request)
     {

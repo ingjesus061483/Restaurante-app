@@ -7,8 +7,7 @@ use App\Models\Categoria;
 class CategoriaRepository implements IRepository{
     public function GetAll()
     {
-        return Categoria::all();
-        
+        return Categoria::all();        
     }
     public function Find($id)
     {
@@ -32,6 +31,5 @@ class CategoriaRepository implements IRepository{
     {
         $categoria= $this->Find($id);
         $categoria->delete();
-    }
-    
+    }    
 }

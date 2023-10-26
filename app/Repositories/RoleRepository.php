@@ -23,8 +23,8 @@ class RoleRepository implements IRepository{
     public function Update($id, $request)
     {
         $role= $this->Find($id);
-        $role->nombre=$request->input('nombre');
-        $role->descripcion=$request->input('descripcion');
+        $role->nombre=$request->nombre;
+        $role->descripcion=$request->descripcion;
         $role->save();
     }
     public function Delete($id)

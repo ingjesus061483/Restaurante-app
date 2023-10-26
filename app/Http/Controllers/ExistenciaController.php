@@ -28,8 +28,7 @@ class ExistenciaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
-                
+        }                
         $inventario_view=$this->_existenciaRepository->GetAll();
         $data=[
             'inventario'=> $inventario_view,          
@@ -60,7 +59,6 @@ class ExistenciaController extends Controller
                 "tipo"=>'',
                 "mensaje"=>"El usuario no ha sido logueado",
             ]);
-
         }
         if(!$this->autorizar(Auth::user()))
         {
@@ -70,9 +68,7 @@ class ExistenciaController extends Controller
                 "tipo"=>'',
                 "mensaje"=>"El usuario no ha sido autorizado para esta operacion",
             ]);
-
         }
-
         $tipo=$request->input('tipo');     
         $this->_existenciaRepository->Store((object)$request->all());           
         return json_encode([

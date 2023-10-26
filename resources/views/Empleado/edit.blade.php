@@ -72,6 +72,19 @@
                     @endforeach
                 </select>
             </div>
+            <div class="mb-3">
+                <label class="form-label" for="role">
+                    Caja
+                </label>
+                <select class="form-select" name="caja" id="role">
+                    <option value="">seleccione una caja</option>
+                    @foreach ($cajas as $item)
+                    <option value="{{$item->id}}"
+                        {{$item->id==$empleado->usuario->caja_id?"selected":''}}
+                        >{{$item->nombre}}</option>        
+                    @endforeach
+                </select>
+            </div>
             <a class="btn btn-primary" href="{{url('/')}}/empleados">
                 Regresar
             </a> 

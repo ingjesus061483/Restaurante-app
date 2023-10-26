@@ -27,8 +27,7 @@ class EmpresaController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -48,8 +47,7 @@ class EmpresaController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -57,15 +55,11 @@ class EmpresaController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-       
-
-        $data=[
-         
-            'tipo_regimen'=>$this->_tipoRegimenRepository->GetAll()
-                ];
+        }        
+        $data=[         
+            'tipo_regimen'=>$this->_tipoRegimenRepository->GetAll()        
+        ];
         return view ('Empresa.create',$data);
-
         //
     }
 
@@ -109,8 +103,7 @@ class EmpresaController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -124,7 +117,6 @@ class EmpresaController extends Controller
             'empresa'=>Empresa::find($id)
         ];
         return view ('Empresa.edit',$data);
-
         //
     }
 
@@ -151,10 +143,8 @@ class EmpresaController extends Controller
             'contacto'=>'required',
             'tipo_regimen'=>'required',            
         ]);                
-        $this->_empresaRepository->Update($id,$request);
-    
+        $this->_empresaRepository->Update($id,$request);    
         return redirect()->to(url('/empresas'));
-
         //
     }
 
@@ -162,7 +152,7 @@ class EmpresaController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-    {
+    {        
         try
         {
             if(!Auth::check())

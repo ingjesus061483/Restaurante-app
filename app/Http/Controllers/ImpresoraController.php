@@ -22,13 +22,11 @@ class ImpresoraController extends Controller
         if (!Auth::check())
         {
             return redirect()->to('login');
-        }
-        
+        }        
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-       
+        }       
         $data =[
             'impresoras'=>$this->_impresoraRepository->GetAll()
         ];
@@ -47,8 +45,7 @@ class ImpresoraController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-       
+        }       
         return view('Impresora.create');
         //
     }
@@ -57,8 +54,7 @@ class ImpresoraController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -66,8 +62,7 @@ class ImpresoraController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
-     
+        }     
         $validacion=$request->validate([
             'codigo'=>'required|max:50|unique:impresoras',
             'nombre'=>'required|max:50',
@@ -76,7 +71,6 @@ class ImpresoraController extends Controller
             'tamaño_fuente'=>'required|numeric',                    
         ]);           
         $this->_impresoraRepository->Store((object)$request->all());
-
         return redirect()->to(url('/impresoras'));  
         //
     }
@@ -97,15 +91,13 @@ class ImpresoraController extends Controller
         if (!Auth::check())
         {
             return redirect()->to('login');
-        }
-        
+        }        
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
         }
         $data =[
             'impresora'=>$this->_impresoraRepository->Find($id)
-
         ];
         return view('Impresora.edit',$data);
         //
@@ -132,10 +124,7 @@ class ImpresoraController extends Controller
             'codigo'=>'required|max:50|unique:impresoras,codigo,'.$id,
         ]);
         $this->_impresoraRepository->Update( $id,(object)$request->all());
-
         return redirect()->to(url('/impresoras'));  
-
-
         //
     }
 

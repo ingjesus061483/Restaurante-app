@@ -37,8 +37,7 @@ class ClienteController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -131,8 +130,7 @@ class ClienteController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -159,8 +157,7 @@ class ClienteController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy( $id)
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');

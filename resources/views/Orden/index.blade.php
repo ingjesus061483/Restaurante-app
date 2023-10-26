@@ -10,7 +10,6 @@
     </ul>
 </div>
 @endif
-
 <div class="card mb-4">
     <div class="card-header">
         <a href="{{url('/ordendetalles')}}" class="btn btn-primary">
@@ -126,6 +125,5 @@
         </table>
     </div>
 </div>
-
 @endsection
 

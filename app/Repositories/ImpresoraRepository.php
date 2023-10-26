@@ -1,16 +1,13 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
 use App\Models\Impresora;
-
 class ImpresoraRepository implements IRepository
 {
     public function GetAll()    
     {
         return Impresora::all();    
-    }
-    
+    }    
     public function Store($request)    
     {
         $impresora=new Impresora();        
@@ -20,8 +17,7 @@ class ImpresoraRepository implements IRepository
         $impresora->anchura_papel=$request->anchura_papel;
         $impresora->tamaño_fuente=$request->tamaño_fuente;        
         $impresora->descripcion=$request->descripcion;        
-        $impresora->save();
-    
+        $impresora->save();    
     }
     function Find($id)
     {

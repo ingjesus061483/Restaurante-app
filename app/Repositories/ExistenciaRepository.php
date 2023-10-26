@@ -1,6 +1,5 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
 use App\Models\Existencia;
 use Illuminate\Support\Facades\DB;

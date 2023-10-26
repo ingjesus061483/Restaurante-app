@@ -1,6 +1,5 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -12,19 +11,19 @@ class UserRepository implements IRepository
     }
     public function Store($request)
     {
-        $user=  User::create([
+        $user=User::create([
             'name'=>$request->name,
             'email'=>$request->email,   
             'role_id'=>property_exists($request, "role")? $request->role:null,
             'empresa_id'=>$request->empresa,                 
+            'caja_id'=>property_exists($request,"caja")?$request->caja:null,
             'password'=>hash::make( $request->password),        
         ]);         
         return $user;        
     }
     public function Find($id)
     {
-        return User::find($id);
-        
+        return User::find($id);        
     }
     public function Update($id, $request)
     {
@@ -35,7 +34,6 @@ class UserRepository implements IRepository
     public function Delete($id)
     {
         $user=User::find($id);
-        $user->delete();
-        
+        $user->delete();        
     }
 }

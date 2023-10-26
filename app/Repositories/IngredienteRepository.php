@@ -1,9 +1,7 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
 use App\Models\Preparacion;
-
 class IngredienteRepository implements IRepository
 {
     protected ProductoRepository $_productoRepository;

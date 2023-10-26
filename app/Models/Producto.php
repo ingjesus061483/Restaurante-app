@@ -22,7 +22,6 @@ class Producto extends Model
     {       
         return $this->belongsTo(impresora::class,'impresora_id');        
     }
-
     public function factura_detalles(){
         return $this->hasMany(FacturaDetalle::class,'producto_id');
     } 
@@ -38,6 +37,4 @@ class Producto extends Model
                            'foraneo','imagen','unidad_medida_id',
                            'impresora_id','categoria_id',
                            'materia_prima','tiempo_coccion'];
-
-
 }

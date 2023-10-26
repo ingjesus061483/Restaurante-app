@@ -80,11 +80,11 @@ class PagoDetalleController extends Controller
         {
             return redirect()->to('login');   
         }      
-        $user=Auth::user();                
+       /* $user=Auth::user();                
         if(! $this->autorizar($user))        
         {
             return  back();        
-        }   
+        }*/   
         $detalles=[];                
         $id=1;                       
         if(session()->has('pagodetalles'))                
@@ -99,7 +99,7 @@ class PagoDetalleController extends Controller
                 break;            
             }
         }
-        if($encontrado)
+        if(!$encontrado)
         {
             $acum=0;                
             foreach($detalles as $item)            

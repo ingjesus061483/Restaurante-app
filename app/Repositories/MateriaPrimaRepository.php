@@ -1,6 +1,5 @@
 <?php
 namespace App\Repositories;
-
 use App\Contracts\IRepository;
 use App\Models\MateriaPrima;
 class MateriaPrimaRepository implements IRepository
@@ -24,8 +23,7 @@ class MateriaPrimaRepository implements IRepository
            $sum=$item->cantidad+$sum;
        }
        return $sum;
-    }
-  
+    }  
     public function GetAll()
     {
         return MateriaPrima::all();
@@ -64,8 +62,7 @@ class MateriaPrimaRepository implements IRepository
         $materiaprima->costo_unitario=$request->input('costo_unitario');        
         $materiaprima-> unidad_medida_id =$request->input('unidad_medida') ;
         $materiaprima->categoria_id=$request->input('categoria');
-        $materiaprima->save();
-    
+        $materiaprima->save();    
     }
     public function Delete($id)
     {
