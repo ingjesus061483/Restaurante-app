@@ -38,11 +38,11 @@ class OrdenDetalleController extends Controller
         {
             return redirect()->to('login');
         }   
-        $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();
+    /*    $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();
         if(count($cabañas)==0)
         {
             return back()->withErrors('No hay cabañas disponibles en en elmomento!');
-        }     
+        }     */
         $detalles=[];       
         if(session()->has('detalles')){            
             $detalles=session('detalles');
@@ -58,20 +58,28 @@ class OrdenDetalleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($idcategoria="")
+    public function create()
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }             
-        $productos=[];
+
+        $productos=[];       
         if(!session()->has('detalles'))        
         {            
-            $productos=$idcategoria==""?$this->_productoRepository->GetAll():$this->_categoriaRepository
-                                                                                  ->Find( $idcategoria)
-                                                                                  ->productos;                          
+          //  $prod=request()->producto;
+           // if($prod!=null){
+             //   $productos=$this->_productoRepository->buscarproductosBynombre($prod);
+            //}
+            //else
+            //{
+                $productos=$this->_productoRepository->GetAll();
+            //}
         }        
-        else{            
+        else
+        {
+
             $productosSession=[];            
             $detalles=session('detalles');                   
             foreach($detalles as $item)

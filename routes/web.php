@@ -71,6 +71,7 @@ Route:: resource('ordendetalles',OrdenDetalleController::class);
 Route::resource('impuestos', ImpuestoController::class);
 Route::resource("usuarios",UserController::class);
 Route::resource('productos',ProductosController::class);
+Route::get('clientes/GetClientes/{cliente}',[ClienteController::class,'GetClientes']);
 Route::get('productos/cargarProductos/{search}',[ProductosController::class,'loadProduct']);
 Route::get('productos/BuscarProductos/{id}',[ProductosController::class,'SearchProductById']);
 Route::get('materiaprimas/cargarmateriaprima/{id}',[materiaprimaController::class,'LoadPrimaryMatter']);

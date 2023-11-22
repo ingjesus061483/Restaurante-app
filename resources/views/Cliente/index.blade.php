@@ -41,8 +41,8 @@
                     <td>{{$item->nombre .' '.$item->apellido}}</td>            
                     <td>{{$item->direccion}}</td>
                     <td>{{$item->telefono}}</td>
-                    <td>{{$item->usuario->email}}</td>
-                    <td>{{$item->usuario->name}}</td>                  
+                    <td>{{$item->usuario!=null?$item->usuario->email:''}}</td>
+                    <td>{{$item->usuario!=null?$item->usuario->name:''}}</td>                  
                     <td>
                         <a class="btn btn-warning" href="{{url('/clientes/'.$item->id.'/edit')}}">
                             Editar 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->time('hora_entrega');
             $table->text('observaciones')->nullable();
             $table->decimal('total',10);
-
+            
             $table->foreignId('cabaña_id')
             ->nullable()
             ->constrained('cabañas')

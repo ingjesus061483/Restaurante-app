@@ -330,6 +330,24 @@
         </script>  
         <script type="text/javascript">    
            var observacions=[];               
+           var clientes=[];
+           $.ajax({
+                url:"{{url('/clientes/GetClientes/1')}}",
+                type: "GET",
+                dataType: "json",
+                success: function (result) 
+                {
+                    var clients=result.clientes;
+                    var cont=0;
+                    for(i=0;i<=clients.length-1;i++)
+                    {
+                        clientes[cont]=clients[i].cliente;
+
+                    }
+                }
+
+
+           })
            $.ajax({
                 url: "{{url('/observaciones/GetObservacions/null')}}",
                 type: "GET",
@@ -345,6 +363,9 @@
                     }
                 }            
             });        
+            $("#cliente").autocomplete({
+                source:clientes
+            })
             $("#observaciones").autocomplete({                
                 source:observacions             
             });  
@@ -359,14 +380,11 @@
                 {
                     $("#coccion").fadeOut();
                     $("#descripcion").fadeOut();
-
                 }
                 else{
                     $("#coccion").fadeIn();
                     $("#descripcion").fadeIn();
-                }
-
-            
+                }            
             });
             $("#forma-pago").change(function(){
                 window.location.href="{{url('/pagodetalle')}}?forma_pago="+this.value; 
@@ -384,10 +402,7 @@
                 }
                 detallepago.value="";                
                 valorRecibido.value=faltante; 
-                detallepago.focus();                
-
-
-
+                detallepago.focus();                            
             })
             $("#cliente").change(function(event){
                 var identificacion=this.value;
@@ -636,7 +651,7 @@
                     return;
                 }
                 $.ajax({
-                    url:"{{url('/ordendetalles')}}",
+                    url:"{{url('/ordendetalles/')}}",
                     type: "POST",
                     dataType: "json",
                     data: {   
@@ -648,7 +663,7 @@
                         alertify.success(result.message);
                         if(result.encontrado)
                         {
-                            window.location.href="{{url('/ordendetalles')}}";
+                            window.location.href="{{url('/ordendetalles/create')}}";
                         }
                         
                     }

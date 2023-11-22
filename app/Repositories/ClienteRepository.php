@@ -5,9 +5,14 @@ use App\Contracts\IRepository;
 use App\Models\Cliente;
 
 class ClienteRepository implements IRepository{
-    protected UserRepository $_UserRepository;
+    protected UserRepository $_UserRepository;        
     public function __construct( UserRepository $userRepository) {
         $this->_UserRepository = $userRepository;
+    }
+    public function Getclientes()
+    {
+        return Cliente::selectRaw("concat(identificacion,'-',nombre,' ',apellido)as cliente")
+                      ->get();
     }
     public function GetclienteByUser($user){
         return Cliente::where('user_id',$user->id)->first();

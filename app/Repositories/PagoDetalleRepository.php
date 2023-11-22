@@ -13,7 +13,7 @@ class PagoDetalleRepository implements IRepository
                                ->join('forma_pagos', 'pago_detalles.forma_pago_id', '=', 'forma_pagos.id')
                                ->join('pagos','pagos.id','=','pago_detalles.pago_id')            
                                ->whereBetween('pagos.fecha_hora',[$fecha1,$fecha2])
-                               ->groupBy('forma_pago_id')
+                               ->groupBy(["forma_pago_id","forma_pagos.nombre"])
                                ->get();          
         }
         else
@@ -24,7 +24,7 @@ class PagoDetalleRepository implements IRepository
                            ->join('pagos','pagos.id','=','pago_detalles.pago_id')
                            ->where('forma_pago_id',$forma_pago)
                            ->whereBetween('pagos.fecha_hora',[$fecha1,$fecha2])
-                           ->groupBy('forma_pago_id')
+                           ->groupBy(["forma_pago_id","forma_pagos.nombre"])
                            ->get();          
 
         }        
@@ -37,7 +37,7 @@ class PagoDetalleRepository implements IRepository
                            ->selectRaw("SUM(valor_recibido) as Total_valor_recibido")                
                            ->join('forma_pagos', 'pago_detalles.forma_pago_id', '=', 'forma_pagos.id')
                            ->where('forma_pago_id',$forma_pago)
-                           ->groupBy('forma_pago_id')
+                           ->groupBy(["forma_pago_id","forma_pagos.nombre"])
                            ->get();         
         }
         else
@@ -45,7 +45,7 @@ class PagoDetalleRepository implements IRepository
             $pagos= PagoDetalle::select('forma_pago_id','forma_pagos.nombre AS forma_pago')
                            ->selectRaw("SUM(valor_recibido) as Total_valor_recibido")                
                            ->join('forma_pagos', 'pago_detalles.forma_pago_id', '=', 'forma_pagos.id')                           
-                           ->groupBy('forma_pago_id')
+                           ->groupBy(["forma_pago_id","forma_pagos.nombre"])
                            ->get();          
         }        
         return $pagos;            

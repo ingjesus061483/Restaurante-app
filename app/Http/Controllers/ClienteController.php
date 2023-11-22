@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Auth;
 
 class ClienteController extends Controller
 {
-    protected ClienteRepository $_reposotory;
+    protected ClienteRepository $_repository;
+    public function GetClientes($cliente)
+    {
+        $clientes=$this->_repository->Getclientes();
+        $data=[
+            "clientes"=>count($clientes)>0?$clientes:null
+        ];
+        return json_encode($data);
+    }
+
     public function __construct(ClienteRepository $repository ) {
-        $this->_reposotory=$repository;
+        $this->_repository=$repository;
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +36,7 @@ class ClienteController extends Controller
             return redirect()->to('login');
         }
         $data=[         
-            'clientes'=> $this->_reposotory->GetAll()
+            'clientes'=> $this->_repository->GetAll()
         ];
         return view ('Cliente.index',$data);      
         //
@@ -65,7 +74,7 @@ class ClienteController extends Controller
         }
         if(!$this-> autorizar(Auth::user()))
         {
-            return back();            
+            return back();              
         }
         $validacion=$request->validate([
             'identificacion'=>'required|unique:clientes|max:50',
@@ -77,7 +86,7 @@ class ClienteController extends Controller
             'email'=>'required|email|max:255|unique:users',
             'password'=>['required','confirmed',Password::default()],            
         ]);        
-        $this->_reposotory->Store(((object)$request->all() ));
+        $this->_repository->Store(((object)$request->all() ));
         return redirect()->to(url('/clientes'));
         //
     }
@@ -88,7 +97,7 @@ class ClienteController extends Controller
     public function showClient( $id)    
     {
         $data=[
-            "cliente"=>$this-> _reposotory->Getcliente($id)
+            "cliente"=>$this-> _repository->Getcliente($id)
         ];
         return json_encode($data);
     }
@@ -99,7 +108,7 @@ class ClienteController extends Controller
             return redirect()->to('login');
         }
         $data=[
-            "cliente"=>$this-> _reposotory->Find($id)
+            "cliente"=>$this-> _repository->Find($id)
         ];
         return view('Cliente.show',$data);
         //
@@ -120,7 +129,7 @@ class ClienteController extends Controller
             return back();            
         }
         $data=[          
-            'cliente'=>$this->_reposotory->Find($id),
+            'cliente'=>$this->_repository->Find($id),
         ];
         return view ('Cliente.edit',$data);
         //
@@ -147,7 +156,7 @@ class ClienteController extends Controller
             'telefono'=>'required|max:50',
             'email'=>'required|email|max:255',            
         ]);
-        $this->_reposotory->Update($id,(object)$request->all());        
+        $this->_repository->Update($id,(object)$request->all());        
         return redirect()->to(url('/clientes'));
 
         //
@@ -166,7 +175,7 @@ class ClienteController extends Controller
         {
             return back();            
         }
-        $this->_reposotory->Delete($id);       
+        $this->_repository->Delete($id);       
         return redirect()->to(url('/clientes'));
         //
     }

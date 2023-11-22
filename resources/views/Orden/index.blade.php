@@ -35,7 +35,8 @@
                     <th>Mesero</th>                    
                     <th>Total</th>
                     <th>Cantidad de productos ordenados</th>
-                    <th>Observaciones</th>                    
+                    <th>Observaciones</th> 
+                    <th>credito</th>                   
                     <th>Estado</th>                    
                 </tr>
             </thead>
@@ -57,6 +58,7 @@
                     <th>Total</th>
                     <th>Cantidad de productos ordenados</th>
                     <th>Observaciones</th>       
+                    <th>credito</th>                   
                     <th>Estado</th>                    
                 </tr>
             </tfoot>
@@ -95,13 +97,17 @@
                                     onsubmit="return validar('Desea entregaar estad orden?');" method="post">
                                     @csrf
                                     @method('patch')
-                                    <button class="btn btn-success" style="font-size: 10px" type="submit"> Entregar</button>
+                                    <button class="btn btn-success" style="font-size: 10px" type="submit">
+                                        Entregar
+                                    </button>
                                 </form>                                
                                 @break
                             @case(2)
                                 <form action="{{url('pagos/create')}}" method="get">
                                     <input type="hidden" value="{{$item->id}}" name="id">
-                                    <button type="submit" class="btn btn-success" style="font-size: 10px" > Cobrar</button>                                
+                                    <button type="submit" class="btn btn-success" style="font-size: 10px">
+                                        Cobrar
+                                    </button>                                
                                 </form>                           
                                 @break
                             @default                            
@@ -109,15 +115,16 @@
                     </td>
                     <td>{{$item->id}}</td>
                     <td>{{$item->codigo}}</td>                    
-                    <th>{{$item->fecha}} </th>                    
-                    <th>{{$item->hora}}</th>                    
-                    <th>{{$item->hora_entrega}}</th>
-                    <th>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</th>
-                    <th><a onmouseover="mostrar( {{$item->cliente!=null?$item->cliente->identificacion:'0'}})" href="{{url('/clientes')}}/{{$item->cliente!=null?$item->cliente->id:"0"}}">{{$item->cliente!=null?$item->cliente->nombre.' '.$item->cliente->apellido:""}}</a></th>
-                    <th>{{$item->empleado->nombre. ' '.$item->empleado->apellido}}</th>                    
-                    <th>{{number_format($item->total)}}</th>
-                    <th>{{$item->orden_detalles->count()}}</th>
-                    <th>{{$item->observaciones}}  </th>                    
+                    <td>{{$item->fecha}} </td>                    
+                    <td>{{$item->hora}}</td>                    
+                    <td>{{$item->hora_entrega}}</td>
+                    <td>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</td>
+                    <td><a onmouseover="mostrar( {{$item->cliente!=null?$item->cliente->identificacion:'0'}})" href="{{url('/clientes')}}/{{$item->cliente!=null?$item->cliente->id:"0"}}">{{$item->cliente!=null?$item->cliente->nombre.' '.$item->cliente->apellido:""}}</a></td>
+                    <td>{{$item->empleado->nombre. ' '.$item->empleado->apellido}}</td>                    
+                    <td>{{number_format($item->total)}}</td>
+                    <td>{{$item->orden_detalles->count()}}</td>
+                    <td>{{$item->observaciones}}</td>  
+                    <td>{{$item->credito==1?'Si':'No'}}</td>  
                     <td>{{$item->estado->nombre}}</td>                    
                 </tr>
                 @endforeach   

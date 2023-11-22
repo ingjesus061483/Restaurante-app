@@ -101,7 +101,7 @@ class OrdenEncabezadoController extends Controller
         {
             return redirect()->to('login');
         }        
-        $aplicaCliente=$request->input('aplicaCliente')!=null?(bool)$request->input('aplicaCliente'):0;
+        $aplicaCliente=$request->input('aplicaCliente')!=null?(bool)$request->input('aplicaCliente'):0;        
         if($aplicaCliente)
         {
             $validate=$request->validate([
@@ -195,7 +195,12 @@ class OrdenEncabezadoController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }    
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back()->withErrors("Usted no tiene permisos para borrar esta operacion");
+        }      
+           
         $this->_ordenServicioRepository->Delete($id);        
         return redirect()->to(url('/ordenservicio'));        
         //

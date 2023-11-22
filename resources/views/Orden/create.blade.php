@@ -98,6 +98,12 @@
                             {{old('observaciones')}}                    
                         </textarea>                
                     </div>
+                    <div class ="mb-3">                    
+                        <label class="form-label" for="descripcion">                        
+                            credito                                    
+                        </label>                    
+                        <input type="checkbox" name="credito" id="">
+                    </div>
                                                     
                     <a class="btn btn-primary" href="{{url('/ordenservicio')}}">                    
                         Regresar                

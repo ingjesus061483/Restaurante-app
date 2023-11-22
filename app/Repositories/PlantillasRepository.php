@@ -19,6 +19,7 @@ class PlantillasRepository
         $printer->setJustification(Printer::JUSTIFY_LEFT);        
         $printer ->setTextSize(1,1);            
         $printer->text("Codigo:".$ordenservicio->orden_encabezado->codigo  .  "\n");
+        $printer->text("Mesero:".$ordenservicio->orden_encabezado->empleado->nombre.' '.$ordenservicio->orden_encabezado->empleado->apellido  .  "\n");
         $printer->text("Fecha/hora:".$ordenservicio->orden_encabezado->fecha." ". $ordenservicio->orden_encabezado->hora."\n");
         $printer->text("Hora entrega:".$ordenservicio->orden_encabezado->hora_entrega ."\n");
         $printer->text("Estado:".$ordenservicio->orden_encabezado->estado->nombre. "\n");        
@@ -40,7 +41,7 @@ class PlantillasRepository
             $printer ->setTextSize(3,3);              
             $printer->setJustification(Printer::JUSTIFY_CENTER);        
             $printer->text("================\n");
-            $printer->text("=====Kiosko=====\n");        
+            $printer->text("=====Mesa======\n");        
             $printer->setJustification(Printer::JUSTIFY_LEFT);        
             $printer ->setTextSize(1,1);              
             $printer->text("Codigo:".$ordenservicio->orden_encabezado->cabaña->codigo."\n");
@@ -86,19 +87,20 @@ class PlantillasRepository
             {
                 $printer->text("Codigo: ".$item->codigo."\n");
                 $printer->text("Fecga / hora: ".$item->fecha_hora."\n");
-                $printer->text("Forma de pago: ".$item->forma_pago->nombre."\n");
                 $printer->text("Subtotal: ".$item->subtotal."\n");
                 $printer->text("Impuesto: ". $item->impuesto."\n");
                 $printer->text("Deswcuento: ".$item->descuento."\n");
                 $printer->text("Total a pagar: ".$item->total_pagar."\n");
                 $printer->text("Recibido: ".$item->recibido."\n");  
                 $printer->text("Cambio: ".$item->cambio."\n");
+                $printer->text("Propina voluntaria".$item->total_pagar*0.1."\n");
                 $printer->text("Observaciones: ".$item->observaciones."\n");                
             }  
             $printer ->setTextSize(3,3);              
             $printer->setJustification(Printer::JUSTIFY_CENTER);        
             $printer->text("================\n");
         }        
+        
     }
     public function ImprimirPlantillaComanda(Printer $printer,$ordenservicio )
     {

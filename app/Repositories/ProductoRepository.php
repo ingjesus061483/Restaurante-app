@@ -10,6 +10,9 @@ class ProductoRepository implements IRepository{
     public function __construct(FileRepository $fileRepository) {
         $this->_filerepository = $fileRepository;
     }
+    public function buscarproductosBynombre($nombre){
+        return Producto::where('nombre','like','%'.$nombre.'%')->get();
+    }
     public function BuscarProductoEnOrdenServicio($productos){
         return Producto::whereNotIn('id',$productos)->get();
      } 

@@ -15,8 +15,6 @@ class PagoRepository implements IRepository{
     public function TotalesPagos()
     {
         $pagos= $pagos=$this->GetAll();
-    
-        
         $sum=0;
         foreach($pagos as $item){
             $sum=$sum+$item->total_pagar;

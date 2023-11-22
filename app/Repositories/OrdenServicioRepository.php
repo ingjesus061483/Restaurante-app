@@ -152,11 +152,13 @@ class OrdenServicioRepository implements IRepository
     }
     public function Store($request)
     {
-        $cliente=$request->input('cliente')!=null?
-            $this-> _clienteRepository->Getcliente($request->input('cliente')):null;
+        $arr=$request->input('cliente')!=null?explode('-',$request->input('cliente')):[];
+
+        $cliente=count($arr)!=0?
+            $this-> _clienteRepository->Getcliente($arr[0]):null;
         $empleado=$request->input('empleado')!=null?
             $this->_empleadoRepository->Getempleado($request->input('empleado')):null;
-
+        $credito=$request->input('credito')!=null?(bool)$request->input('credito'):0;
         $detalles=session('detalles');
         $ordenEncabezado=OrdenEncabezado::create([
           'codigo'=>$request->input('codigo'),
@@ -166,6 +168,7 @@ class OrdenServicioRepository implements IRepository
           'hora_entrega'=>$request->input('hora_entrega'),
           'observaciones'=>$request->input('observaciones'),
           "total"=>$this->totalizarOrden($detalles),
+          'credito'=>$credito,
           'cabaña_id'=>$request->input('cabaña'),
           'cliente_id'=>$cliente!=null?$cliente->id:null,
           'empleado_id'=>$empleado!=null?$empleado->id:null,
