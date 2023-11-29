@@ -13,18 +13,17 @@ use Illuminate\Support\Facades\Auth;
 
 class ClienteController extends Controller
 {
-    protected ClienteRepository $_repository;
+    protected ClienteRepository $_repository;   
+    public function __construct(ClienteRepository $repository ) {
+        $this->_repository=$repository;
+    }
     public function GetClientes($cliente)
     {
         $clientes=$this->_repository->Getclientes();
         $data=[
-            "clientes"=>count($clientes)>0?$clientes:null
+            "clientes"=>$clientes
         ];
         return json_encode($data);
-    }
-
-    public function __construct(ClienteRepository $repository ) {
-        $this->_repository=$repository;
     }
     /**
      * Display a listing of the resource.
@@ -51,10 +50,10 @@ class ClienteController extends Controller
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
+      /*  if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
+        }*/
         $empresa=Auth::user()->empresa;
         $data=[
             "empresa"=>$empresa
@@ -72,10 +71,10 @@ class ClienteController extends Controller
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
+        /*if(!$this-> autorizar(Auth::user()))
         {
             return back();              
-        }
+        }*/
         $validacion=$request->validate([
             'identificacion'=>'required|unique:clientes|max:50',
             'nombre'=>'required|max:50',

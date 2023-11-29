@@ -15,6 +15,9 @@ use App\Repositories\FormaPagoRepository;
 use App\Repositories\ImpuestoRepository;
 use App\Repositories\OrdenServicioRepository;
 use App\Repositories\PagoRepository;
+use App\Repositories\CuentasCobrarRepository;
+use App\Repositories\DetalleCuentasCobrarRepository;
+
 use Illuminate\Support\Facades\Auth;
 
 class PagoController extends Controller
@@ -27,6 +30,8 @@ class PagoController extends Controller
     protected EmpresaRepository $_empresaRepository;
     protected CajaRepository $_cajaRepository;
     protected CajaMovimientoRepository $_cajaMovimientoRepository;
+    protected CuentasCobrarRepository $_cuentasCobrarRepository;
+    private DetalleCuentasCobrarRepository $_DetalleCuentasCobrarRepository;
     public function __construct(
                                 CabanaRepository $cabanaRepository,
                                 PagoRepository $pagoRepository,    
@@ -35,7 +40,9 @@ class PagoController extends Controller
                                FormaPagoRepository $formaPagoRepository,
                                OrdenServicioRepository $ordenServicioRepository,
                                CajaRepository $cajaRepository,
-                               CajaMovimientoRepository $cajaMovimientoRepository)                               
+                               CajaMovimientoRepository $cajaMovimientoRepository,
+                               CuentasCobrarRepository $cuentasCobrarRepository,
+                               DetalleCuentasCobrarRepository $DetalleCuentasCobrarRepository)                               
     {
         $this->_cabanaRepository=$cabanaRepository;        
         $this->_pagoRepository=$pagoRepository;        
@@ -45,7 +52,29 @@ class PagoController extends Controller
         $this->_ordenServicioRepository=$ordenServicioRepository;        
         $this->_cajaRepository=$cajaRepository;                
         $this->_cajaMovimientoRepository=$cajaMovimientoRepository;    
+        $this->_cuentasCobrarRepository=$cuentasCobrarRepository ;
+        $this->_DetalleCuentasCobrarRepository=$DetalleCuentasCobrarRepository;
     }   
+    function pagoStore(Request $request,$pagoDetalles,$caja)
+    {
+        $this->_pagoRepository->Store((object)$request->all());        
+        foreach($pagoDetalles as $item)        
+        {            
+            if($item->forma_pago_id==1)                        
+            {                
+                $CajaMovimiento =(object)[                                    
+                    "fecha_hora"=>date("Y-m-d H:i:s"),                        
+                    "concepto"=>'Ingreso de pago',                     
+                    "valor"=>$item->valor_recibido,                    
+                    "ingreso"=>1,                                      
+                    "caja_id"=>$caja->id                           
+                ];                                        
+                $this->_cajaMovimientoRepository->Store($CajaMovimiento);                            
+            }        
+        }            
+        session()->forget('pagodetalles');                
+        $this->_cajaRepository->Cerrar($caja->id); 
+    }
     /**
      * Display a listing of the resource.
      */
@@ -91,19 +120,33 @@ class PagoController extends Controller
             $this->_cajaRepository->Abrir($caja->id);
         }
 
-        $id=request()->input('id');   
+        $orden_id=request()->input('id');           
+        $ordenServicio=$this->_ordenServicioRepository->Find($orden_id);        
+        $acum=0;        
+        if($ordenServicio->credito==1)
+        {
+            $creditos=$ordenServicio->CuentasCobrar;
+            $pagos=$ordenServicio->pagos;
+            $recibido=$this->_pagoRepository->valorRecibido($pagos);
+            $acum=$recibido;
+            if(count($creditos)==0&&$recibido>0){
+                $credito=(object)["orden_id"=>$ordenServicio->id,"valor_recibido"=>$recibido];
+                session(['cuentascobrar' => $credito]);                  
+                return redirect()->to(url('/cuentascobrar/create'));                                                                              
+            }
+        }
         $pagoDetalles=[];
         if(session()->has('pagodetalles'))
         {
             $pagoDetalles=session('pagodetalles');
         }
-        $acum=0;        
+        
         foreach($pagoDetalles as $item)
         {
             $acum=$acum+ $item->valor_recibido;                   
         }
         $empresa= $this->_empresaRepository->Find( $user->empresa_id);        
-        $ordenServicio=$this->_ordenServicioRepository->Find($id);        
+        
         $subtotal=$this->_ordenServicioRepository-> totalizarOrden( $ordenServicio->orden_detalles) ;
         $impuesto=0;
         if ($empresa-> tipo_regimen_id==2)
@@ -130,7 +173,7 @@ class PagoController extends Controller
      */
     public function store(Request $request)
     {
-        if(!Auth::check())
+        if(!Auth::check())        
         {
             return redirect()->to('login');   
         }
@@ -153,31 +196,67 @@ class PagoController extends Controller
         $total_pagar= $request->input('total_pagar');
         settype($recibido,"double");
         settype($total_pagar,"double");
-        if($total_pagar>$recibido){
-            return back()->withErrors('No se ha recibido el mototo total de pago');
-        }           
         $ordenServicio=$this->_ordenServicioRepository->Find($request->input('orden_id'));       
-        $this->_pagoRepository->Store((object)$request->all());
-        foreach($pagoDetalles as $item)
+        $cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;                  
+        $this->_cabanaRepository->desocuparCabana($cabana);
+        if($ordenServicio->credito==0)
         {
-            if($item->forma_pago_id==1)            
-            {                
-                $CajaMovimiento =(object)[                
-                            "fecha_hora"=>date("Y-m-d H:i:s"),                                            
-                            "concepto"=>'Ingreso de pago', 
-                            "valor"=>$item->valor_recibido,                                            
-                            "ingreso"=>1,                                               
-                            "caja_id"=>$caja->id                        
-                        ];                        
-                $this->_cajaMovimientoRepository->Store($CajaMovimiento);                
-            }
+            if($total_pagar>$recibido)
+            {
+                return back()->withErrors('No se ha recibido el mototo total de pago');
+            }                   
+            $this->pagoStore($request,$pagoDetalles ,$caja);       
+            $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);            
+            return redirect()->to(url('/ordenservicio'));  
         }
-        $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);
-        $cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;
-        $this->_cabanaRepository->desocuparCabana($cabana->id);
-        $this->_cajaRepository->Cerrar($caja->id);
-        session()->forget('pagodetalles');
-        return redirect()->to(url('/ordenservicio'));  
+        else
+        {
+            $cuentasCobrar=$this->_cuentasCobrarRepository->GetCuentasCobrarByOrdenServicio($ordenServicio->id);
+            if($cuentasCobrar==null)
+            {
+                $this->pagoStore($request,$pagoDetalles,$caja);
+                /*$this->_pagoRepository->Store((object)$request->all());
+                foreach($pagoDetalles as $item)
+                {
+                    if($item->forma_pago_id==1)            
+                    {                
+                        $CajaMovimiento =(object)[                
+                                "fecha_hora"=>date("Y-m-d H:i:s"),                                            
+                                "concepto"=>'Ingreso de pago', 
+                                "valor"=>$item->valor_recibido,                                            
+                                "ingreso"=>1,                                               
+                                "caja_id"=>$caja->id                        
+                            ];                        
+                        $this->_cajaMovimientoRepository->Store($CajaMovimiento);                
+                    }
+                } */           
+                //$cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;
+               // $this->_cabanaRepository->desocuparCabana($cabana->id);
+              //  $this->_cajaRepository->Cerrar($caja->id);                
+                $credito=(object)["orden_id"=>$ordenServicio->id,"valor_recibido"=>$recibido];
+                session(['cuentascobrar' => $credito]);  
+                $this->_ordenServicioRepository->AcreditarOrden($ordenServicio->id);
+                return redirect()->to(url('/cuentascobrar/create'));                                                                              
+            }
+            else
+            {
+                $this->pagoStore($request,$pagoDetalles,$caja);                   
+                $credito=(object)["orden_id"=>$ordenServicio->id,"valor_recibido"=>$recibido];                              
+                $this->_DetalleCuentasCobrarRepository->store($credito);
+                $creditodetalles=$cuentasCobrar->DetalleCuentaCobrar;
+                $totalpagdoCredito=$this->_DetalleCuentasCobrarRepository->TotalizarDetallesCreditos($creditodetalles);
+                $montointeres=$cuentasCobrar->monto+ $cuentasCobrar->interes;
+                if($totalpagdoCredito==$montointeres)
+                {
+                    $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);            
+                    return redirect()->to(url('/ordenservicio'));                                                                                                                                                                              
+                }
+                else
+                {
+                    return redirect()->to(url('/cuentascobrar/'.$cuentasCobrar->id));                  
+                }               
+            }           
+        }
         //
     }
 

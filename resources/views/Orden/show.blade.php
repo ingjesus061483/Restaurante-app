@@ -25,7 +25,6 @@
                                         </label>                        
                                         {{$ordenEncabezado->cliente->identificacion}}             
                                     </div>      
-
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3">
@@ -84,7 +83,6 @@
                                         </label>                        
                                         {{$ordenEncabezado->empleado->identificacion}}             
                                     </div>      
-
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3">
@@ -124,17 +122,16 @@
                             Observaciones                    
                         </label>                    
                         {{$ordenEncabezado->observaciones}}
-                    </div>
-                          
+                    </div>                          
                     <div class ="mb-3">                    
                         <label class="form-label" for="descripcion">                        
                             Estado
                         </label>                    
                         {{$ordenEncabezado->estado->nombre}}
                     </div>                          
-                    <a class="btn btn-primary" href="{{url('/')}}/categorias">                    
+                    <a class="btn btn-primary" href="{{url('/orderservicio')}}">                    
                         Regresar                
-                    </a>                 
+                    </a>                                     
                     <a href="" class="btn btn-danger" >                   
                         PDF                
                     </a>        
@@ -157,10 +154,10 @@
                                     @foreach( $orden_detalle as $item)                                                                            
                                     <tr>                           
                                         <td>{{$item->id}}</td>
-                                        <td>{{$item->cantidad}}</td>
-                                        <td>{{$item->detalleOrden}}</td>
-                                        <td>{{$item->valorUnitario}}</td>
-                                        <td>{{$item->total}} </td>                                                   
+                                        <td>{{number_format($item->cantidad)}}</td>
+                                        <td>{{$item->producto->nombre}}</td>
+                                        <td>${{number_format($item->valor_unitario)}}</td>
+                                        <td>${{number_format($item->total)}} </td>                                                   
                                     </tr>                    
                                     @endforeach                       
                                 </tbody>                                            

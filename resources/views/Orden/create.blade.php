@@ -39,8 +39,17 @@
                         <label class="form-label" for="cliente">
                             Cliente
                         </label>
-                        <input type="text" name="cliente"style="display:none"
-                         value="{{old('cliente')}}" class="form-control" id="cliente">
+                        <div id="pnlcliente" class="row"style="display:none">
+                            <div class="col-7">
+                                <input type="text" name="cliente"
+                                value="{{old('cliente')}}" class="form-control" id="cliente">
+                            </div>
+                            <div class="col-5">                                                                
+                                <a class="btn btn-success" href="{{url('/clientes/create')}}">                                    
+                                    Nuevo cliente                                                        
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3" id="pnlcabaña">
                         <label class="form-label" for="cabaña">

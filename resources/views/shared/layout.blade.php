@@ -68,7 +68,8 @@
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
+                                <nav class="sb-sidenav-menu-nested nav">                                    
+                                    <a class="nav-link" href="{{url('/cuentascobrar')}}">Cuentas por cobrar</a>
                                     <a class="nav-link" href="{{url('/formapagos')}}">Formas de pagos</a>
                                     <a class="nav-link" href="{{url('/configuracion')}}">Configuracion</a>
                                     <a class="nav-link" href="{{url('/pagos')}}">Pagos</a>
@@ -248,9 +249,9 @@
         </div>
         <div id="DetalleOrden" class="container">
             <div class="card mb-4">                
-                <div class="card-body">
+                <div class="card-body">                    
                     <form action="">         
-
+                        <input type="hidden" value="{{isset($orden_id)?$orden_id:0}}" id="orden_id">
                         <input type="hidden" id="ordendetalle_id">                                               
                         <input type="hidden" id="producto_id">                  
                         <div class="row" >
@@ -285,7 +286,8 @@
                         
                     </form>
                     
-                </div>                                   
+                </div> 
+            </div>                                  
         </div>
         <div id="formasPagos" class="container">
             <div class="mb-3">
@@ -437,12 +439,12 @@
                 //alert(this.checked);
                 if(this.checked)
                 {
-                    $("#cliente").fadeIn();
+                    $("#pnlcliente").fadeIn();
                     $("#pnlcabaña").fadeOut();
 
                 }
                 else{
-                    $("#cliente").fadeOut();
+                    $("#pnlcliente").fadeOut();
                     $("#pnlcabaña").fadeIn();
 
                 }
@@ -644,6 +646,7 @@
                 });             
             }
             function GuardarDetalle(){
+                var orden_id=document.getElementById('orden_id').value;
                 var producto_id=document.getElementById('producto_id').value;
                 var cantidad=document.getElementById('cantidadDetalleOrden').value;
                 if(cantidad==""){
@@ -656,14 +659,19 @@
                     dataType: "json",
                     data: {   
                         _token:"{{csrf_token()}}",     
+                        orden_id:orden_id,
                         producto_id:producto_id,
                         cantidad:cantidad,                    
                     },
-                    success: function (result){
-                        alertify.success(result.message);
-                        if(result.encontrado)
+                    success: function (result){                        
+                        if(!result.encontrado)
                         {
-                            window.location.href="{{url('/ordendetalles/create')}}";
+                            alertify.error(result.message);
+                        }
+                        else
+                        {
+                            alertify.success(result.message);
+                            window.location.href=result.orden_id==0?"{{url('/ordendetalles/')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                        
                         }
                         
                     }

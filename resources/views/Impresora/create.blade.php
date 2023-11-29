@@ -12,7 +12,7 @@
             </ul>
         </div>
         @endif
-        <form action="{{url('/')}}/impresoras" autocomplete="off" method="post">
+        <form action="{{url('/impresoras')}}" autocomplete="off" method="post">
             @csrf
             <div class="mb-3">
                 <label class="form-label" for="nombre">
@@ -35,16 +35,16 @@
 
             <div class="mb-3">
                 <label class="form-label" for="nombre">
-                    Anchura papel
+                    Tamaño fuente encabezado                
                 </label>
-                <input type="text" name="anchura_papel" value="{{old('anchura_papel')}}" class="form-control" id="nombre">
+                <input type="text" name="tamaño_fuente_encabezado" value="{{old('tamaño_fuente_encbezado')}}" class="form-control" id="nombre">
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="nombre">
-                    tamaño_fuente
+                    tamaño fuente contenido
                 </label>
-                <input type="text" name="tamaño_fuente" value="{{old('tamaño_fuente')}}" class="form-control" id="nombre">
+                <input type="text" name="tamaño_fuente_contenido" value="{{old('tamaño_fuente_contenido')}}" class="form-control" id="nombre">
             </div>
             <div class ="mb-3">
                 <label class="form-label" for="descripcion">

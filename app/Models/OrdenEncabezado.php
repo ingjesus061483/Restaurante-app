@@ -17,16 +17,21 @@ class OrdenEncabezado extends Model
     public function empleado(){
         return  $this->belongsTo(Empleado::class,'empleado_id');
     }
-    public function estado(){
+    public function estado()
+    {
         return $this->belongsTo(Estado::class,'estado_id');        
     }  
-    public function orden_detalles(){
+    public function orden_detalles()
+    {
         return $this->hasMany(OrdenDetalle::class,'orden_encabezado_id');
     }
     public function pagos()
     {
         return $this->hasMany(Pago::class,'orden_id');
-
+    }
+    public function CuentasCobrar()
+    {
+        return $this->hasMany(CuentasCobrar::class,"orden_id");
     }
     
     protected $fillable=[

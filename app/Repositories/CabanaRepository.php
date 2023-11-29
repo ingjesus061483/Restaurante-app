@@ -8,8 +8,7 @@ class CabanaRepository implements IRepository
     public function GetAll(){
         return Cabaña::all();
     }
-    public function desocuparCabana($id){
-        $cabaña=$this->Find($id);
+    public function desocuparCabana(Cabaña $cabaña){        
         if ($cabaña!=null)
         {
             $cabaña->ocupado=0;

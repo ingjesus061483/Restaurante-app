@@ -5,19 +5,22 @@ class PlantillasRepository
 {
     public function ImprimirPlantillaOrdenServicio(Printer $printer,$ordenservicio)
     {
-        $printer ->setTextSize(3,3);      
+        $encabezado=$ordenservicio->impresonra->tamaño_fuente_encabezado;
+        $contenido=$ordenservicio->impresonra->tamaño_fuente_contenido;
+
+        $printer ->setTextSize($encabezado,$encabezado);      
         $printer -> text("================\n");    
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer -> text($ordenservicio-> empresa->nombre. "\n");    
-        $printer ->setTextSize(2,2);
+        $printer ->setTextSize($contenido,$contenido);
         $printer->text($ordenservicio->empresa->nit."\n" );
         $printer->text($ordenservicio-> empresa->direccion."\n" );
         $printer->text($ordenservicio-> empresa->telefono."\n");
-        $printer ->setTextSize(3,3);              
+        $printer ->setTextSize($encabezado,$encabezado);              
         $printer->text("================\n");
         $printer->text("===Encabezado===\n");
         $printer->setJustification(Printer::JUSTIFY_LEFT);        
-        $printer ->setTextSize(1,1);            
+        $printer ->setTextSize($contenido,$contenido);            
         $printer->text("Codigo:".$ordenservicio->orden_encabezado->codigo  .  "\n");
         $printer->text("Mesero:".$ordenservicio->orden_encabezado->empleado->nombre.' '.$ordenservicio->orden_encabezado->empleado->apellido  .  "\n");
         $printer->text("Fecha/hora:".$ordenservicio->orden_encabezado->fecha." ". $ordenservicio->orden_encabezado->hora."\n");
@@ -26,11 +29,11 @@ class PlantillasRepository
         if($ordenservicio->orden_encabezado->cliente!=null)
         {
             $printer->setJustification(Printer::JUSTIFY_CENTER);                    
-            $printer ->setTextSize(3,3);    
+            $printer ->setTextSize($encabezado,$encabezado);    
             $printer->text("================\n");
             $printer->text("=====Cliente====\n");
             $printer->setJustification(Printer::JUSTIFY_LEFT);        
-            $printer ->setTextSize(1,1);              
+            $printer ->setTextSize($contenido,$contenido);              
             $printer->text("Identificacion:\n");
             $printer->text("Nombre:\n");
             $printer->text("Direccion:\n");
@@ -38,22 +41,22 @@ class PlantillasRepository
         }          
         if($ordenservicio->orden_encabezado->cabaña!=null)
         {
-            $printer ->setTextSize(3,3);              
+            $printer ->setTextSize($encabezado,$encabezado);              
             $printer->setJustification(Printer::JUSTIFY_CENTER);        
             $printer->text("================\n");
             $printer->text("=====Mesa======\n");        
             $printer->setJustification(Printer::JUSTIFY_LEFT);        
-            $printer ->setTextSize(1,1);              
+            $printer ->setTextSize($contenido,$contenido);              
             $printer->text("Codigo:".$ordenservicio->orden_encabezado->cabaña->codigo."\n");
             $printer->text("Nombre:".$ordenservicio->orden_encabezado->cabaña->nombre."\n");
             $printer->text("Nombre:".$ordenservicio->orden_encabezado->cabaña->capacidad."\n");        
         }
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
-        $printer ->setTextSize(3,3);              
+        $printer ->setTextSize($encabezado,$encabezado);              
         $printer->text("================\n");
         $printer->text("=====Detalle====\n");
         $printer->setJustification(Printer::JUSTIFY_LEFT);        
-        $printer ->setTextSize(1,1);   
+        $printer ->setTextSize($contenido,$contenido);   
         $detalles=$ordenservicio->detalles;         
         foreach( $detalles as $item)
         {   
@@ -64,7 +67,7 @@ class PlantillasRepository
             $printer->text("Total:".$item->total."\n");
             $printer->text("**************\n");         
         }
-        $printer ->setTextSize(3,3);              
+        $printer ->setTextSize($encabezado,$encabezado);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer->text("================\n");      
         if($ordenservicio->orden_encabezado->observaciones!="")
@@ -72,9 +75,9 @@ class PlantillasRepository
               
             $printer->text("==Observaciones=\n");
             $printer->setJustification(Printer::JUSTIFY_LEFT);        
-            $printer ->setTextSize(1,1);              
+            $printer ->setTextSize($contenido,$contenido);              
             $printer->text($ordenservicio->orden_encabezado->observaciones."\n");
-            $printer ->setTextSize(3,3);              
+            $printer ->setTextSize($encabezado,$encabezado);              
             $printer->setJustification(Printer::JUSTIFY_CENTER);        
             $printer->text("================\n");   
         }        
@@ -82,7 +85,7 @@ class PlantillasRepository
         {
             $printer->text("=====Totales====\n");
             $printer->setJustification(Printer::JUSTIFY_LEFT);        
-            $printer ->setTextSize(1,1);     
+            $printer ->setTextSize($contenido,$contenido);     
             foreach($ordenservicio->orden_encabezado->pagos as $item)
             {
                 $printer->text("Codigo: ".$item->codigo."\n");
@@ -96,27 +99,28 @@ class PlantillasRepository
                 $printer->text("Propina voluntaria".$item->total_pagar*0.1."\n");
                 $printer->text("Observaciones: ".$item->observaciones."\n");                
             }  
-            $printer ->setTextSize(3,3);              
+            $printer ->setTextSize($encabezado,$encabezado);              
             $printer->setJustification(Printer::JUSTIFY_CENTER);        
             $printer->text("================\n");
         }        
-        
+
     }
     public function ImprimirPlantillaComanda(Printer $printer,$ordenservicio )
     {
-        $printer ->setTextSize(3,3);      
+        $encabezado=$ordenservicio->impresonra->tamaño_fuente_encabezado;
+        $contenido=$ordenservicio->impresonra->tamaño_fuente_contenido;
+        $printer ->setTextSize($encabezado,$encabezado);      
         $printer -> text("================\n");    
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer -> text($ordenservicio-> empresa->nombre. "\n");    
-        $printer ->setTextSize(2,2);
+        $printer ->setTextSize($contenido,$contenido);
         $printer->text($ordenservicio->empresa->nit."\n" );        
-        $printer ->setTextSize(3,3);                      
-        $printer->setJustification(Printer::JUSTIFY_CENTER);        
-        $printer ->setTextSize(3,3);              
+        $printer ->setTextSize($encabezado,$encabezado);                      
+        $printer->setJustification(Printer::JUSTIFY_CENTER);                
         $printer->text("================\n");
         $printer->text("=====Detalle====\n");
         $printer->setJustification(Printer::JUSTIFY_LEFT);        
-        $printer ->setTextSize(1,1);    
+        $printer ->setTextSize($contenido,$contenido);    
         $detalles=$ordenservicio->detalles;          
         foreach( $detalles as $item)
         {   
@@ -135,16 +139,16 @@ class PlantillasRepository
                 }
             }      
         }
-        $printer ->setTextSize(3,3);              
+        $printer ->setTextSize($encabezado,$encabezado);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer->text("================\n");      
         if($ordenservicio->orden_encabezado->observaciones!="")
         {              
             $printer->text("==Observaciones=\n");
             $printer->setJustification(Printer::JUSTIFY_LEFT);        
-            $printer ->setTextSize(1,1);              
+            $printer ->setTextSize($contenido,$contenido);              
             $printer->text($ordenservicio->orden_encabezado->observaciones."\n");
-            $printer ->setTextSize(3,3);              
+            $printer ->setTextSize($encabezado,$encabezado);              
             $printer->setJustification(Printer::JUSTIFY_CENTER);        
             $printer->text("================\n");   
         }        

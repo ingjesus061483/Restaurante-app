@@ -16,9 +16,9 @@ class ImpresoraSeeder extends Seeder
             [                
                 'codigo'=>'001',
                 'nombre'=>'Impresora1',
-                'recurso_compartido'=>'pos',
-                'anchura_papel'=>3,
-                'tamaño_fuente'=>1,
+                'recurso_compartido'=>'pos',           
+                'tamaño_fuente_encabezado'=>2,
+                'tamaño_fuente_contenido'=>1           
             ],        
         ]);
                 //

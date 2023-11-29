@@ -12,7 +12,7 @@
 @endif
 <div class="card mb-4">
     <div class="card-header">
-        <a href="{{url('/ordendetalles')}}" class="btn btn-primary">
+        <a href="{{url('/ordendetalles/create')}}" class="btn btn-primary">
             Crear Orden de servicio 
         </a>
     </div>
@@ -20,6 +20,7 @@
         <table id="datatablesSimple">
             <thead>
                 <tr>
+                    <th></th>
                     <th></th>                    
                     <th></th>                    
                     <th></th>                    
@@ -41,7 +42,8 @@
                 </tr>
             </thead>
             <tfoot>
-                <tr>               
+                <tr>         
+                    <th></th>      
                     <th></th>                                 
                     <th></th>                    
                     <th></th>                    
@@ -65,6 +67,13 @@
             <tbody>    
                 @foreach($ordenes as $item)
                 <tr style="{{$item->estado_id==2?'color:green':'color:black'}}">
+                    <td>
+                        @if($item->estado_id==1)
+                        <a class="btn btn-primary" style="font-size: 10px" href="{{url('/ordendetalles/'.$item->id.'/edit')}}">                    
+                            Editar                
+                        </a>                 
+                        @endif
+                    </td>
                     <td>
                         <a class="btn btn-info" style="font-size: 10px" href="{{url('/ordenservicio')}}/{{$item->id}}">
                             Ver detalles
@@ -103,6 +112,14 @@
                                 </form>                                
                                 @break
                             @case(2)
+                                <form action="{{url('pagos/create')}}" method="get">
+                                    <input type="hidden" value="{{$item->id}}" name="id">
+                                    <button type="submit" class="btn btn-success" style="font-size: 10px">
+                                        Cobrar
+                                    </button>                                
+                                </form>                           
+                                @break
+                            @case(4)
                                 <form action="{{url('pagos/create')}}" method="get">
                                     <input type="hidden" value="{{$item->id}}" name="id">
                                     <button type="submit" class="btn btn-success" style="font-size: 10px">

@@ -14,8 +14,8 @@ class ImpresoraRepository implements IRepository
         $impresora->codigo=$request->codigo;        
         $impresora->nombre=$request->nombre;        
         $impresora->recurso_compartido=$request->recurso_compartido;        
-        $impresora->anchura_papel=$request->anchura_papel;
-        $impresora->tamaño_fuente=$request->tamaño_fuente;        
+        $impresora->tamaño_fuente_encabezado=$request->tamaño_fuente_encabezado;
+        $impresora->tamaño_fuente_contenido=$request->tamaño_fuente_contenido;        
         $impresora->descripcion=$request->descripcion;        
         $impresora->save();    
     }
@@ -28,9 +28,9 @@ class ImpresoraRepository implements IRepository
         $impresora=$this->Find($id);        
         $impresora->codigo=$request->codigo;
         $impresora->nombre=$request->nombre;
-        $impresora->recurso_compartido=$request->recurso_compartido;
-        $impresora->anchura_papel=$request->anchura_papel;
-        $impresora->tamaño_fuente=$request->tamaño_fuente;
+        $impresora->recurso_compartido=$request->recurso_compartido;        
+        $impresora->tamaño_fuente_encabezado=$request->tamaño_fuente_encabezado;
+        $impresora->tamaño_fuente_contenido=$request->tamaño_fuente_contenido;  
         $impresora->descripcion=$request->descripcion;
         $impresora->save();
     }

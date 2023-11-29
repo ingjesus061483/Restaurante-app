@@ -13,8 +13,8 @@
                     <th>Codigo</th>  
                     <th>Nombre</th>
                     <th>Recurso compartido</th>
-                    <th>Anchura papel</th>
-                    <th>Tamaño fuente</th>                                
+                    <th>Tamaño fuente encabezado</th>
+                    <th>Tamaño fuente contnido</th>                                
                     <th>Descripcion</th>
                     <th></th>
                     <th></th>
@@ -26,8 +26,8 @@
                     <th>Codigo</th>  
                     <th>Nombre</th>
                     <th>Recurso compartido</th>
-                    <th>Anchura papel</th>
-                    <th>Tamaño fuente</th>                                
+                    <th>Tamaño fuente encabezado</th>
+                    <th>Tamaño fuente contnido</th>                                
                     <th>Descripcion</th>
                     <th></th>
                     <th></th>
@@ -40,8 +40,8 @@
                     <td>{{$item->codigo}}</td>            
                     <td>{{$item->nombre}}</td>            
                     <td>{{$item->recurso_compartido}}</td>
-                    <td>{{$item->anchura_papel}}</td>
-                    <td>{{$item->tamaño_fuente}}</td>
+                    <td>{{$item->tamaño_fuente_encabezado}}</td>
+                    <td>{{$item->tamaño_fuente_contenido}}</td>
                     <td>{{$item->descripcion}}</td>
                     <td>
                         <a class="btn btn-warning" href="{{url('/impresoras')}}/{{$item->id}}/edit">

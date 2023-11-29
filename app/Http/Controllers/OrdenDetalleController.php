@@ -109,18 +109,24 @@ class OrdenDetalleController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }   
-        if(!$this->_ordenServicioRepository->GuardarSesionDetalle($request))
+        }        
+        if(!$this->_ordenServicioRepository->GuardarSesionDetalle($request))        
+        {
+            
+            $data=[
+                    'orden_id'=>$request->orden_id,
+                    'message'=>'El producto ya encuentra en la tabla detalle',
+                    'encontrado'=>false
+                ];  
+        }        
+        else
         {
             $data=[
-                'message'=>'El producto ya encuentra en la tabla detalle',
-                'encontrado'=>false
-            ];
-        }
-        $data=[
-            'message'=>'Has insertado un detalle',
-            'encontrado'=>true
-        ];
+                'orden_id'=>$request->orden_id,
+                'message'=>'Has insertado un detalle',
+                'encontrado'=>true
+            ];                
+        }        
         return json_encode($data);        
         //
     }
@@ -136,8 +142,26 @@ class OrdenDetalleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(OrdenDetalle $ordenDetalle)
-    {
+    public function edit($id)
+    {       
+        $orden_servicio=$this->_ordenServicioRepository->Find($id);        
+        $ordendetalles=$orden_servicio->orden_detalles;        
+        $productosSession=[];                                
+        foreach($ordendetalles as $item)        
+        {            
+            $productosSession[]=$item->producto_id;        
+        }
+        $productos= $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession);
+        $data=[
+            "orden_id"=>$orden_servicio->id,
+            'categorias'=>$this->_categoriaRepository->GetAll(),
+            'productos'=>$productos,
+        ];  
+        return view('OrdenDetalle.create',$data);       
+
+        
+        
+                
         //
     }
 

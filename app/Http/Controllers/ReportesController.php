@@ -126,6 +126,7 @@ class ReportesController extends Controller
                         $printer =new Printer($conector);                            
                         $printer ->initialize();                    
                         $this->_plantillaRepository->ImprimirPlantillaOrdenServicio($printer,$ordenservicio);                    
+                        $printer->pulse();
                         $printer -> cut();                    
                         $printer->close();                                    
                     }                

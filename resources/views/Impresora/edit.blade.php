@@ -38,16 +38,15 @@
 
             <div class="mb-3">
                 <label class="form-label" for="nombre">
-                    Anchura papel
+                    Tamaño fuente encabezado                
                 </label>
-                <input type="text" name="anchura_papel" value="{{$impresora->anchura_papel}}" class="form-control" id="nombre">
+                <input type="text" name="tamaño_fuente_encabezado" value="{{$impresora->tamaño_fuente_encabezado}}" class="form-control" id="nombre">
             </div>
-
             <div class="mb-3">
                 <label class="form-label" for="nombre">
-                    tamaño_fuente
+                    tamaño fuente contenido
                 </label>
-                <input type="text" name="tamaño_fuente" value="{{$impresora->tamaño_fuente}}" class="form-control" id="nombre">
+                <input type="text" name="tamaño_fuente_contenido" value="{{$impresora->tamaño_fuente_contenido}}" class="form-control" id="nombre">
             </div>
             <div class ="mb-3">
                 <label class="form-label" for="descripcion">

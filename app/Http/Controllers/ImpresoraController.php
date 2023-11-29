@@ -67,8 +67,8 @@ class ImpresoraController extends Controller
             'codigo'=>'required|max:50|unique:impresoras',
             'nombre'=>'required|max:50',
             'recurso_compartido'=>'required|max:50',
-            'anchura_papel'=>'required|numeric',
-            'tamaño_fuente'=>'required|numeric',                    
+            'tamaño_fuente_encabezado'=>'required|numeric',
+            'tamaño_fuente_contenido'=>'required|numeric',                    
         ]);           
         $this->_impresoraRepository->Store((object)$request->all());
         return redirect()->to(url('/impresoras'));  
@@ -119,8 +119,8 @@ class ImpresoraController extends Controller
         $validacion=$request->validate([
             'nombre'=>'required|max:50',
             'recurso_compartido'=>'required|max:50',
-            'anchura_papel'=>'required|numeric',
-            'tamaño_fuente'=>'required|numeric',                    
+            'tamaño_fuente_encabezado'=>'required|numeric',
+            'tamaño_fuente_contenido'=>'required|numeric',                    
             'codigo'=>'required|max:50|unique:impresoras,codigo,'.$id,
         ]);
         $this->_impresoraRepository->Update( $id,(object)$request->all());

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('codigo',50)->unique();
             $table->string('nombre',50);
-            $table->string('recurso_compartido',50);
-            $table->integer('anchura_papel');
-            $table->integer('tamaño_fuente');
+            $table->string('recurso_compartido',50);       
+            $table->integer('tamaño_fuente_encabezado');
+            $table->integer('tamaño_fuente_contenido');
             $table->string('descripcion')->nullable();
             $table->timestamps();
         });

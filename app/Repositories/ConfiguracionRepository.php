@@ -5,6 +5,10 @@ use App\Contracts\IRepository;
 use App\Models\Configuracion;
 
 class ConfiguracionRepository implements IRepository{
+    public function getConfigByNombre($nombre)
+    {
+      return Configuracion::where ('nombre',$nombre)->first();
+    }
     public function GetAll()
     {
       return Configuracion::all();

@@ -95,9 +95,24 @@ class OrdenServicioRepository implements IRepository
         return $errors;
     
     }
+    public function actualizarCliente($request){
+        $arr=$request->input('cliente')!=null?explode('-',$request->input('cliente')):[];
+        $cliente=count($arr)!=0? $this-> _clienteRepository->Getcliente($arr[0]):null;
+        $ordenEncabezado=$this->Find($request->orden_id);
+        if ($ordenEncabezado->cliente ==null){
+            $ordenEncabezado->cliente_id=$cliente->id;
+            $ordenEncabezado->update();            
+        }
+        
+    }
     public function  PagarOrden($id){
         $ordenEncabezado= $this->Find($id);
         $ordenEncabezado->estado_id=3;
+        $ordenEncabezado->save();
+    }
+    public function AcreditarOrden($id){
+        $ordenEncabezado= $this->Find($id);
+        $ordenEncabezado->estado_id=4;
         $ordenEncabezado->save();
     }
     public function Update($id, $request)
@@ -150,12 +165,13 @@ class OrdenServicioRepository implements IRepository
     {
        return OrdenEncabezado::find($id);
     }
+
     public function Store($request)
     {
         $arr=$request->input('cliente')!=null?explode('-',$request->input('cliente')):[];
-
         $cliente=count($arr)!=0?
             $this-> _clienteRepository->Getcliente($arr[0]):null;
+
         $empleado=$request->input('empleado')!=null?
             $this->_empleadoRepository->Getempleado($request->input('empleado')):null;
         $credito=$request->input('credito')!=null?(bool)$request->input('credito'):0;
@@ -212,31 +228,47 @@ class OrdenServicioRepository implements IRepository
         $producto_id=$request->input('producto_id');
         $producto=$this->_productoRepository->Find($producto_id);
         $total=$cantidad*$producto->precio;        
-        $id=0;        
-        $detalles=[];
-        if(!session()->has('detalles'))        
-        {            
-            $id=1;                       
-        }        
-        else{            
-            $detalles=session('detalles');                   
-            $id=count($detalles)+1;                        
-        }       
-        $search=$this->BuscarItemOrdenDetalle($detalles,$producto_id);
-        if($search)
-        {
-            return false;
+        $id=0;      
+        if($request->orden_id==0){  
+            $detalles=[];
+            if(!session()->has('detalles'))        
+            {            
+                $id=1;                       
+            }        
+            else{            
+                $detalles=session('detalles');                   
+                $id=count($detalles)+1;                        
+            }       
+            $search=$this->BuscarItemOrdenDetalle($detalles,$producto_id);
+            if($search)
+            {
+                return false;
+            }
+            $detalles[]=(object)[            
+                'id'=>$id,
+                'producto_id'=>$producto->id,
+                'cantidad'=>$cantidad,
+                'detalleOrden'=>$producto->nombre,
+                'valorUnitario'=>$producto->precio,
+                'total'=>$total
+            ];                    
+            session(['detalles' => $detalles]);
+            return true;
         }
-        $detalles[]=(object)[            
-            'id'=>$id,
-            'producto_id'=>$producto->id,
-            'cantidad'=>$cantidad,
-            'detalleOrden'=>$producto->nombre,
-            'valorUnitario'=>$producto->precio,
-            'total'=>$total
-        ];                    
-        session(['detalles' => $detalles]);
-        return true;
+        else
+        {            
+            $OrdenDetalle=new OrdenDetalle();
+            $OrdenDetalle->cantidad =$cantidad;
+            $OrdenDetalle->valor_unitario=$producto->precio;
+            $OrdenDetalle->total=$total;            
+            $OrdenDetalle->orden_encabezado_id=$request->orden_id;            
+            $OrdenDetalle->producto_id=$producto_id;            
+            $OrdenDetalle->save();           
+            $ordenservicio=$this->find($request->orden_id);
+            $ordenservicio->total=$ordenservicio->total+$total;
+            $ordenservicio->update();
+            return true;
+        }
     }
     public function EliminarSesionDetalle($id)
     {

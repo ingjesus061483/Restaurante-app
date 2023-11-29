@@ -6,19 +6,19 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class EstadoSeeder extends Seeder
+class TipoCobroSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('estados')->insert([
-            ['nombre'=>'Espera'],
-            ['nombre'=>'Listo'], 
-            ['nombre'=>'Pago'],                       
-            ["nombre"=>'En mora']
-        ]);
+        DB::table('tipo_cobros')->insert(
+            [
+                ["nombre"=>"Mensual"],
+                ["nombre"=>"Quincenal"],
+                ["nombre"=>"Diario"],
+            ]);
         //
     }
 }
