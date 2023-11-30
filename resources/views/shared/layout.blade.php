@@ -57,10 +57,14 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Orden de servicio
                             </a>                            
-                           <!-- <a class="nav-link" href="{{url('/facturacion')}}">
+                            <a class="nav-link" href="{{url('/cuentascobrar')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Ventas
-                            </a>        -->                   
+                                Cartera
+                            </a>      
+                            <a class="nav-link" href="{{url('/pagos')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Pagos
+                            </a>      
                             <div class="sb-sidenav-menu-heading">Administracion del sistema</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -68,11 +72,9 @@
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">                                    
-                                    <a class="nav-link" href="{{url('/cuentascobrar')}}">Cuentas por cobrar</a>
+                                <nav class="sb-sidenav-menu-nested nav">                                                                     
                                     <a class="nav-link" href="{{url('/formapagos')}}">Formas de pagos</a>
-                                    <a class="nav-link" href="{{url('/configuracion')}}">Configuracion</a>
-                                    <a class="nav-link" href="{{url('/pagos')}}">Pagos</a>
+                                    <a class="nav-link" href="{{url('/configuracion')}}">Configuracion</a>                                    
                                     <a class="nav-link" href="{{url('/impresoras')}}">Impresoras</a>
                                     <a class="nav-link" href="{{url('/categorias')}}">Categorias</a>
                                     <a class="nav-link" href="{{url('/unidad_medida')}}">Unidades de medida</a>
