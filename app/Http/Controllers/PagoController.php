@@ -214,25 +214,7 @@ class PagoController extends Controller
             $cuentasCobrar=$this->_cuentasCobrarRepository->GetCuentasCobrarByOrdenServicio($ordenServicio->id);
             if($cuentasCobrar==null)
             {
-                $this->pagoStore($request,$pagoDetalles,$caja);
-                /*$this->_pagoRepository->Store((object)$request->all());
-                foreach($pagoDetalles as $item)
-                {
-                    if($item->forma_pago_id==1)            
-                    {                
-                        $CajaMovimiento =(object)[                
-                                "fecha_hora"=>date("Y-m-d H:i:s"),                                            
-                                "concepto"=>'Ingreso de pago', 
-                                "valor"=>$item->valor_recibido,                                            
-                                "ingreso"=>1,                                               
-                                "caja_id"=>$caja->id                        
-                            ];                        
-                        $this->_cajaMovimientoRepository->Store($CajaMovimiento);                
-                    }
-                } */           
-                //$cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;
-               // $this->_cabanaRepository->desocuparCabana($cabana->id);
-              //  $this->_cajaRepository->Cerrar($caja->id);                
+                $this->pagoStore($request,$pagoDetalles,$caja);            
                 $credito=(object)["orden_id"=>$ordenServicio->id,"valor_recibido"=>$recibido];
                 session(['cuentascobrar' => $credito]);  
                 $this->_ordenServicioRepository->AcreditarOrden($ordenServicio->id);
