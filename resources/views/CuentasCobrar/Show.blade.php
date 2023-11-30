@@ -56,6 +56,21 @@
                 </div>
             </div>        
         </div>
+        <div class="row" >
+            <div class="col-4">
+                <a class="btn btn-primary" href="{{url('/cuentascobrar')}}">Regresar</a>
+            </div>
+            <div class="col-4">
+                @if($cuentasCobrar->OrdenEncabezado->estado_id==4)
+                <form action="{{url('/pagos/create')}}" method="GET">
+                    <input type="hidden" name="id" value="{{$cuentasCobrar->OrdenEncabezado->id}}">
+                    <button class="btn btn-success" type="submit"> Pagar</button>
+        
+                </form>
+                @endif
+            </div>
+            <div class="col-4"></div>
+        </div>
     </div>
 </div>
 @endsection

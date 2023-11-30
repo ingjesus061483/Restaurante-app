@@ -12,7 +12,7 @@
                     <input type="text" name="cliente" class="form-control" >                    
                 </div>                
                 <div class="col-2">                                            
-                    <button class="btn btn-success"  type="submit">                        
+                    <button class="btn btn-primary"  type="submit">                        
                         Buscar                        
                     </button>                     
                 </div>                        
