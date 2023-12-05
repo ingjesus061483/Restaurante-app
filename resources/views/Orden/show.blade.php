@@ -129,7 +129,7 @@
                         </label>                    
                         {{$ordenEncabezado->estado->nombre}}
                     </div>                          
-                    <a class="btn btn-primary" href="{{url('/orderservicio')}}">                    
+                    <a class="btn btn-primary" href="{{url('/ordenservicio')}}">                    
                         Regresar                
                     </a>                                     
                     <a href="" class="btn btn-danger" >                   
