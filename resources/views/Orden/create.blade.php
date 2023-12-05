@@ -124,7 +124,7 @@
             </div>                    
             <div class="col-7">            
                 <div class ="mb-3">                
-                    <table class="table">                    
+                    <table id="datatablesSimple">                    
                         <thead>                        
                             <tr>       
                                 <th>Id</th>             
