@@ -63,8 +63,7 @@ class OrdenDetalleController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }             
-
+        }            
         $productos=[];       
         if(!session()->has('detalles'))        
         {            
@@ -79,12 +78,11 @@ class OrdenDetalleController extends Controller
         }        
         else
         {
-
             $productosSession=[];            
             $detalles=session('detalles');                   
             foreach($detalles as $item)
             {
-                $productosSession[]=$item->id;
+                $productosSession[]=$item->producto_id;
             }
             $productos= $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession);
                       
