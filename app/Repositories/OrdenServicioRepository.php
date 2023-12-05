@@ -95,6 +95,13 @@ class OrdenServicioRepository implements IRepository
         return $errors;
     
     }
+    public function BuscarOrdenCliente($request)
+    {
+        $arr=$request->input('cliente')!=null?explode('-',$request->input('cliente')):[];
+        $cliente=count($arr)!=0? $this-> _clienteRepository->Getcliente($arr[0]):null;
+        return $cliente!=null?OrdenEncabezado::where('cliente_id',$cliente->id)->where('estado_id',1)->first():null;
+
+    }
     public function actualizarCliente($request){
         $arr=$request->input('cliente')!=null?explode('-',$request->input('cliente')):[];
         $cliente=count($arr)!=0? $this-> _clienteRepository->Getcliente($arr[0]):null;

@@ -125,11 +125,16 @@ class OrdenEncabezadoController extends Controller
                 'cabaña'=>'required',
                 'empleado'=>'required',
             ]);
-        }    
+        }          
         if(!session()->has('detalles'))
         {
             return back()->withErrors('No hay detalles de ordenes disponibles');
         } 
+        $orden =$this->_ordenServicioRepository->BuscarOrdenCliente($request); 
+        if($orden!=null)
+        {
+            return back()->withErrors('El cliente ya tiene un orden en espera asociada a el');
+        }
         $this->_ordenServicioRepository->Store($request);
         session()->forget('detalles');
         return redirect()->to(url('/ordenservicio'));            
