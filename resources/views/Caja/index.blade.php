@@ -38,7 +38,7 @@
                     <td>{{$item->codigo}}</td>
                     <td>{{$item->nombre}}</td>            
                     <td>{{$item->descripcion}}</td>
-                    <td>{{$item->valor_inicial}}</td>                    
+                    <td>${{number_format($item->valor_inicial)}}</td>                    
                     <td>
                         <a class="btn btn-success" href="{{url('/cajas')}}/{{$item->id}}">
                             Detalles 
