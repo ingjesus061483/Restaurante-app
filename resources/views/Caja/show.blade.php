@@ -20,7 +20,7 @@
                 <label class="form-label" for="">
                     Valor inicial                    
                 </label>
-                <td>{{$caja->valor_inicial}}</td>                    
+                <td>${{number_format($caja->valor_inicial)}}</td>                    
             </div>            
             <div class="col-6">
                 <label class="form-label" for="">
@@ -84,7 +84,7 @@
                             <td>{{$item->caja}}</td>
                             <td>{{$item->fecha_hora}}</td>            
                             <td>{{$item->concepto}}</td>
-                            <td>{{$item->valor}}</td>                                        
+                            <td>${{number_format( $item->valor)}}</td>                                        
                         </tr>
                         @endforeach   
                     </tbody>
@@ -96,19 +96,19 @@
                 <label class="form-label" for="">
                    Total ingresos
                 </label>                
-                {{$ingreso}}               
+                ${{number_format($ingreso)}}               
             </div>
             <div class="col-4">
                 <label class="form-label" for="">
                    Total egresos
-                </label>                
-                {{$egreso}}               
+                </label>                                
+                ${{number_format($egreso)}}               
             </div>
             <div class="col-4">
                 <label class="form-label" for="">
                     Total en caja                
                 </label>                 
-                 {{$ingreso-$egreso}}
+                 ${{number_format($ingreso-$egreso)}}
             </div>
         </div>
         <a class="btn btn-primary" href="{{url('/cajas')}}">

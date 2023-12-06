@@ -61,7 +61,7 @@
                 @foreach($pagosdetalles as $item)
                 <tr>               
                     <td>{{$item->forma_pago}}</td>                                     
-                    <td>{{$item->Total_valor_recibido}}</td>                                
+                    <td>${{number_format($item->Total_valor_recibido)}}</td>                                
                 </tr>
                 @endforeach   
             </tbody>        

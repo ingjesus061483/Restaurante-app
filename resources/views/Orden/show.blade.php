@@ -172,7 +172,7 @@
                                 <label class="form-label" for="descripcion">                        
                                     Total
                                 </label>                    
-                                {{$ordenEncabezado->total}}
+                                ${{number_format($ordenEncabezado->total)}}
                             </div>
                                     
                         </div>

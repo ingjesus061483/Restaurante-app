@@ -13,7 +13,7 @@
                 <label class="form-label" for="categoria">
                     Total de venta    
                 </label>
-                {{$totales}}              
+                ${{number_format($totales)}}              
             </div>
         </div>
 
@@ -65,12 +65,12 @@
                     <td>{{$item->orden_encabezado->cabaña!=null? $item->orden_encabezado->cabaña->codigo.' - '.$item->orden_encabezado->cabaña->nombre:""}}</td>                                   
                     <td>{{$item->orden_encabezado->cliente!=null?$item->orden_encabezado->cliente->nombre.' '.$item->orden_encabezado->cliente->apellido:""}}</td>
                     <td>{{$item->orden_encabezado->empleado->nombre. ' '.$item->orden_encabezado->empleado->apellido}}</td>                    
-                    <td>{{number_format($item->subtotal)}}</td>
-                    <td>{{$item->impuesto}}</td>
-                    <td>{{$item->descuento}}  </td>                    
-                    <td>{{$item->total_pagar}}</td>
-                    <td>{{$item->recibido}}</td>
-                    <td>{{$item->cambio}}</td>  
+                    <td>${{number_format($item->subtotal)}}</td>
+                    <td>${{number_format($item->impuesto)}}</td>
+                    <td>${{number_format($item->descuento)}}  </td>                    
+                    <td>${{number_format($item->total_pagar)}}</td>
+                    <td>${{number_format($item->recibido)}}</td>
+                    <td>${{number_format($item->cambio)}}</td>  
                     <td>
                         <a href="{{url('/pagos')}}/{{$item->id}}" class="btn btn-success"> Ver detalles</a>
                     </td>

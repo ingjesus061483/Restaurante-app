@@ -25,7 +25,7 @@
                 <tr>
                     <td>{{$item->id}}</td>            
                     <td>{{$item->detalle_pago}}</td>
-                    <td>{{$item->valor_recibido}}</td>            
+                    <td>${{number_format($item->valor_recibido)}}</td>            
                     <td>{{$item->forma_pago->nombre}}</td>                                     
                 </tr>
                 @endforeach   

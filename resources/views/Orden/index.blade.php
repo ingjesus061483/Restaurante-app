@@ -138,7 +138,7 @@
                     <td>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</td>
                     <td><a onmouseover="mostrar( {{$item->cliente!=null?$item->cliente->identificacion:'0'}})" href="{{url('/clientes')}}/{{$item->cliente!=null?$item->cliente->id:"0"}}">{{$item->cliente!=null?$item->cliente->nombre.' '.$item->cliente->apellido:""}}</a></td>
                     <td>{{$item->empleado->nombre. ' '.$item->empleado->apellido}}</td>                    
-                    <td>{{number_format($item->total)}}</td>
+                    <td>${{number_format($item->total)}}</td>
                     <td>{{$item->orden_detalles->count()}}</td>
                     <td>{{$item->observaciones}}</td>  
                     <td>{{$item->credito==1?'Si':'No'}}</td>  

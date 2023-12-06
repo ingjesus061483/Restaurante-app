@@ -60,7 +60,7 @@
                                 <td>{{$item->cantidad}}</td>
                                 <td>{{$item->detalleOrden}}</td>
                                 <th>{{$item->valorUnitario}}</th>
-                                <th>{{$item->total}} </th>           
+                                <th>${{number_format($item->total)}} </th>           
                                 <td>                
                                     <form action="{{url('/ordendetalles')}}/{{$item->id}}" 
                                         onsubmit="return validar('Desea eliminar este registro?');" method="post">

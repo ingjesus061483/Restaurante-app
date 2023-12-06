@@ -33,7 +33,7 @@
                                     <label class="form-label" for="costo_unitario">                                
                                         Costo unitario                            
                                     </label>                            
-                                    {{number_format($producto->costo_unitario)}}                                                    
+                                    ${{number_format($producto->costo_unitario)}}                                                    
                                 </div>                    
                             </div>                    
                         </div>
@@ -43,7 +43,7 @@
                                     <label class="form-label" for="costo_unitario">                                
                                         Precio                            
                                     </label>                            
-                                    {{number_format($producto->precio)}}                                                    
+                                    ${{number_format($producto->precio)}}                                                    
                                 </div>                    
                             </div>                                     
                             <div class="col-4">                        
@@ -71,9 +71,7 @@
                                     </label>                            
                                     {{$producto->foraneo==1?'si':'no'}}                                                    
                                 </div>                    
-                            </div>                                     
-                        
-                            
+                            </div>                        
                         </div>             
                         <div class="row">                            
                             <div class="col-12">                            
@@ -113,8 +111,7 @@
                         <form action="{{url('ingredientes/create')}}" method="get">
                             <input type="hidden" name="producto" value="{{$producto->id}}">
                             <button class="btn btn-primary" type="submit">Nuevo ingrediente </button>                            
-                        </form>                        
-                                                
+                        </form>                                       
                     </div>
                 </div>
                 
@@ -125,8 +122,7 @@
                         <tr>
                             <th>Id</th>                            
                             <th>Materia prima</th>
-                            <th>Cantidad</th>
-                            
+                            <th>Cantidad</th>                            
                             <th></th>
                             <th></th>
                         </tr>

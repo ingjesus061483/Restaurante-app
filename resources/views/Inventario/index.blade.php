@@ -57,7 +57,7 @@
                     <td>{{$item->id}}</td>
                     <td>{{$item->codigo}}</td>
                     <td>{{$item->nombre}}</td>
-                    <td>{{number_format($item->costo_unitario)}}</td>                                                            
+                    <td>${{number_format($item->costo_unitario)}}</td>                                                            
                     <td>{{$item->categoria}}</td>       
                     <td>{{$item->unidad_medida}}</td>                           
                     <td>{{$item->tipo}}</td>

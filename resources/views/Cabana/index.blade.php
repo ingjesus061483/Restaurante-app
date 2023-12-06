@@ -38,7 +38,7 @@
                     <td>{{$item->codigo}}</td>
                     <td>{{$item->nombre}}</td>            
                     <td>{{$item->descripcion}}</td>
-                    <td>{{$item->precio}}</td>
+                    <td>${{number_format($item->precio)}}</td>
                     <td>{{$item->capacidad_maxima}}</td>
                     <td>
                         <a class="btn btn-warning" href="{{url('/')}}/cabañas/{{$item->id}}/edit">

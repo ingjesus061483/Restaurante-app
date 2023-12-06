@@ -52,8 +52,8 @@
                     <td>{{$item->codigo}}</td>
                     <td>{{$item->nombre}}</td>
                     <td>{{$item->Preparacion}}</td>
-                    <td>{{$item->costo_unitario}}</td>                    
-                    <td>{{$item->precio}}</td>
+                    <td>${{number_format($item->costo_unitario)}}</td>                    
+                    <td>${{ number_format($item->precio)}}</td>
                     <td>{{$item->tiempo_coccion}}</td>
                     <td>{{$item->unidad_medida!=null?$item->unidad_medida->nombre:''}}</td>
                     <td>{{$item->categoria->nombre}}</td>
