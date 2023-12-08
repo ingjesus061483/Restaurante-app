@@ -11,11 +11,13 @@ use App\Models\Categoria;
 use App\Models\Producto;
 use App\Repositories\CabanaRepository;
 use App\Repositories\CategoriaRepository;
+use App\Repositories\OrdenDetalleRepository;
 use App\Repositories\OrdenServicioRepository;
 use App\Repositories\ProductoRepository;
 use Illuminate\Support\Facades\Auth;
 class OrdenDetalleController extends Controller
 {
+    protected OrdenDetalleRepository  $_OrdenDetalleRepository;
     protected ProductoRepository $_productoRepository;
     protected CategoriaRepository $_categoriaRepository;
     protected CabanaRepository $_cabanaRepository;
@@ -23,11 +25,13 @@ class OrdenDetalleController extends Controller
     public function __construct(CabanaRepository $cabanaRepository,
                                 ProductoRepository $productoRepository,
                                 CategoriaRepository $categoriaRepository,
-                                OrdenServicioRepository $ordenServicioRepository) {
+                                OrdenServicioRepository $ordenServicioRepository,
+                                OrdenDetalleRepository $ordenDetalleRepository) {
          $this->_productoRepository=$productoRepository;                       
          $this->_categoriaRepository=$categoriaRepository;
         $this->_cabanaRepository = $cabanaRepository;
         $this->_ordenServicioRepository=$ordenServicioRepository;
+        $this->_OrdenDetalleRepository=$ordenDetalleRepository;
     }
     /**
      * Display a listing of the resource.
@@ -66,15 +70,8 @@ class OrdenDetalleController extends Controller
         }            
         $productos=[];       
         if(!session()->has('detalles'))        
-        {            
-          //  $prod=request()->producto;
-           // if($prod!=null){
-             //   $productos=$this->_productoRepository->buscarproductosBynombre($prod);
-            //}
-            //else
-            //{
-                $productos=$this->_productoRepository->GetAll();
-            //}
+        {
+            $productos=$this->_productoRepository->GetAll();            
         }        
         else
         {
@@ -84,8 +81,7 @@ class OrdenDetalleController extends Controller
             {
                 $productosSession[]=$item->producto_id;
             }
-            $productos= $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession);
-                      
+            $productos= $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession);                      
         }
         if(count($productos)==0)
         {
@@ -107,24 +103,38 @@ class OrdenDetalleController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
-        if(!$this->_ordenServicioRepository->GuardarSesionDetalle($request))        
-        {
-            
-            $data=[
+        } 
+        $detalle=$this->_ordenServicioRepository-> GetdetalleByproducto($request);
+        if($detalle->orden_id==0)
+        {  
+            if(!$this->_ordenServicioRepository->GuardarSesionDetalle($detalle))        
+            {            
+                $data=[
+                        'orden_id'=>$request->orden_id,
+                        'message'=>'El producto ya encuentra en la tabla detalle',
+                        'encontrado'=>false
+                    ];  
+            }        
+            else
+            {
+                $data=[
                     'orden_id'=>$request->orden_id,
-                    'message'=>'El producto ya encuentra en la tabla detalle',
-                    'encontrado'=>false
-                ];  
-        }        
+                    'message'=>'Has insertado un detalle',
+                    'encontrado'=>true
+                ];                
+            }        
+        }
         else
         {
+            $this->_OrdenDetalleRepository->save($request->orden_id,$detalle);
+            $this->_ordenServicioRepository->ActualizarTotalPagarOrdenservicio($request->orden_id);
             $data=[
                 'orden_id'=>$request->orden_id,
                 'message'=>'Has insertado un detalle',
                 'encontrado'=>true
             ];                
-        }        
+
+        }
         return json_encode($data);        
         //
     }
@@ -132,8 +142,12 @@ class OrdenDetalleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(OrdenDetalle $ordenDetalle)
+    public function show($id)
     {
+        $data=[
+            "detalle"=>$this->_OrdenDetalleRepository->find($id)
+        ];
+        return json_encode($data);
         //
     }
 
@@ -155,19 +169,24 @@ class OrdenDetalleController extends Controller
             'categorias'=>$this->_categoriaRepository->GetAll(),
             'productos'=>$productos,
         ];  
-        return view('OrdenDetalle.create',$data);       
-
-        
-        
-                
+        return view('OrdenDetalle.create',$data);              
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrdenDetalleRequest $request, OrdenDetalle $ordenDetalle)
+    public function update(Request $request, $id)
     {
+        $detalle=$this->_ordenServicioRepository-> GetdetalleByproducto($request);
+        $this->_OrdenDetalleRepository->update($id,$detalle);
+        $this->_ordenServicioRepository->ActualizarTotalPagarOrdenservicio($request->orden_id);
+        $data=[
+            'orden_id'=>$request->orden_id,
+            'message'=>'se ha actualizado un item del detalle',           
+        ];                
+        return json_encode($data);
+
         //
     }
 
@@ -179,8 +198,18 @@ class OrdenDetalleController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
-        $this->_ordenServicioRepository->EliminarSesionDetalle($id);
+        }
+        $request=request();       
+        if ($request->orden_id==null)
+        {
+            $this->_ordenServicioRepository->EliminarSesionDetalle($id);
+        }
+        else
+        {
+            $this->_OrdenDetalleRepository->delete($id);            
+            $this->_ordenServicioRepository->ActualizarTotalPagarOrdenservicio($request->orden_id); 
+        }
+        
         return back();
         //
     }

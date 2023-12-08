@@ -59,7 +59,7 @@
                                 <td>{{$item->id}}</td>
                                 <td>{{$item->cantidad}}</td>
                                 <td>{{$item->detalleOrden}}</td>
-                                <th>{{$item->valorUnitario}}</th>
+                                <th>${{number_format($item->valor_unitario)}}</th>
                                 <th>${{number_format($item->total)}} </th>           
                                 <td>                
                                     <form action="{{url('/ordendetalles')}}/{{$item->id}}" 

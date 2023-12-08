@@ -120,7 +120,7 @@ class CuentasCobrarController extends Controller
             'tipo_cobro'=>  'required',
             'valorRecibido'=>'required|numeric',
         ]);        
-        $this->_ordenservicioRepository->actualizarCliente($request);
+        $this->_ordenservicioRepository->actualizarClienteOrdenServicio($request);
         $this->_CuentasCobrarRepository->store($request);
         session()->forget('cuentascobrar');
         return redirect()->to(url('/cuentascobrar'));        

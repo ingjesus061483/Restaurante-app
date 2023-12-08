@@ -140,14 +140,16 @@
                 <div class ="mb-3">                
                     <div class="row">
                         <div class="col-12">                            
-                            <table class="table">                            
+                            <table id="datatablesSimple" class="table">                            
                                 <thead>                                          
                                     <tr>                             
                                         <th>Id</th>                                                 
                                         <th>Cantidad</th>                                    
                                         <th>Detalle</th>                                    
                                         <th>Valor Unitario </th>                                                        
-                                        <th>Total</th>                                                              
+                                        <th>Total</th> 
+                                        <th></th>  
+                                        <th></th>                                                           
                                     </tr>                            
                                 </thead>                    
                                 <tbody>                                    
@@ -157,7 +159,24 @@
                                         <td>{{number_format($item->cantidad)}}</td>
                                         <td>{{$item->producto->nombre}}</td>
                                         <td>${{number_format($item->valor_unitario)}}</td>
-                                        <td>${{number_format($item->total)}} </td>                                                   
+                                        <td>${{number_format($item->total)}} </td>    
+                                        <td>
+                                            @if($ordenEncabezado->estado_id==1)                                           
+                                            <a onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning"> Editar</a>
+                                            @endif
+                                        </td>                                                                                       
+                                        <td>
+                                            @if($ordenEncabezado->estado_id==1)                                           
+                                            <form action="{{url('/ordendetalles')}}/{{$item->id}}"                                                 
+                                                onsubmit="return validar('Desea eliminar este registro?');" method="post">                                                
+                                                @csrf                                                
+                                                @method('delete')
+                                                <input type="hidden" name="orden_id"value="{{$ordenEncabezado->id}}" >                                                
+                                                <button class="btn btn-danger" type="submit"> Eliminar</button>
+                                            </form>
+                                            @endif
+                                        
+                                        </td>
                                     </tr>                    
                                     @endforeach                       
                                 </tbody>                                            

@@ -408,14 +408,14 @@
                 valorRecibido.value=faltante; 
                 detallepago.focus();                            
             })
-            $("#cliente").change(function(event){
+            /*$("#cliente").change(function(event){
                 var identificacion=this.value;
                 if(identificacion.length>=7)
                 {
 
                     mostrar(identificacion);
                 }
-             });
+             });*/ 
             $("#cantidadDetalleOrden").keyup(function(event){
                 //console.log(event.which);
                 if(event.which==13)
@@ -647,7 +647,8 @@
                     }
                 });             
             }
-            function GuardarDetalle(){
+            function GuardarDetalle(){                
+                 var detalle_id= document.getElementById('ordendetalle_id').value;
                 var orden_id=document.getElementById('orden_id').value;
                 var producto_id=document.getElementById('producto_id').value;
                 var cantidad=document.getElementById('cantidadDetalleOrden').value;
@@ -655,29 +656,71 @@
                     alertify.error("este campo no puede ser nulo");
                     return;
                 }
+                if (detalle_id=="")
+                {                    
+                    $.ajax({                        
+                        url:"{{url('/ordendetalles/')}}",                        
+                        type: "POST",                        
+                        dataType: "json",                        
+                        data: {                               
+                            _token:"{{csrf_token()}}",                                 
+                            orden_id:orden_id,                            
+                            producto_id:producto_id,                            
+                            cantidad:cantidad,                              
+                        },                        
+                        success: function (result){                                                    
+                            if(!result.encontrado)                            
+                            {                                
+                                alertify.error(result.message);                            
+                            }                            
+                            else                            
+                            {                               
+                                alertify.success(result.message);                                
+                                window.location.href=result.orden_id==0?"{{url('/ordendetalles/')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                                                    
+                            }                       
+                        }                    
+                    });  
+                }
+                else           
+                {
+                    $.ajax({                        
+                        url:"{{url('/ordendetalles')}}/"+detalle_id,                        
+                        type: "POST",                        
+                        dataType: "json",                        
+                        data: {                               
+                            _token:"{{csrf_token()}}",                                 
+                            _method: 'PATCH',  
+                            orden_id:orden_id,                         
+                            producto_id:producto_id,                            
+                            cantidad:cantidad,                              
+                        },                        
+                        success: function (result){                                                 
+                            alertify.success(result.message);                                       
+                            window.location.href="{{url('/ordenservicio/')}}/"+result.orden_id                                                    
+                    
+                        }                    
+                    });  
+                }
+            }
+            function EditarDetalleOrden(id)
+            {                
                 $.ajax({
-                    url:"{{url('/ordendetalles/')}}",
-                    type: "POST",
-                    dataType: "json",
-                    data: {   
-                        _token:"{{csrf_token()}}",     
-                        orden_id:orden_id,
-                        producto_id:producto_id,
-                        cantidad:cantidad,                    
-                    },
-                    success: function (result){                        
-                        if(!result.encontrado)
-                        {
-                            alertify.error(result.message);
-                        }
-                        else
-                        {
-                            alertify.success(result.message);
-                            window.location.href=result.orden_id==0?"{{url('/ordendetalles/')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                        
-                        }
-                        
-                    }
-                });             
+                    url:"{{url('/ordendetalles')}}/"+id,          
+                    type: "GET",               
+                    dataType: "json",                
+                    success: function (result){
+                        var detalle=result.detalle;                   
+                        document.getElementById('orden_id').value=detalle.orden_id;         
+                        document.getElementById('ordendetalle_id').value=detalle.detalle_id;
+                        document.getElementById('cantidadDetalleOrden').value=detalle.cantidad;
+                        document.getElementById('producto_id').value=detalle.producto_id;
+                        document.getElementById('detalleOrden').value=detalle.detalle;
+                        document.getElementById('ValorUnitarioDetalleOrden').value=detalle.precio;
+                        document.getElementById('producto_img').src=""
+                        dialogDetalleOrden.dialog('open');
+                    }                
+                });
+
             }
             function ordenservicio(id){                
                 $.ajax({
