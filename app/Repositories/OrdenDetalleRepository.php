@@ -2,8 +2,16 @@
 namespace App\Repositories;
 use App\Contracts\IRepository;
 use App\Models\OrdenDetalle;
-class OrdenDetalleRepository
+class OrdenDetalleRepository implements IRepository
 {
+    public function GetAll()
+    {
+        
+    }
+    public function Store($request)
+    {
+        
+    }
     public function getDetallesByOrden($orden_id)
     {
         return OrdenDetalle::where('orden_encabezado_id',$orden_id)->get();
@@ -23,7 +31,8 @@ class OrdenDetalleRepository
         return OrdenDetalle::select('orden_detalles.orden_encabezado_id as orden_id','orden_detalles.id as detalle_id','productos.id as producto_id',
                                     'cantidad','productos.nombre as detalle','productos.precio',)
                            ->join('productos','productos.id','=','orden_detalles.producto_id')
-                           ->where('orden_detalles.id',$id)->first()         ;
+                           ->where('orden_detalles.id',$id)
+                           ->first();
 
     }
     public function Delete($id){
