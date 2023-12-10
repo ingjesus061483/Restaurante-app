@@ -126,7 +126,7 @@ class OrdenDetalleController extends Controller
         }
         else
         {
-            $this->_OrdenDetalleRepository->save($request->orden_id,$detalle);
+            $this->_OrdenDetalleRepository->store($detalle);
             $this->_ordenServicioRepository->ActualizarTotalPagarOrdenservicio($request->orden_id);
             $data=[
                 'orden_id'=>$request->orden_id,

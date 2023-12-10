@@ -139,14 +139,8 @@ class OrdenServicioRepository implements IRepository
         ]);           
         foreach($detalles as $item)
         {
-            $this->_OrdenDetalleRepository-> save($ordenEncabezado->id,$item);
-            /*$OrdenDetalle=new OrdenDetalle();
-            $OrdenDetalle->cantidad =$item->cantidad;
-            $OrdenDetalle->valor_unitario=$item->valor_unitario;            
-            $OrdenDetalle->total=$item->total;            
-            $OrdenDetalle->orden_encabezado_id=$ordenEncabezado->id;            
-            $OrdenDetalle->producto_id=$item->producto_id;            
-            $OrdenDetalle->save();        */
+            $item-> orden_id=$ordenEncabezado->id;
+            $this->_OrdenDetalleRepository-> Store($item);  
         }
         $this-> _cabanaRepository->ocuparCabaña($request->input('cabaña'));
     }
@@ -262,7 +256,8 @@ class OrdenServicioRepository implements IRepository
             return false;        
         }        
         $detalles[]=(object)[                        
-            'id'=>$id,            
+            'id'=>$id, 
+            "orden_id"=>'',           
             'producto_id'=>$request-> producto_id,            
             'cantidad'=>$request-> cantidad,            
             'detalleOrden'=>$request->detalleOrden,            
