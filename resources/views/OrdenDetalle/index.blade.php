@@ -36,20 +36,22 @@
                     <thead>
                         <tr>       
                             <th>Id</th>             
-                            <th>Cantidad  </th>
+                            <th>Cantidad  </th>                   
                             <th>Detalle</th>
                             <th>Valor Unitario </th>                    
                             <th>Total</th>                                                            
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>     
                             <th>Id</th>               
-                            <th>Cantidad  </th>
+                            <th>Cantidad  </th>                            
                             <th>Detalle</th>
                             <th>Valor Unitario </th>                    
                             <th>Total</th>                                                            
+                            <th></th>
                             <th></th>
                         </tr>                
                     </tfoot>
@@ -57,10 +59,13 @@
                         @foreach( $orden_detalle as $item)                                    
                             <tr>
                                 <td>{{$item->id}}</td>
-                                <td>{{$item->cantidad}}</td>
+                                <td>{{$item->cantidad}}</td>                                
                                 <td>{{$item->detalleOrden}}</td>
                                 <th>${{number_format($item->valor_unitario)}}</th>
                                 <th>${{number_format($item->total)}} </th>           
+                                <td>
+                                    <a onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning"> Editar</a>
+                                </td>                                                                                       
                                 <td>                
                                     <form action="{{url('/ordendetalles')}}/{{$item->id}}" 
                                         onsubmit="return validar('Desea eliminar este registro?');" method="post">

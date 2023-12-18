@@ -104,7 +104,7 @@ class OrdenDetalleController extends Controller
         {
             return redirect()->to('login');
         } 
-        $detalle=$this->_ordenServicioRepository-> GetdetalleByproducto($request);
+        $detalle=$this->_OrdenDetalleRepository-> GetdetalleByproducto($request);
         if($detalle->orden_id==0)
         {  
             if(!$this->_ordenServicioRepository->GuardarSesionDetalle($detalle))        
@@ -144,8 +144,12 @@ class OrdenDetalleController extends Controller
      */
     public function show($id)
     {
+        $detalle=$this->_ordenServicioRepository->GetItemOrdenDetalleById($id)!=null?
+                        $this->_ordenServicioRepository->GetItemOrdenDetalleById($id):
+                        $this->_OrdenDetalleRepository->find($id);        
         $data=[
-            "detalle"=>$this->_OrdenDetalleRepository->find($id)
+            "detalle"=>$detalle
+        
         ];
         return json_encode($data);
         //
@@ -178,9 +182,16 @@ class OrdenDetalleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $detalle=$this->_ordenServicioRepository-> GetdetalleByproducto($request);
-        $this->_OrdenDetalleRepository->update($id,$detalle);
-        $this->_ordenServicioRepository->ActualizarTotalPagarOrdenservicio($request->orden_id);
+        $detalle=$this->_OrdenDetalleRepository-> GetdetalleByproducto($request);
+        if($id!=0)
+        {
+            $this->_OrdenDetalleRepository->update($id,$detalle);            
+            $this->_ordenServicioRepository->ActualizarTotalPagarOrdenservicio($request->orden_id);
+        }
+        else
+        {
+            $this->_ordenServicioRepository->ActualizarSesionDetalle($detalle);
+        }
         $data=[
             'orden_id'=>$request->orden_id,
             'message'=>'se ha actualizado un item del detalle',           

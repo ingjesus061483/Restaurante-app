@@ -4,9 +4,29 @@ use App\Contracts\IRepository;
 use App\Models\OrdenDetalle;
 class OrdenDetalleRepository implements IRepository
 {
+    protected ProductoRepository $_productoRepository;
+    public function __construct(ProductoRepository $productoRepository = null) {
+        $this->_productoRepository = $productoRepository;
+    }
     public function GetAll()
     {
         
+    }
+    public function  GetdetalleByProducto($request)
+    {
+        $cantidad=$request->input('cantidad');
+        $producto_id=$request->input('producto_id');
+        $producto=$this->_productoRepository->Find($producto_id);
+        $total=$cantidad*$producto->precio;        
+        $data =(object) [
+            "cantidad"=>$cantidad,            
+            "detalleOrden"=>$producto->nombre,
+            "producto_id"=>$producto->id,
+            "valor_unitario"=>$producto->precio ,
+            "total"=>$total,
+            "orden_id"=>$request->orden_id,
+        ];    
+        return $data;
     }
     public function Store($request)
     {
@@ -25,11 +45,17 @@ class OrdenDetalleRepository implements IRepository
  
     public function find($id)
     {
-        return OrdenDetalle::select('orden_detalles.orden_encabezado_id as orden_id','orden_detalles.id as detalle_id','productos.id as producto_id',
-                                    'cantidad','productos.nombre as detalle','productos.precio',)
+        $detalle=OrdenDetalle::select('orden_detalles.orden_encabezado_id as orden_id',
+                                      'orden_detalles.id as detalle_id',
+                                      'productos.id as producto_id',
+                                      'cantidad',
+                                      'productos.nombre as detalleOrden',
+                                      'productos.precio as valor_unitario',)
                            ->join('productos','productos.id','=','orden_detalles.producto_id')
                            ->where('orden_detalles.id',$id)
                            ->first();
+
+        return $detalle;
     }
     public function Delete($id){
         $detalle=OrdenDetalle::find($id);

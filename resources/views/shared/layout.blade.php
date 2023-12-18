@@ -335,6 +335,7 @@
         <script type="text/javascript">    
            var observacions=[];               
            var clientes=[];
+           var opcion=''
            $.ajax({
                 url:"{{url('/clientes/GetClientes/1')}}",
                 type: "GET",
@@ -491,6 +492,7 @@
                     "Guardar": function(){GuardarDetalle()},
                     "Cerrar": function() 
                     {
+                        opcion='';
                         dialogDetalleOrden.dialog( "close" );                    
                     }
                 }
@@ -656,50 +658,53 @@
                     alertify.error("este campo no puede ser nulo");
                     return;
                 }
-                if (detalle_id=="")
-                {                    
-                    $.ajax({                        
-                        url:"{{url('/ordendetalles/')}}",                        
-                        type: "POST",                        
-                        dataType: "json",                        
-                        data: {                               
-                            _token:"{{csrf_token()}}",                                 
-                            orden_id:orden_id,                            
-                            producto_id:producto_id,                            
-                            cantidad:cantidad,                              
-                        },                        
-                        success: function (result){                                                    
-                            if(!result.encontrado)                            
-                            {                                
-                                alertify.error(result.message);                            
-                            }                            
-                            else                            
-                            {                               
-                                alertify.success(result.message);                                
+                switch (opcion)
+                {             
+                    case 'guardar' :
+                    {
+                        $.ajax({                        
+                            url:"{{url('/ordendetalles/')}}",                        
+                            type: "POST",                        
+                            dataType: "json",                        
+                            data: {                               
+                                _token:"{{csrf_token()}}",                                 
+                                orden_id:orden_id,                            
+                                producto_id:producto_id,                            
+                                cantidad:cantidad,                              
+                            },                        
+                            success: function (result){                                                                                    
+                                if(!result.encontrado)                            
+                                {
+                                    alertify.error(result.message);                                                            
+                                }                               
+                                else                                                            
+                                {                                    
+                                    alertify.success(result.message);                                
+                                    window.location.href=result.orden_id==0?"{{url('/ordendetalles/')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                                                    
+                                }                       
+                            }                    
+                        });  
+                        break;
+                    }
+                    case 'editar':
+                    {
+                        $.ajax({                        
+                            url:"{{url('/ordendetalles')}}/"+detalle_id,                        
+                            type: "POST",                        
+                            dataType: "json",                        
+                            data: {                               
+                                _token:"{{csrf_token()}}",                                 
+                                _method: 'PATCH',  
+                                orden_id:orden_id,                         
+                                producto_id:producto_id,                            
+                                cantidad:cantidad,                              
+                            },                        
+                            success: function (result){                                                 
+                                alertify.success(result.message);                                       
                                 window.location.href=result.orden_id==0?"{{url('/ordendetalles/')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                                                    
-                            }                       
-                        }                    
-                    });  
-                }
-                else           
-                {
-                    $.ajax({                        
-                        url:"{{url('/ordendetalles')}}/"+detalle_id,                        
-                        type: "POST",                        
-                        dataType: "json",                        
-                        data: {                               
-                            _token:"{{csrf_token()}}",                                 
-                            _method: 'PATCH',  
-                            orden_id:orden_id,                         
-                            producto_id:producto_id,                            
-                            cantidad:cantidad,                              
-                        },                        
-                        success: function (result){                                                 
-                            alertify.success(result.message);                                       
-                            window.location.href="{{url('/ordenservicio/')}}/"+result.orden_id                                                    
-                    
-                        }                    
-                    });  
+                            }                    
+                        });  
+                    }
                 }
             }
             function EditarDetalleOrden(id)
@@ -714,10 +719,11 @@
                         document.getElementById('ordendetalle_id').value=detalle.detalle_id;
                         document.getElementById('cantidadDetalleOrden').value=detalle.cantidad;
                         document.getElementById('producto_id').value=detalle.producto_id;
-                        document.getElementById('detalleOrden').value=detalle.detalle;
-                        document.getElementById('ValorUnitarioDetalleOrden').value=detalle.precio;
+                        document.getElementById('detalleOrden').value=detalle.detalleOrden;
+                        document.getElementById('ValorUnitarioDetalleOrden').value=detalle.valor_unitario;
                         document.getElementById('producto_img').src=""
                         dialogDetalleOrden.dialog('open');
+                        opcion="editar";
                     }                
                 });
 
@@ -734,6 +740,7 @@
                         document.getElementById('ValorUnitarioDetalleOrden').value=producto.precio
                         document.getElementById('producto_img').src=""
                         dialogDetalleOrden.dialog('open');
+                        opcion='guardar';
                     }                
                 });
             }

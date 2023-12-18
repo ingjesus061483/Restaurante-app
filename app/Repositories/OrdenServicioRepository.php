@@ -224,19 +224,61 @@ class OrdenServicioRepository implements IRepository
         }
         return $errors;    
     }  
-    function BuscarItemOrdenDetalle($detalles,$value)
+    function GetItemOrdenDetalleProducto($detalles,$producto_id)
     {
-        $search=false;
+        $search=null;
         foreach($detalles as $item)
         {
-            if($item->producto_id==$value)
+            if($item->producto_id==$producto_id)
             {
-                $search=true;            
+                $search=$item;            
                 break;
             }           
         }
         return $search;
     }  
+    function GetItemOrdenDetalleById($id)
+    {
+        $detalles=[];        
+        if(session()->has('detalles'))                
+        {            
+            $detalles=session('detalles');                               
+        }                
+        
+        $search=null;
+        foreach($detalles as $item)
+        {
+            if($item->id==$id)
+            {
+                $search=$item;            
+                break;
+            }           
+        }
+        return $search;
+    }  
+    public function ActualizarSesionDetalle($request)
+    {
+        $detalles=[];        
+        if(session()->has('detalles'))                        
+        {
+            $detalles=session('detalles');                                           
+            for($i = 0 ; $i < sizeof($detalles); $i++)
+            {
+             //   $catantida= $detalles[$i]->cantidad;
+                if($detalles[$i]->producto_id==$request->producto_id)
+                {
+                   $detalles[$i]->cantidad=$request->cantidad;
+                   $detalles[$i]->total=$request->total; 
+                   break;
+
+                }
+
+            }
+            session(['detalles' => $detalles]);        
+        }                
+      
+
+    }
     public function GuardarSesionDetalle($request)
     { 
         $id=0;              
@@ -250,39 +292,26 @@ class OrdenServicioRepository implements IRepository
             $detalles=session('detalles');                               
             $id=count($detalles)+1;                                
         }               
-        $search=$this->BuscarItemOrdenDetalle($detalles,$request->producto_id);        
-        if($search)        
+        $search=$this->GetItemOrdenDetalleProducto($detalles,$request->producto_id);        
+        if($search==null)        
         {
-            return false;        
+            $detalles[]=(object)[                        
+                'id'=>$id, 
+                'detalle_id'=>'0',
+                "orden_id"=>'0',           
+                'producto_id'=>$request-> producto_id,            
+                'cantidad'=>$request-> cantidad,            
+                'detalleOrden'=>$request->detalleOrden,            
+                'valor_unitario'=>$request->valor_unitario,            
+                'total'=>$request-> total        
+            ];                            
+            session(['detalles' => $detalles]);        
+            return true;                     
         }        
-        $detalles[]=(object)[                        
-            'id'=>$id, 
-            "orden_id"=>'',           
-            'producto_id'=>$request-> producto_id,            
-            'cantidad'=>$request-> cantidad,            
-            'detalleOrden'=>$request->detalleOrden,            
-            'valor_unitario'=>$request->valor_unitario,            
-            'total'=>$request-> total        
-        ];                            
-        session(['detalles' => $detalles]);        
-        return true;        
+        return false;
+      
     }
-    public function GetdetalleByproducto($request)
-    {
-        $cantidad=$request->input('cantidad');
-        $producto_id=$request->input('producto_id');
-        $producto=$this->_productoRepository->Find($producto_id);
-        $total=$cantidad*$producto->precio;        
-        $data =(object) [
-            "cantidad"=>$cantidad,            
-            "detalleOrden"=>$producto->nombre,
-            "producto_id"=>$producto->id,
-            "valor_unitario"=>$producto->precio ,
-            "total"=>$total,
-            "orden_id"=>$request->orden_id,
-        ];    
-        return $data;
-    }
+ 
     
     public function EliminarSesionDetalle($id)
     {
