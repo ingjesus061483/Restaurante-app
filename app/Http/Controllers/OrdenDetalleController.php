@@ -14,6 +14,7 @@ use App\Repositories\CategoriaRepository;
 use App\Repositories\OrdenDetalleRepository;
 use App\Repositories\OrdenServicioRepository;
 use App\Repositories\ProductoRepository;
+use App\Repositories\SessionRepository;
 use Illuminate\Support\Facades\Auth;
 class OrdenDetalleController extends Controller
 {
@@ -22,16 +23,19 @@ class OrdenDetalleController extends Controller
     protected CategoriaRepository $_categoriaRepository;
     protected CabanaRepository $_cabanaRepository;
     protected OrdenServicioRepository $_ordenServicioRepository;
+    protected SessionRepository $_sessionRepository;
     public function __construct(CabanaRepository $cabanaRepository,
                                 ProductoRepository $productoRepository,
                                 CategoriaRepository $categoriaRepository,
                                 OrdenServicioRepository $ordenServicioRepository,
-                                OrdenDetalleRepository $ordenDetalleRepository) {
+                                OrdenDetalleRepository $ordenDetalleRepository,
+                                SessionRepository $sessionRepository) {
          $this->_productoRepository=$productoRepository;                       
          $this->_categoriaRepository=$categoriaRepository;
         $this->_cabanaRepository = $cabanaRepository;
         $this->_ordenServicioRepository=$ordenServicioRepository;
         $this->_OrdenDetalleRepository=$ordenDetalleRepository;
+        $this->_sessionRepository=$sessionRepository;
     }
     /**
      * Display a listing of the resource.
@@ -107,7 +111,7 @@ class OrdenDetalleController extends Controller
         $detalle=$this->_OrdenDetalleRepository-> GetdetalleByproducto($request);
         if($detalle->orden_id==0)
         {  
-            if(!$this->_ordenServicioRepository->GuardarSesionDetalle($detalle))        
+            if(!$this->_sessionRepository->Store($detalle))
             {            
                 $data=[
                         'orden_id'=>$request->orden_id,
@@ -144,8 +148,8 @@ class OrdenDetalleController extends Controller
      */
     public function show($id)
     {
-        $detalle=$this->_ordenServicioRepository->GetItemOrdenDetalleById($id)!=null?
-                        $this->_ordenServicioRepository->GetItemOrdenDetalleById($id):
+        $detalle=$this->_sessionRepository->find($id)!=null?
+                        $this->_sessionRepository->find($id):
                         $this->_OrdenDetalleRepository->find($id);        
         $data=[
             "detalle"=>$detalle
@@ -182,6 +186,10 @@ class OrdenDetalleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
         $detalle=$this->_OrdenDetalleRepository-> GetdetalleByproducto($request);
         if($id!=0)
         {
@@ -190,7 +198,7 @@ class OrdenDetalleController extends Controller
         }
         else
         {
-            $this->_ordenServicioRepository->ActualizarSesionDetalle($detalle);
+            $this->_sessionRepository->update(0,$detalle);
         }
         $data=[
             'orden_id'=>$request->orden_id,
@@ -213,7 +221,7 @@ class OrdenDetalleController extends Controller
         $request=request();       
         if ($request->orden_id==null)
         {
-            $this->_ordenServicioRepository->EliminarSesionDetalle($id);
+            $this->_sessionRepository->delete($id);
         }
         else
         {
