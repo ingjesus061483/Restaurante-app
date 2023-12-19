@@ -90,8 +90,7 @@
                 
             </div>
             <div class="col-4">
-                Total orden:
-                {{$total}}
+                Total orden:&nbsp;${{$total}}
             </div>
 
         </div>       
