@@ -7,7 +7,12 @@ class SessionRepository implements IRepository
 {
     function GetAll()
     {
-        
+        $detalles=[];       
+        if(session()->has('detalles'))
+        {            
+            $detalles=session('detalles');
+        }
+        return $detalles;
     }
     private function GetItemOrdenDetalleProducto($detalles,$producto_id)
     {

@@ -51,10 +51,7 @@ class OrdenDetalleController extends Controller
         {
             return back()->withErrors('No hay cabañas disponibles en en elmomento!');
         }     */
-        $detalles=[];       
-        if(session()->has('detalles')){            
-            $detalles=session('detalles');
-        }
+        $detalles=$this-> _sessionRepository->GetAll();     
         $data=[
             "orden_detalle"=>$detalles,
             "total"=>$this-> _ordenServicioRepository-> totalizarOrden($detalles)
