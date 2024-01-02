@@ -50,6 +50,7 @@ class OrdenDetalleRepository implements IRepository
                                       'productos.id as producto_id',
                                       'cantidad',
                                       'productos.nombre as detalleOrden',
+                                      'productos.imagen',
                                       'productos.precio as valor_unitario',)
                            ->join('productos','productos.id','=','orden_detalles.producto_id')
                            ->where('orden_detalles.id',$id)

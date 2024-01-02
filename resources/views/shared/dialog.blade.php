@@ -152,7 +152,7 @@
                         </div>                                                       
                     </div>
                     <div class="col-5">
-                        <img id="producto_img" src="" alt="">
+                        <img id="producto_img" src="" alt="" style="width:90%;heigth:100%">
 
                     </div>
                     

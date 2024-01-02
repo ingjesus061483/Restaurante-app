@@ -94,7 +94,7 @@
         <script  type="text/javascript">    
            var observacions=[];               
            var clientes=[];
-           var opcion=''
+           var opcion='';
            $.ajax({
                 url:"{{url('/clientes/GetClientes/1')}}",
                 type: "GET",
@@ -106,12 +106,9 @@
                     for(i=0;i<=clients.length-1;i++)
                     {
                         clientes[cont]=clients[i].cliente;
-
                     }
                 }
-
-
-           })
+           });
            $.ajax({
                 url: "{{url('/observaciones/GetObservacions/null')}}",
                 type: "GET",
@@ -126,93 +123,7 @@
                         cont++;
                     }
                 }            
-            });        
-            $("#cliente").autocomplete({
-                source:clientes
-            })
-            $("#observaciones").autocomplete({                
-                source:observacions             
-            });  
-            if($("#foraneo")!=null&&$("#foraneo").checked)
-            {
-                $("#coccion").fadeOut();                
-                $("#descripcion").fadeOut();
-            }
-            $("#foraneo").change( function(){
-                //alert(this.checked);
-                if(this.checked)
-                {
-                    $("#coccion").fadeOut();
-                    $("#descripcion").fadeOut();
-                }
-                else{
-                    $("#coccion").fadeIn();
-                    $("#descripcion").fadeIn();
-                }            
-            });
-            $("#forma-pago").change(function(){
-                window.location.href="{{url('/pagodetalle')}}?forma_pago="+this.value; 
-            })
-            $("#forma_pago").change(function(){
-               var detallepago=document.getElementById('detallepago');
-               var valorRecibido=document.getElementById('valorRecibido');
-               var total_pagar=document.getElementById('total_pagar').value;
-               var faltante={{isset($faltante)? $faltante:0}}              
-                if (this.value==1)
-                {
-                    detallepago.value="Pago de contado";
-                    valorRecibido.value=total_pagar;                
-                    return;
-                }
-                detallepago.value="";                
-                valorRecibido.value=faltante; 
-                detallepago.focus();                            
-            })
-         /*   $("#cliente").change(function(event){
-                var identificacion=this.value;
-                if(identificacion.length>=7)
-                {
-
-                    mostrar(identificacion);
-                }
-             }); */
-            $("#cantidadDetalleOrden").keyup(function(event){
-                //console.log(event.which);
-                if(event.which==13)
-                {
-                    GuardarDetalle();
-                }
-
-            });
-            $("#movimiento").click(function(){
-                dialogEgreso.dialog('open');
-            })
-            $("#detalle").click(function(){  
-                var faltante={{isset($faltante)? $faltante:0}}              
-                if(faltante<=0)
-                {
-                    alertify.error('');
-                    return;
-                }
-                dialogformasPagos.dialog("open");                
-                
-            })
-            $("#chkcliente").change( function(){
-                //alert(this.checked);
-                if(this.checked)
-                {
-                    $("#pnlcliente").fadeIn();
-                    $("#pnlcabaña").fadeOut();
-
-                }
-                else{
-                    $("#pnlcliente").fadeOut();
-                    $("#pnlcabaña").fadeIn();
-
-                }
-
-            
-            });
+            });     
             var dialogformasPagos=$("#formasPagos").dialog({
                 autoOpen: false,
                 height:450,
@@ -255,8 +166,7 @@
                         dialogDetalleOrden.dialog( "close" );                    
                     }
                 }
-            });   
-            
+            });              
             var dialogingrediente=$("#ingredientes").dialog({
                 autoOpen: false,
                 height:520,
@@ -279,12 +189,83 @@
                 buttons: 
                 {
                     "Guardar": function(){GuardarExistencia();},
-                    "Cerrar": function() 
-                    {
-                        dialogexistencia.dialog( "close" );                    
-                    }
+                    "Cerrar": function() {dialogexistencia.dialog( "close" );}
                 }
-            });   
+            });    
+            $("#cliente").autocomplete({
+                source:clientes
+            });
+            $("#observaciones").autocomplete({                
+                source:observacions             
+            });  
+            if($("#foraneo")!=null&&$("#foraneo").checked)
+            {
+                $("#coccion").fadeOut();                
+                $("#descripcion").fadeOut();
+            }
+            $("#foraneo").change( function(){
+                //alert(this.checked);
+                if(this.checked)
+                {
+                    $("#coccion").fadeOut();
+                    $("#descripcion").fadeOut();
+                }
+                else{
+                    $("#coccion").fadeIn();
+                    $("#descripcion").fadeIn();
+                }            
+            });
+            $("#forma-pago").change(function(){
+                window.location.href="{{url('/pagodetalle')}}?forma_pago="+this.value; 
+            });
+            $("#forma_pago").change(function(){
+               var detallepago=document.getElementById('detallepago');
+               var valorRecibido=document.getElementById('valorRecibido');
+               var total_pagar=document.getElementById('total_pagar').value;
+               var faltante={{isset($faltante)? $faltante:0}}              
+                if (this.value==1)
+                {
+                    detallepago.value="Pago de contado";
+                    valorRecibido.value=total_pagar;                
+                    return;
+                }
+                detallepago.value="";                
+                valorRecibido.value=faltante; 
+                detallepago.focus();                            
+            });
+            $("#cantidadDetalleOrden").keyup(function(event){
+                //console.log(event.which);
+                if(event.which==13)
+                {
+                    GuardarDetalle();
+                }
+
+            });
+            $("#movimiento").click(function(){
+                dialogEgreso.dialog('open');
+            });
+            $("#detalle").click(function(){  
+                var faltante={{isset($faltante)? $faltante:0}}              
+                if(faltante<=0)
+                {
+                    alertify.error('');
+                    return;
+                }
+                dialogformasPagos.dialog("open");                
+            });
+            $("#chkcliente").change( function(){
+                //alert(this.checked);
+                if(this.checked)
+                {
+                    $("#pnlcliente").fadeIn();
+                    $("#pnlcabaña").fadeOut();
+                }
+                else{
+                    $("#pnlcliente").fadeOut();
+                    $("#pnlcabaña").fadeIn();
+
+                }            
+            });              
             function GuardarMovimiento()
             {
                 total_caja={{isset($ingreso)&&isset($egreso)?$ingreso-$egreso:0}} 
@@ -297,16 +278,12 @@
                 {
                     alertify.error('');
                     return;
-
-
                 }
                 if(valor=='')
                 {
                     alertify.error('');
-                    return;
-                }
-
-                
+                    return;                
+                }                
                 $.ajax({
                     url:"{{url('/movimientocaja')}}",
                     type: "POST",
@@ -331,7 +308,6 @@
                         window.location.href=url
                     }
                 });             
-
             }
             function mostrar(id){
                 console.log(id);
@@ -350,14 +326,10 @@
                             }
                             else                            
                             {
-                                return ;
-                            
-                            }     
-                            
+                                return;                            
+                            }                    
                         }
-                        alertify.success     (cliente.nombre+' '+cliente.apellido+"</br>"+cliente.direccion+"</br>"+cliente.telefono );
-                        
-                        
+                        alertify.success(cliente.nombre+' '+cliente.apellido+"</br>"+cliente.direccion+"</br>"+cliente.telefono );                                                
                     }
                 });             
             }
@@ -370,18 +342,19 @@
                var forma_pago=document.getElementById('forma_pago').value;
                if(detallepago=="")
                {
-                alertify.error('');
-                return; 
+                   alertify.error('');
+                   return; 
                }
-               if(valorRecibido==""){
-                alertify.error('');
-                return ;
+               if(valorRecibido=="")
+               {
+                  alertify.error('');
+                  return;
 
                }
                if(forma_pago=="")
                {
-                alertify.error('');
-                return ;
+                    alertify.error('');
+                     return ;
                }
                $.ajax({
                     url:"{{url('/pagodetalle')}}",
@@ -392,8 +365,7 @@
                         detallepago:detallepago,
                         valorRecibido:valorRecibido,
                         totalpagar:total_pagar,
-                        forma_pago:forma_pago
-            
+                        forma_pago:forma_pago            
                     },
                     success: function (result){
                         if(result.error){
@@ -480,14 +452,15 @@
                         document.getElementById('producto_id').value=detalle.producto_id;
                         document.getElementById('detalleOrden').value=detalle.detalleOrden;
                         document.getElementById('ValorUnitarioDetalleOrden').value=detalle.valor_unitario;
-                        document.getElementById('producto_img').src=""
+                        document.getElementById('producto_img').src="{{url('/')}}/img/"+detalle.imagen;
                         dialogDetalleOrden.dialog('open');
                         opcion="editar";
                     }                
                 });
 
             }
-            function ordenservicio(id){                
+            function ordenservicio(id)
+            {                
                 $.ajax({
                     url:"{{url('/')}}/productos/BuscarProductos/"+id,          
                     type: "GET",               
@@ -497,7 +470,7 @@
                         document.getElementById('producto_id').value=producto.id
                         document.getElementById('detalleOrden').value=producto.nombre
                         document.getElementById('ValorUnitarioDetalleOrden').value=producto.precio
-                        document.getElementById('producto_img').src=""
+                        document.getElementById('producto_img').src="{{url('/')}}/img/"+producto.imagen
                         dialogDetalleOrden.dialog('open');
                         opcion='guardar';
                     }                
@@ -637,22 +610,22 @@
                 url:"{{url('/')}}/productos/BuscarProductos/"+producto_id,          
                 type: "GET",               
                 dataType: "json",                
-                success: function (result){
-                        var producto=result.producto;
-                        var tr=button.parentElement.parentElement;                        
-                        var tdcolection=tr.children;                        
-                        var id=tdcolection[0].innerHTML;                        
-                        var codigo= tdcolection[1].innerHTML;                        
-                        var nombre= tdcolection[2].innerHTML;              
-                        document.getElementById("materia_prima_id").value=id;
-                        document.getElementById("ingrediente").value=codigo+' - '+nombre;
-                        document.getElementById("codigo").innerHTML=producto.codigo;
-                        document.getElementById("nombre").innerHTML=producto.nombre;
-                        dialogingrediente.dialog("open");
-                        //window.location.href="{{url('/')}}//"+result.materiaprima.id;
-                    }
-            }); 
-
+                success: function (result)
+                {
+                    var producto=result.producto;
+                    var tr=button.parentElement.parentElement;                        
+                    var tdcolection=tr.children;                        
+                    var id=tdcolection[0].innerHTML;                                            
+                    var codigo= tdcolection[1].innerHTML;                                       
+                    var nombre= tdcolection[2].innerHTML;                                  
+                    document.getElementById("materia_prima_id").value=id;                    
+                    document.getElementById("ingrediente").value=codigo+' - '+nombre;                    
+                    document.getElementById("codigo").innerHTML=producto.codigo;                    
+                    document.getElementById("nombre").innerHTML=producto.nombre;                    
+                    dialogingrediente.dialog("open");                    
+                    //window.location.href="{{url('/')}}//"+result.materiaprima.id;
+                }
+            });
         }
         </script>   
     </body>

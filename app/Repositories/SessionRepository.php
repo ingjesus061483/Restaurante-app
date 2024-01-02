@@ -5,6 +5,11 @@ use App\Contracts\IRepository;
 
 class SessionRepository implements IRepository
 {
+    protected ProductoRepository $_ProductoRepsitory;
+    public function __construct(ProductoRepository $ProductoRepository) 
+    {
+        $this->_ProductoRepsitory = $ProductoRepository;
+    }
     function GetAll()
     {
         $detalles=[];       
@@ -78,13 +83,16 @@ class SessionRepository implements IRepository
             $id=count($detalles)+1;                                
         }               
         $search=$this->GetItemOrdenDetalleProducto($detalles,$request->producto_id);        
+        $producto =$this->_ProductoRepsitory->find($request-> producto_id);
+
         if($search==null)        
         {
             $detalles[]=(object)[                        
                 'id'=>$id, 
                 'detalle_id'=>'0',
                 "orden_id"=>'0',           
-                'producto_id'=>$request-> producto_id,            
+                'producto_id'=>$producto->id, 
+                'imagen'=>$producto->imagen,           
                 'cantidad'=>$request-> cantidad,            
                 'detalleOrden'=>$request->detalleOrden,            
                 'valor_unitario'=>$request->valor_unitario,            

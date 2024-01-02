@@ -29,7 +29,7 @@
                     <td>${{number_format( $item->precio)}}</td>
                     <td>
                         @if ($item->imagen!=null)
-                          <img class="img-fluid" src="{{url('/')}}/img/{{$item->imagen}}" alt="" sizes="" srcset="">                                                                                        </td>
+                          <img class="img-fluid" src="{{url('/')}}/img/{{$item->imagen}}" alt="" sizes="" srcset="" width="50px" height="50px"></td>
                         @endif
                     </td>                                            
                     <td>                        
