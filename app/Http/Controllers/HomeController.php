@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Repositories\CabanaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use League\CommonMark\Extension\SmartPunct\EllipsesParser;
 
 class HomeController extends Controller
 {
