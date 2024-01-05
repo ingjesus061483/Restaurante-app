@@ -59,7 +59,11 @@
                         id="cabaña">
                             <option value="">seleccione una cabaña</option>
                             @foreach($cabañas as $item)
-                            <option value="{{$item->id}}">{{$item->nombre}}</option>
+                            <option value="{{$item->id}}"
+                                @if($cabana!=null&&$item->id==$cabana->id)
+                                {{'selected'}}
+                                @endif
+                                >{{$item->nombre}}</option>
                             @endforeach
                         </select>
                     </div>

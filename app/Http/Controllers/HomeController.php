@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\CabanaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use League\CommonMark\Extension\SmartPunct\EllipsesParser;
 
 class HomeController extends Controller
 {
+    protected CabanaRepository $_cabanaRepository;
+    public function __construct(CabanaRepository $cabanaRepository) 
+    {
+        $this->_cabanaRepository = $cabanaRepository;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -17,7 +24,9 @@ class HomeController extends Controller
         {
             return redirect()->to('login');
         }        
-        return view('Home.index');
+        $cabanas=$this->_cabanaRepository->GetCabanasDesocupadas();
+        $data=["cabanas"=>$cabanas];
+        return view('Home.index',$data);
         //
     }
 
@@ -42,6 +51,20 @@ class HomeController extends Controller
      */
     public function show(string $id)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }    
+        $cabana =$this->_cabanaRepository->Find($id);
+        session(['cabana' => $cabana]);   
+        if (session()->has('detalles'))
+        {
+          return  redirect()->to('ordendetalles');
+        }    
+        else
+        {
+            return redirect()->to(url('/ordendetalles/create'));        
+        }
         //
     }
 

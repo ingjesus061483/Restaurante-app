@@ -63,7 +63,12 @@ class OrdenEncabezadoController extends Controller
         if(!session()->has('detalles')){
             return back()->withErrors('Escoje un producto antes de ordenar!');
         }
-        $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();        
+        $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();    
+        $cabana=null;
+        if(session()->has('cabana'))
+        {    
+            $cabana=session('cabana');
+        }
         /*if(count($cabañas)==0)
         {
             return back()->withErrors('No hay cabañas disponibles en en elmomento!');
@@ -83,6 +88,7 @@ class OrdenEncabezadoController extends Controller
         $data=[
             'tipo_documento'=>$this->_tipoDocumentoRepository->GetAll(),   
             'cabañas'=>$cabañas,  
+            'cabana'=>$cabana,
             'tiempo_entrega'=>$time,          
             'empleado'=>$empleado,
             'cliente'=>$cliente,
@@ -136,7 +142,11 @@ class OrdenEncabezadoController extends Controller
             return back()->withErrors('El cliente ya tiene un orden en espera asociada a el');
         }
         $this->_ordenServicioRepository->Store($request);
-        session()->forget('detalles');
+        session()->forget('detalles');        
+        if(session()->has('cabana')) 
+        {
+            session()->forget('cabana');
+        }
         return redirect()->to(url('/ordenservicio'));            
         //
     }

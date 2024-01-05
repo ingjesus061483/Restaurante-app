@@ -83,6 +83,7 @@ Route::get('observaciones/GetObservacions/{codigo}',[ObservacionController::clas
 Route::get('clientes/showClient/{id}',[ClienteController::class,'showClient']);
 Route::get('impuestos/calcularImpuestos/{subtotal}',[ImpuestoController::class,'CalcularImpuestos']);
 Route::get('/',[HomeController::class,'index']);
+Route::get('/{id}',[HomeController::class,'show']);
 Route::get('login',[LoginController::class,'show']);
 Route::delete('login/{id}',[LoginController::class,'destroy']);
 Route::post('login',[LoginController::class,'store']);

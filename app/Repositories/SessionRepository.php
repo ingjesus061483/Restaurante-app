@@ -120,6 +120,8 @@ class SessionRepository implements IRepository
         if(count($newdetalle)==0)
         {
             session()->forget(['detalles']);
+            session()->forget(['cabana']);
+
         }
         else{
             session(['detalles' => $newdetalle]);
