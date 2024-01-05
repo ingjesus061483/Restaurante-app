@@ -36,7 +36,7 @@
                         <td>{{$item->nombre}}</td>            
                         <td>{{$item->capacidad_maxima}}</td>
                         <td>                 
-                            <p> <a class ="btn btn-primary" href="{{url('/')}}/{{$item->id}}"> Ordenar  </a></p>
+                            <p> <a class ="btn btn-primary" href="{{url('/cabañas')}}/{{$item->id}}"> Ordenar  </a></p>
                         </td>
                     </tr>
                     @endforeach   

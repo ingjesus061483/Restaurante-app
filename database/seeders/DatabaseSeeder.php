@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             FormaPagoSeeder::class,
             ImpresoraSeeder::class,
             TipoCobroSeeder::class,
+            CabañaSeeder::class,
         ]);
     }
 }

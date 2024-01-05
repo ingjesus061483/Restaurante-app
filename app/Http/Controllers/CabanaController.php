@@ -77,6 +77,20 @@ class CabanaController extends Controller
      */
     public function show(string $id)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }    
+        $cabana =$this->_repository->Find($id);
+        session(['cabana' => $cabana]);   
+        if (session()->has('detalles'))
+        {
+          return  redirect()->to('ordendetalles');
+        }    
+        else
+        {
+            return redirect()->to(url('/ordendetalles/create'));        
+        }
         //
     }
 
