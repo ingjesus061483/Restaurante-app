@@ -6,7 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>@yield('title')</title>                
+        <title>@yield('title')</title>   
+        <link rel="shortcut icon" type="image/x-icon" href="{{url('/')}}/restaurante-app.ico" />             
         <link rel="stylesheet" href="{{url('/')}}/jquery-ui-1.12.1.custom/jquery-ui.css">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="{{url('/')}}/css/styles.css" rel="stylesheet" />
