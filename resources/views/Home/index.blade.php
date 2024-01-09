@@ -3,12 +3,9 @@
 @section('content') 
 <div class="jumbotron">
     <div class="row" >
-        <div class="col-6">
+        <div class="col-12">
             <p class="lead">bienvenido </p>
-            <hr class="my-4">
-            <p>Aplicacion para restaurantes con inventario y facturacion de comidas y alquiler de cabañas</p>           
-        </div>
-        <div class="col-6">
+            <hr class="my-4">            
             <table id="datatablesSimple">
                 <thead>
                     <tr>
@@ -41,7 +38,11 @@
                     </tr>
                     @endforeach   
                 </tbody>
-            </table>
+            </table>            
+        </div>
+        <div class="col-12">           
+            <hr class="my-4">
+            <p>Aplicacion para restaurantes con inventario y facturacion de comidas y alquiler de cabañas</p>                       
         </div>
     </div>
 </div>
