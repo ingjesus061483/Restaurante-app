@@ -4,7 +4,7 @@
 <div class="jumbotron">
     <div class="row" >
         <div class="col-12">
-            <p class="lead">bienvenido </p>
+            <p class="lead">Bienvenido </p>
             <hr class="my-4">            
             <table id="datatablesSimple">
                 <thead>
@@ -42,7 +42,7 @@
         </div>
         <div class="col-12">           
             <hr class="my-4">
-            <p>Aplicacion para restaurantes con inventario y facturacion de comidas y alquiler de cabañas</p>                       
+            <p>Aplicacion para restaurantes con inventario y facturacion de comidas</p>                       
         </div>
     </div>
 </div>
