@@ -106,7 +106,8 @@ class OrdenServicioRepository implements IRepository
     public function Delete($id)
     {
         $ordenEncabezado=OrdenEncabezado::find($id);
-        $this->_cabanaRepository->desocuparCabana($ordenEncabezado->cabaña_id);
+        $cabaña =$this->_cabanaRepository->find($ordenEncabezado->cabaña_id);
+        $this->_cabanaRepository->desocuparCabana($cabaña);
         $ordenEncabezado->delete();
     }
     public function Find($id)
