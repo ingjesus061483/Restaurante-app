@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,11 +12,26 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\Password;
 class UserController extends Controller
 {
+    protected UserRepository $_userRepository; 
+    public function __construct(UserRepository $userRepoitory,)
+    {
+        $this->_userRepository=$userRepoitory;       
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }        
+        $users=$this->_userRepository->UsersAdmin();              
+        $data=[            
+            'msg'=>'La operacion ha sido realizada con exito'        
+        ];
+            return json_encode($data);
         //
     }
 

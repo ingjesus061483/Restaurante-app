@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Configuracion;
 use App\Models\Impresora;
 use App\Models\OrdenEncabezado;
+use App\Repositories\ConfiguracionRepository;
 use App\Repositories\ExistenciaRepository;
 use App\Repositories\FileRepository;
 use App\Repositories\PlantillasRepository;
@@ -16,6 +17,7 @@ use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 class ReportesController extends Controller
 {
+    protected ConfiguracionRepository $_configuracionRepository;
     protected ExistenciaRepository  $_existenciaRepository;
     protected FileRepository $_fileRepository;
     protected PlantillasRepository $_plantillaRepository;
@@ -35,8 +37,10 @@ class ReportesController extends Controller
     }
     public function __construct(ExistenciaRepository $existenciaRepository,
                                 PlantillasRepository $plantillasRepository,
-                                FileRepository $fileRepository)
+                                FileRepository $fileRepository,
+                                ConfiguracionRepository $configuracionRepository)
     {
+        $this->_configuracionRepository=$configuracionRepository;
         $this->_plantillaRepository=$plantillasRepository;
         $this ->_fileRepository=$fileRepository;
         $this->_existenciaRepository = $existenciaRepository;
@@ -109,7 +113,8 @@ class ReportesController extends Controller
             $ordenservicio=(object)["empresa"=>$empresa,
                                     "orden_encabezado"=>$ordenEncabezado ,
                                     "detalles"=>[],
-                                    "impresora"=>null
+                                    "impresora"=>null,
+                                    "domicilio"=>$this->_configuracionRepository->getConfigByNombre('Valor_Domicilio')->valor,
                                    ];
             $err=[];
             foreach( $impresoras as $item )            

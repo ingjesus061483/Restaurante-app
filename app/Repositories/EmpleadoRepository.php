@@ -38,7 +38,7 @@ class EmpleadoRepository implements IRepository
         $empleado->save();
     }
     public function Update($id, $request)
-    {
+    {       
         $empleado=$this->Find($id);
         $user=$this->_UserRepository ->find($empleado->user_id);
         $empleado->identificacion=$request->identificacion;

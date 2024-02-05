@@ -173,6 +173,7 @@ class EmpleadoController extends Controller
         {
             return back();            
         }  
+        
         $this-> _empleadoRepository->Delete($id);
         return redirect()->to(url('/empleados'));
         //

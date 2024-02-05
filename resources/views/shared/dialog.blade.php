@@ -67,6 +67,25 @@
             </div>
         </div>                   
 </div>
+<div id="CancelarOrden">
+    <div class="card mb-4">                
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label" for="codigo">
+                    Codigo
+                </label>
+                <span id="codigo"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="codigo">
+                    Contraseña
+                </label>                
+                <input type="password" class="form-control" id="password"/>
+            </div>        
+        </div>
+    </div>
+    
+</div>
 <div id="ingredientes" class="container">
     <div class="card mb-4">                
         <div class="card-body">

@@ -45,8 +45,17 @@ class OrdenEncabezadoController extends Controller
         {
           return  redirect()->to('ordendetalles');
         }    
+        $user=Auth::user();
+        if($user->role_id==3)
+        {
+            $ordenes=$this->_ordenServicioRepository-> GetOrdenesByEmpleados($user->id);
+        }
+        else
+        {
+            $ordenes=$this->_ordenServicioRepository->GetAll();            
+        }
         $data=[
-            'ordenes'=>$this->_ordenServicioRepository->GetAll()            
+            'ordenes'=>$ordenes           
         ];
         return view('Orden.index',$data);
         //
@@ -141,13 +150,13 @@ class OrdenEncabezadoController extends Controller
         {
             return back()->withErrors('El cliente ya tiene un orden en espera asociada a el');
         }
-        $this->_ordenServicioRepository->Store($request);
+        $id=$this->_ordenServicioRepository->Store($request);
         session()->forget('detalles');        
         if(session()->has('cabana')) 
         {
             session()->forget('cabana');
         }
-        return redirect()->to(url('/ordenservicio'));            
+        return redirect()->to(url("/reportes/printComanda/$id"));            
         //
     }
 

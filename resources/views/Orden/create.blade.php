@@ -16,6 +16,10 @@
                 @endif
                 <form action="{{url('/ordenservicio')}}" enctype="multipart/form-data" autocomplete="off" method="post">
                     @csrf
+                    <input type="hidden" name="fecha" value="{{date('Y-m-d')}}" class="form-control"
+                    id="fecha">                    
+                    <input type="hidden" name="hora" value="{{date('H:i:s')}}" class="form-control"
+                    id="hora">
                     <div class="mb-3">
                         <label class="form-label" for="codigo">
                             Tipo documento
@@ -32,43 +36,46 @@
                             Codigo
                         </label>
                         <input type="text" name="codigo" value="{{date_timestamp_get(date_create())}}" class="form-control" id="codigo">
-                    </div>            
+                    </div>                    
                     @if($cliente==null)
-                    <div class="mb-3">
-                        <input type="checkbox" name="aplicaCliente" id="chkcliente">
-                        <label class="form-label" for="cliente">
-                            Cliente
-                        </label>
-                        <div id="pnlcliente" class="row"style="display:none">
-                            <div class="col-7">
-                                <input type="text" name="cliente"
-                                value="{{old('cliente')}}" class="form-control" id="cliente">
-                            </div>
-                            <div class="col-5">                                                                
-                                <a class="btn btn-success" href="{{url('/clientes/create')}}">                                    
+                        @if($cabana==null)                        
+                        <div class="mb-3">
+                        
+                            <input type="checkbox" name="aplicaCliente" id="chkcliente">                        
+                            <label class="form-label" for="cliente">
+                                Cliente
+                            </label>                            
+                            <div id="pnlcliente" class="row"style="display:none">
+                                <div class="col-7">
+                                    <input type="text" name="cliente"
+                                    value="{{old('cliente')}}" class="form-control" id="cliente">
+                                </div>
+                                <div class="col-5">                                                                
+                                    <a class="btn btn-success" href="{{url('/clientes/create')}}">                                    
                                     Nuevo cliente                                                        
-                                </a>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3" id="pnlcabaña">
-                        <label class="form-label" for="cabaña">
-                            Cabaña
-                        </label>
-                        <select type="text" name="cabaña" class="form-select"
-                        id="cabaña">
-                            <option value="">seleccione una cabaña</option>
-                            @foreach($cabañas as $item)
-                            <option value="{{$item->id}}"
-                                @if($cabana!=null&&$item->id==$cabana->id)
-                                {{'selected'}}
-                                @endif
-                                >{{$item->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                        @endif
+                        <div class="mb-3" id="pnlcabaña">
+                            <label class="form-label" for="cabaña">
+                                Cabaña
+                            </label>
+                            <select type="text" name="cabaña" class="form-select"
+                            id="cabaña">
+                                <option value="">seleccione una cabaña</option>
+                                @foreach($cabañas as $item)
+                                    <option value="{{$item->id}}"
+                                    @if($cabana!=null&&$item->id==$cabana->id)
+                                    {{'selected'}}
+                                    @endif
+                                    >{{$item->nombre}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     @else
-                   <input type="hidden" name="cliente"value="{{$cliente->identificacion}}">                           
+                        <input type="hidden" name="cliente"value="{{$cliente->identificacion}}">                           
                     @endif
                     @if($empleado==null)
                     <div class="mb-3">
@@ -80,21 +87,7 @@
                     </div>            
                     @else
                     <input type="hidden" name="empleado" value="{{$empleado->identificacion}}">
-                    @endif                                
-                    <div class="mb-3">
-                        <label class="form-label" for="unidad_medida">
-                            Fecha                
-                        </label>
-                        <input type="date" name="fecha" value="{{date('Y-m-d')}}" class="form-control"
-                        id="fecha">
-                    </div>                 
-                    <div class="mb-3">
-                        <label class="form-label" for="unidad_medida">
-                            hora                
-                        </label>
-                        <input type="time" name="hora" value="{{date('H:i:s')}}" class="form-control"
-                        id="hora">
-                    </div>             
+                    @endif                                                
                     <div class="mb-3">
                         <label class="form-label" for="unidad_medida">
                             Hora entrega                
@@ -111,6 +104,14 @@
                             {{old('observaciones')}}                    
                         </textarea>                
                     </div>
+                    @if($cabana==null)
+                    <div class ="mb-3">                    
+                        <label class="form-label" for="descripcion">                        
+                            Domicilio                                    
+                        </label>                    
+                        <input type="checkbox" name="domicilio" id="">
+                    </div>
+                    @endif
                     <div class ="mb-3">                    
                         <label class="form-label" for="descripcion">                        
                             credito                                    

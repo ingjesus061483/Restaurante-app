@@ -6,39 +6,20 @@
         <div class="col-12">
             <p class="lead">Bienvenido </p>
             <hr class="my-4">            
-            <table id="datatablesSimple">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Codigo</th>
-                        <th>Nombre</th>
-                        <th>Capacidad</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th>Id</th>
-                        <th>Codigo</th>
-                        <th>Nombre</th>
-                        <th>Capacidad</th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    @foreach($cabanas as $item)
-                    <tr>
-                        <td>{{$item->id}}</td>
-                        <td>{{$item->codigo}}</td>
-                        <td>{{$item->nombre}}</td>            
-                        <td>{{$item->capacidad_maxima}}</td>
-                        <td>                 
-                            <p> <a class ="btn btn-primary" href="{{url('/cabañas')}}/{{$item->id}}"> Ordenar  </a></p>
-                        </td>
-                    </tr>
-                    @endforeach   
-                </tbody>
-            </table>            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">           
+                        @foreach($cabanas as $item)
+                        <div class="col-4"> 
+                            <div style="padding: 5px">
+                                <a class ="btn btn-primary" href="{{url('/cabañas')}}/{{$item->id}}"> {{$item->nombre}}  </a>                            
+                            </div>                           
+                        </div>                             
+                        @endforeach 
+                    </div>                  
+                </div>
+            </div>
+            
         </div>
         <div class="col-12">           
             <hr class="my-4">

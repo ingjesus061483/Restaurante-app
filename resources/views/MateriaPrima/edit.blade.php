@@ -1,5 +1,5 @@
 @extends('shared/layout')
-@section('title','Editar materias primas')
+@section('title','Editar insumo')
 @section('content')  
 <div class="card mb-4">
     <div class="card-body">

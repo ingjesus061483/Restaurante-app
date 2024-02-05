@@ -125,6 +125,21 @@
                     }
                 }            
             });     
+            var CancelarOrden=$("#CancelarOrden").dialog({
+                autoOpen: false,
+                height:450,
+                width: 600,
+                modal: true,
+                buttons: 
+                {
+                    "Eliminar orden": function(){EliminarOrdenServicio()},
+                    "Cerrar": function() 
+                    {
+                        dialogformasPagos.dialog( "close" );                    
+                    }
+                }
+
+            });
             var dialogformasPagos=$("#formasPagos").dialog({
                 autoOpen: false,
                 height:450,
@@ -267,6 +282,10 @@
 
                 }            
             });              
+            function mostrarEliminar(id){
+                alert(id);
+                CancelarOrden.dialog('open');            
+            }
             function GuardarMovimiento()
             {
                 total_caja={{isset($ingreso)&&isset($egreso)?$ingreso-$egreso:0}} 

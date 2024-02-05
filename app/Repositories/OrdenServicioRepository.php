@@ -33,6 +33,11 @@ class OrdenServicioRepository implements IRepository
         }
         return $sum;
     } 
+    public function GetOrdenesByEmpleados($usuario_id)
+    {
+        return OrdenEncabezado ::where('usuario_id',$usuario_id) ->get();       
+    }
+
     public function GetAll()
     {
        return OrdenEncabezado ::all();
@@ -124,6 +129,7 @@ class OrdenServicioRepository implements IRepository
         $empleado=$request->input('empleado')!=null?
             $this->_empleadoRepository->Getempleado($request->input('empleado')):null;
         $credito=$request->input('credito')!=null?(bool)$request->input('credito'):0;
+        $domicilio=$request->input('domicilio')!=null?(bool)$request->input('domicilio'):0;
         $detalles=session('detalles');
         $ordenEncabezado=OrdenEncabezado::create([
           'codigo'=>$request->input('codigo'),
@@ -134,6 +140,7 @@ class OrdenServicioRepository implements IRepository
           'observaciones'=>$request->input('observaciones'),
           "total"=>$this->totalizarOrden($detalles),
           'credito'=>$credito,
+          'domicilio'=>$domicilio,
           'cabaña_id'=>$request->input('cabaña'),
           'cliente_id'=>$cliente!=null?$cliente->id:null,
           'empleado_id'=>$empleado!=null?$empleado->id:null,
@@ -143,7 +150,11 @@ class OrdenServicioRepository implements IRepository
             $item-> orden_id=$ordenEncabezado->id;
             $this->_OrdenDetalleRepository-> Store($item);  
         }
-        $this-> _cabanaRepository->ocuparCabaña($request->input('cabaña'));
+        if($domicilio==0)
+        {
+            $this-> _cabanaRepository->ocuparCabaña($request->input('cabaña'));
+        }
+        return $ordenEncabezado->id;
     }
     public function DescontarProductoDeExistencia($OrdenDetalles)
     {

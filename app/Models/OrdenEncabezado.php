@@ -36,6 +36,6 @@ class OrdenEncabezado extends Model
     
     protected $fillable=[
         'codigo','tipo_documento_id','fecha','hora','hora_entrega','observaciones','total',
-        'cabaña_id','cliente_id','empleado_id','estado_id','credito',
+        'cabaña_id','cliente_id','empleado_id','estado_id','credito','domicilio',
     ];
 }

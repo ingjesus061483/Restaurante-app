@@ -1,9 +1,9 @@
 @extends('shared/layout')
-@section('title','Listado de materias primas')
+@section('title','Listado de insumos')
 @section('content')  
 <div class="card mb-4">
     <div class="card-header">
-        <a href="{{url('/materiaprimas/create')}}" class="btn btn-primary">Crear materias primas </a>
+        <a href="{{url('/materiaprimas/create')}}" class="btn btn-primary">Crear isumos </a>
     </div>
     <div class="card-body">
         <table id="datatablesSimple">

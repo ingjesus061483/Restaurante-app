@@ -1,6 +1,15 @@
 @extends('shared/layout')
 @section('title','Listado de empleados')
 @section('content')  
+@if($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{$error}}</li>                    
+        @endforeach
+    </ul>
+</div>
+@endif
 <div class="card mb-4">
     <div class="card-header">
         <a href="{{url('/empleados/create')}}" class="btn btn-primary">Crear empleado </a>
@@ -18,7 +27,7 @@
                     <th>Usuario</th>
                     <th>Role</th>
                     <th>Caja</th>
-                    <th>Empresa</th>
+                    <th>Empresa</th>                    
                     <th></th>
                     <th></th>
                 </tr>
@@ -34,7 +43,7 @@
                     <th>Usuario</th>
                     <th>Role</th>
                     <th>Caja</th>
-                    <th>Empresa</th>
+                    <th>Empresa</th>         
                     <th></th>
                     <th></th>
                 </tr>        
@@ -51,7 +60,7 @@
                     <td>{{$item->usuario->name}}</td>
                     <td>{{$item->usuario->role->nombre}}</td>
                     <td>{{$item->usuario->caja!=null?$item->usuario->caja->nombre:''}}</td>
-                    <td>{{$item->usuario->empresa->nombre}}</td>
+                    <td>{{$item->usuario->empresa->nombre}}</td>            
                     <td>
                         <a class="btn btn-warning" href="{{url('/empleados/'.$item->id.'/edit')}}">
                             Editar 

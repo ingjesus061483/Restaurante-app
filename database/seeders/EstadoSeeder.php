@@ -15,8 +15,8 @@ class EstadoSeeder extends Seeder
     {
         DB::table('estados')->insert([
             ['nombre'=>'Espera'],
-            ['nombre'=>'Listo'], 
-            ['nombre'=>'Pago'],                       
+            ['nombre'=>'Entregado'], 
+            ['nombre'=>'Pagado'],                       
             ["nombre"=>'En mora']
         ]);
         //

@@ -1,9 +1,9 @@
 @extends('shared/layout')
-@section('title','Listado de formapagos')
+@section('title','Listado de formas de pagos')
 @section('content')  
 <div class="card mb-4">
     <div class="card-header">
-        <a href="{{url('/')}}/formapagos/create" class="btn btn-primary">Crear formapagos </a>
+        <a href="{{url('/')}}/formapagos/create" class="btn btn-primary">Crear formas de pagos </a>
     </div>
     <div class="card-body">
         <table id="datatablesSimple">

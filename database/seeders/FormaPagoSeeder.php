@@ -15,8 +15,8 @@ class FormaPagoSeeder extends Seeder
     {
         DB::table('forma_pagos')->insert([
             ['nombre'=>'Contado'],         
-            ['nombre'=>'Tarjeta de credito'],    
-            ['nombre'=>'Tarjeta de debito'],    
+            ['nombre'=>'Datafono'],    
+            ['nombre'=>'Transferencia'],    
         ]);
         //
     }

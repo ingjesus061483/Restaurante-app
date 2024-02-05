@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 class LoginController extends Controller
 {
+    protected UserRepository $_userRepository;
+    public function  __construct(UserRepository $userRepository) {
+        $this->_userRepository = $userRepository;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -44,6 +49,7 @@ class LoginController extends Controller
                             'password'=>$request->input('password')                        
                     ]);
         Auth::login($user);
+
         return redirect()->to('/');      
         //
     }

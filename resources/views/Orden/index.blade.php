@@ -37,7 +37,8 @@
                     <th>Total</th>
                     <th>Cantidad de productos ordenados</th>
                     <th>Observaciones</th> 
-                    <th>credito</th>                   
+                    <th>credito</th>              
+                    <th>Domicilio</th>     
                     <th>Estado</th>                    
                 </tr>
             </thead>
@@ -60,7 +61,8 @@
                     <th>Total</th>
                     <th>Cantidad de productos ordenados</th>
                     <th>Observaciones</th>       
-                    <th>credito</th>                   
+                    <th>credito</th>       
+                    <th>Domicilio</th>                 
                     <th>Estado</th>                    
                 </tr>
             </tfoot>
@@ -70,7 +72,7 @@
                     <td>
                         @if($item->estado_id==1)
                         <a class="btn btn-primary" style="font-size: 10px" href="{{url('/ordendetalles/'.$item->id.'/edit')}}">                    
-                            Editar                
+                            Añadir item                
                         </a>                 
                         @endif
                     </td>
@@ -90,7 +92,7 @@
                         </a>
                     </td>
                     <td>                
-                        @if($item->estado_id==1)
+                        @if($item->estado_id==1&&(auth()->user()->role_id==1||auth()->user()->role_id==2) )                     
                         <form action="{{url('/ordenservicio')}}/{{$item->id}}" 
                             onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
@@ -103,7 +105,7 @@
                         @switch($item->estado_id)
                             @case(1)                            
                                 <form action="{{url('/ordenservicio')}}/{{$item->id}}" 
-                                    onsubmit="return validar('Desea entregaar estad orden?');" method="post">
+                                    onsubmit="return validar('Desea entregar esta orden?');" method="post">
                                     @csrf
                                     @method('patch')
                                     <button class="btn btn-success" style="font-size: 10px" type="submit">
@@ -142,6 +144,7 @@
                     <td>{{$item->orden_detalles->count()}}</td>
                     <td>{{$item->observaciones}}</td>  
                     <td>{{$item->credito==1?'Si':'No'}}</td>  
+                    <td>{{$item->domicilio==1?'Si':'No'}}</td>  
                     <td>{{$item->estado->nombre}}</td>                    
                 </tr>
                 @endforeach   

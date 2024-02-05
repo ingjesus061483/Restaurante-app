@@ -203,11 +203,11 @@ class PagoController extends Controller
         {
             if($total_pagar>$recibido)
             {
-                return back()->withErrors('No se ha recibido el mototo total de pago');
+                return back()->withErrors('No se ha recibido el monto total de pago');
             }                   
             $this->pagoStore($request,$pagoDetalles ,$caja);       
             $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);            
-            return redirect()->to(url('/ordenservicio'));  
+            return redirect()->to(url("/reportes/printordenservicio/$ordenServicio->id"));  
         }
         else
         {
@@ -235,7 +235,7 @@ class PagoController extends Controller
                 }
                 else
                 {
-                    return redirect()->to(url('/cuentascobrar/'.$cuentasCobrar->id));                  
+                    return redirect()->to(url("/cuentascobrar/$cuentasCobrar->id"));                  
                 }               
             }           
         }

@@ -14,10 +14,10 @@ class ConfiguracionSeeder extends Seeder
     public function run(): void
     {
         DB::table('configuracions')->insert([
-            ['nombre'=>'hipoConsumo','valor'=>'0.08'],
+            ['nombre'=>'ImpoConsumo','valor'=>'0.08'],
             ['nombre'=>'propina','valor'=>''], 
-            ['nombre'=>'descuento','valor'=>''],            
-            ['nombre'=>'impresora_pos','valor'=>''],                     
+            ['nombre'=>'descuento','valor'=>''],                      
+            ['nombre'=>'Valor_Domicilio','valor'=>'0'],                     
         ]);
         //
     }

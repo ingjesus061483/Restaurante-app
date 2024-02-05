@@ -5,9 +5,13 @@ class PlantillasRepository
 {
     public function ImprimirPlantillaOrdenServicio(Printer $printer,$ordenservicio)
     {
-        $encabezado=$ordenservicio->impresonra->tamaño_fuente_encabezado;
-        $contenido=$ordenservicio->impresonra->tamaño_fuente_contenido;
-
+        $encabezado=$ordenservicio->impresora->tamaño_fuente_encabezado;
+        $contenido=$ordenservicio->impresora->tamaño_fuente_contenido;
+        $valorDomicilio=0;
+        if($ordenservicio->orden_encabezado->domicilio==1)
+        {
+            $valorDomicilio=$ordenservicio->domicilio;
+        }
         $printer ->setTextSize($encabezado,$encabezado);      
         $printer -> text("========================\n");    
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
@@ -34,10 +38,10 @@ class PlantillasRepository
             $printer->text("=========Cliente==========\n");
             $printer->setJustification(Printer::JUSTIFY_LEFT);        
             $printer ->setTextSize($contenido,$contenido);              
-            $printer->text("Identificacion:\n");
-            $printer->text("Nombre:\n");
-            $printer->text("Direccion:\n");
-            $printer->text("Telefono:\n");
+            $printer->text("Identificacion:".$ordenservicio->orden_encabezado->cliente->identificacion ."\n");
+            $printer->text("Nombre:".$ordenservicio->orden_encabezado->cliente->nombre." ".$ordenservicio->orden_encabezado->cliente->apellido. "\n");
+            $printer->text("Direccion:".$ordenservicio->orden_encabezado->cliente->direccion."\n");
+            $printer->text("Telefono:".$ordenservicio->orden_encabezado->cliente->telefono."\n");
         }          
         if($ordenservicio->orden_encabezado->cabaña!=null)
         {
@@ -90,13 +94,22 @@ class PlantillasRepository
                 $printer->text("Codigo: ".$item->codigo."\n");
                 $printer->text("Fecga / hora: ".$item->fecha_hora."\n");
               //  $printer->text("Forma de pago: ".$item->forma_pago->nombre."\n");
-                $printer->text("Subtotal: ".$item->subtotal."\n");
-                $printer->text("Impuesto: ". $item->impuesto."\n");
-                $printer->text("Deswcuento: ".$item->descuento."\n");
-                $printer->text("Total a pagar: ".$item->total_pagar."\n");
-                $printer->text("Recibido: ".$item->recibido."\n");  
-                $printer->text("Cambio: ".$item->cambio."\n");
-                $printer->text("Propina voluntaria:  $". $item->total_pagar*0.1 ."\n");
+                $printer->text("Subtotal: $".number_format( $item->subtotal)."\n");
+                $printer->text("Impuesto: $".number_format( $item->impuesto)."\n");
+                $printer->text("Descuento: $".number_format( $item->descuento)."\n");
+
+                $printer ->setTextSize($encabezado,$encabezado);              
+                $printer->text("**************\n");         
+                $printer->text("Total a pagar: $".number_format( $item->total_pagar)."\n");
+                $printer->text("**************\n");                         
+                $printer ->setTextSize($contenido,$contenido);     
+                $printer->text("Recibido: $".number_format( $item->recibido)."\n");  
+                $printer->text("Cambio: $".number_format( $item->cambio)."\n");
+                $printer->text("Propina voluntaria:  $".number_format( $item->total_pagar*0.1 )."\n");
+                if($valorDomicilio!=0)
+                {
+                    $printer->text("Valor domicilio: $".number_format($valorDomicilio)."\n");
+                }
                 $printer->text("Observaciones: ".$item->observaciones."\n");                
             }  
             $printer ->setTextSize($encabezado,$encabezado);              
@@ -106,8 +119,8 @@ class PlantillasRepository
     }
     public function ImprimirPlantillaComanda(Printer $printer,$ordenservicio )
     {
-        $encabezado=$ordenservicio->impresonra->tamaño_fuente_encabezado;
-        $contenido=$ordenservicio->impresonra->tamaño_fuente_contenido;
+        $encabezado=$ordenservicio->impresora->tamaño_fuente_encabezado;
+        $contenido=$ordenservicio->impresora->tamaño_fuente_contenido;
 
         $printer ->setTextSize($encabezado,$encabezado);      
         $printer -> text("========================\n");    

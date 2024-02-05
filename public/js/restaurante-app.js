@@ -94,6 +94,19 @@ function validar(mensaje)
         return false;
     }            
 }
+function EliminarOrden(mensaje)
+{
+    if(confirm(mensaje))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }            
+
+}
+
 //facturacion
 function Cambio(recibido,total_pagar)
 {

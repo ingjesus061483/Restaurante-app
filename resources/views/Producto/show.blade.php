@@ -104,8 +104,7 @@
                     <div class="col-4" >
                         Ingredientes
                     </div>                    
-                    <div class="col-4" >
-                        
+                    <div class="col-4" >                        
                     </div>                    
                     <div class="col-4" >
                         <form action="{{url('ingredientes/create')}}" method="get">
@@ -113,8 +112,7 @@
                             <button class="btn btn-primary" type="submit">Nuevo ingrediente </button>                            
                         </form>                                       
                     </div>
-                </div>
-                
+                </div>                
             </div>
             <div class="card-body">                
                 <table id="datatablesSimple">
