@@ -7,11 +7,8 @@ class PlantillasRepository
     {
         $encabezado=$ordenservicio->impresora->tamaño_fuente_encabezado;
         $contenido=$ordenservicio->impresora->tamaño_fuente_contenido;
-        $valorDomicilio=0;
-        if($ordenservicio->orden_encabezado->domicilio==1)
-        {
-            $valorDomicilio=$ordenservicio->domicilio;
-        }
+        $valorDomicilio=$ordenservicio->orden_encabezado->domicilio==1?$ordenservicio->domicilio:0;
+        $propina=$ordenservicio->prpina;
         $printer ->setTextSize($encabezado,$encabezado);      
         $printer -> text("========================\n");    
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
@@ -97,18 +94,20 @@ class PlantillasRepository
                 $printer->text("Subtotal: $".number_format( $item->subtotal)."\n");
                 $printer->text("Impuesto: $".number_format( $item->impuesto)."\n");
                 $printer->text("Descuento: $".number_format( $item->descuento)."\n");
-
+                if($valorDomicilio!=0)
+                {
+                    $printer->text("Valor domicilio: $".number_format($valorDomicilio)."\n");
+                }
                 $printer ->setTextSize($encabezado,$encabezado);              
                 $printer->text("**************\n");         
-                $printer->text("Total a pagar: $".number_format( $item->total_pagar)."\n");
+                $printer->text("Total a pagar: $".number_format( $item->total_pagar+$valorDomicilio)."\n");
                 $printer->text("**************\n");                         
                 $printer ->setTextSize($contenido,$contenido);     
                 $printer->text("Recibido: $".number_format( $item->recibido)."\n");  
                 $printer->text("Cambio: $".number_format( $item->cambio)."\n");
-                $printer->text("Propina voluntaria:  $".number_format( $item->total_pagar*0.1 )."\n");
-                if($valorDomicilio!=0)
+                if($propina!=0)
                 {
-                    $printer->text("Valor domicilio: $".number_format($valorDomicilio)."\n");
+                    $printer->text("Propina voluntaria:  $".number_format( $item->total_pagar*$propina )."\n");                
                 }
                 $printer->text("Observaciones: ".$item->observaciones."\n");                
             }  

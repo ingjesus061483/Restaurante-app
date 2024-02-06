@@ -115,6 +115,7 @@ class ReportesController extends Controller
                                     "detalles"=>[],
                                     "impresora"=>null,
                                     "domicilio"=>$this->_configuracionRepository->getConfigByNombre('Valor_Domicilio')->valor,
+                                    "propina"=>$this->_configuracionRepository->getConfigByNombre("propina")->valor,
                                    ];
             $err=[];
             foreach( $impresoras as $item )            
