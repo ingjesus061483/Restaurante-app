@@ -19,13 +19,13 @@ class PagoDetalleRepository implements IRepository
         else
         {
             $pagos= PagoDetalle::select('forma_pago_id','forma_pagos.nombre AS forma_pago')
-                           ->selectRaw("SUM(valor_recibido) as Total_valor_recibido")                
-                           ->join('forma_pagos', 'pago_detalles.forma_pago_id', '=', 'forma_pagos.id')
-                           ->join('pagos','pagos.id','=','pago_detalles.pago_id')
-                           ->where('forma_pago_id',$forma_pago)
-                           ->whereBetween('pagos.fecha_hora',[$fecha1,$fecha2])
-                           ->groupBy(["forma_pago_id","forma_pagos.nombre"])
-                           ->get();          
+                               ->selectRaw("SUM(valor_recibido) as Total_valor_recibido")                
+                               ->join('forma_pagos', 'pago_detalles.forma_pago_id', '=', 'forma_pagos.id')
+                               ->join('pagos','pagos.id','=','pago_detalles.pago_id')
+                               ->where('forma_pago_id',$forma_pago)
+                               ->whereBetween('pagos.fecha_hora',[$fecha1,$fecha2])
+                               ->groupBy(["forma_pago_id","forma_pagos.nombre"])
+                               ->get();          
 
         }        
         return $pagos;            
@@ -34,19 +34,19 @@ class PagoDetalleRepository implements IRepository
         if($forma_pago!=null)
         {
             $pagos= PagoDetalle::select('forma_pago_id','forma_pagos.nombre AS forma_pago')
-                           ->selectRaw("SUM(valor_recibido) as Total_valor_recibido")                
-                           ->join('forma_pagos', 'pago_detalles.forma_pago_id', '=', 'forma_pagos.id')
-                           ->where('forma_pago_id',$forma_pago)
-                           ->groupBy(["forma_pago_id","forma_pagos.nombre"])
-                           ->get();         
+                               ->selectRaw("SUM(valor_recibido) as Total_valor_recibido")                
+                               ->join('forma_pagos', 'pago_detalles.forma_pago_id', '=', 'forma_pagos.id')
+                               ->where('forma_pago_id',$forma_pago)
+                               ->groupBy(["forma_pago_id","forma_pagos.nombre"])
+                               ->get();         
         }
         else
         {
             $pagos= PagoDetalle::select('forma_pago_id','forma_pagos.nombre AS forma_pago')
-                           ->selectRaw("SUM(valor_recibido) as Total_valor_recibido")                
-                           ->join('forma_pagos', 'pago_detalles.forma_pago_id', '=', 'forma_pagos.id')                           
-                           ->groupBy(["forma_pago_id","forma_pagos.nombre"])
-                           ->get();          
+                               ->selectRaw("SUM(valor_recibido) as Total_valor_recibido")                
+                               ->join('forma_pagos', 'pago_detalles.forma_pago_id', '=', 'forma_pagos.id')                           
+                               ->groupBy(["forma_pago_id","forma_pagos.nombre"])
+                               ->get();          
         }        
         return $pagos;            
     }

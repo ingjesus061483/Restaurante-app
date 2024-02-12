@@ -27,7 +27,9 @@
                         <select name="tipo_documento" class="form-select" id="tipo_documento">
                             <option value="">Seleccione un tipo de documento</option>
                             @foreach($tipo_documento as $item)
-                            <option value="{{$item->id}}">{{$item->nombre}}</option>
+                            <option value="{{$item->id}}"@if($item->id==3){{'selected'}}@endif>
+                                {{$item->nombre}}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -129,6 +131,11 @@
             </div>                    
             <div class="col-7">            
                 <div class ="mb-3">                
+                    <a href=" {{url('/ordendetalles/create')}}"  class="btn btn-primary">
+                        Crear detalle de Orden
+                    </a>
+                </div>
+                <div class ="mb-3">                
                     <table id="datatablesSimple">                    
                         <thead>                        
                             <tr>       
@@ -137,6 +144,8 @@
                                 <th>Detalle</th>
                                 <th>Valor Unitario </th>                    
                                 <th>Total</th>                                                                                            
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>                             
                         <tbody>    
@@ -147,6 +156,17 @@
                                 <td>{{$item->detalleOrden}}</td>
                                 <td>${{number_format( $item->valor_unitario)}}</td>
                                 <td>${{number_format( $item->total)}} </td>                                                   
+                                <td>
+                                    <a onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning"> Editar</a>
+                                </td>                                                                                       
+                                <td>                
+                                    <form action="{{url('/ordendetalles')}}/{{$item->id}}" 
+                                        onsubmit="return validar('Desea eliminar este registro?');" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger" type="submit"> Cancelar</button>
+                                    </form>
+                                </td>
                             </tr>                    
                             @endforeach
                         </tbody>

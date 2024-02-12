@@ -50,7 +50,7 @@
                         <div class="small">Logueado como:</div>
                         {{auth()->user()->name}}                        
                         <form action="{{url('/login')}}/{{auth()->user()->id }}"
-                             onsubmit="validar('desea cerrar la sesion')" method="post">
+                             onsubmit="return validar('Desea cerrar la sesion?')" method="post">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger"  >Cerrar sesion</button>
@@ -431,7 +431,7 @@
                                 else                                                            
                                 {                                    
                                     alertify.success(result.message);                                
-                                    window.location.href=result.orden_id==0?"{{url('/ordendetalles/')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                                                    
+                                    window.location.href=result.orden_id==0?"{{url('/ordenservicio/create/')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                                                    
                                 }                       
                             }                    
                         });  
@@ -452,7 +452,7 @@
                             },                        
                             success: function (result){                                                 
                                 alertify.success(result.message);                                       
-                                window.location.href=result.orden_id==0?"{{url('/ordendetalles/')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                                                    
+                                window.location.href=result.orden_id==0?"{{url('ordenservicio/create')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                                                    
                             }                    
                         });  
                     }

@@ -4,6 +4,7 @@
 <div class="card mb-4">
     <div class="card-header">
         <a href="{{url('/')}}/cabañas/create" class="btn btn-primary">Crear cabañas </a>
+       <a href="{{url('/reportes/ventasbycabaña')}}" target="blank" class="btn btn-danger">Pdf</a>
     </div>
     <div class="card-body">
         <table id="datatablesSimple">

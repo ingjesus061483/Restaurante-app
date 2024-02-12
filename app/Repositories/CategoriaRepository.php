@@ -4,7 +4,8 @@ namespace App\Repositories;
 use App\Contracts\IRepository;
 use App\Models\Categoria;
 
-class CategoriaRepository implements IRepository{
+class CategoriaRepository implements IRepository
+{
     public function GetAll()
     {
         return Categoria::all();        

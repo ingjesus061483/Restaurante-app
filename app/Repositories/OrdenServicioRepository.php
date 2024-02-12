@@ -5,6 +5,7 @@ use App\Contracts\IRepository;
 use App\Models\OrdenEncabezado;
 class OrdenServicioRepository implements IRepository
 {
+    protected SessionRepository $_sesionRepository;
     protected OrdenDetalleRepository $_OrdenDetalleRepository;
     protected ProductoRepository $_productoRepository;
     protected CabanaRepository $_cabanaRepository;    
@@ -16,7 +17,8 @@ class OrdenServicioRepository implements IRepository
                                 EmpleadoRepository $empleadoRepository,
                                 ClienteRepository $clienteRepository,                                
                                 ExistenciaRepository $existenciaRepository,
-                                OrdenDetalleRepository $ordenDetalleRepository )
+                                OrdenDetalleRepository $ordenDetalleRepository,
+                                SessionRepository $sessionRepository,)
     {
         $this-> _existenciaRepository=$existenciaRepository;
         $this->_cabanaRepository=$cabanaRepository;
@@ -24,6 +26,7 @@ class OrdenServicioRepository implements IRepository
         $this-> _empleadoRepository=$empleadoRepository;
         $this->_productoRepository = $productoRepository;
         $this->_OrdenDetalleRepository=$ordenDetalleRepository ;
+        $this->_sesionRepository=$sessionRepository;
     }
     public function totalizarOrden($detalles){
         $sum=0;
@@ -33,14 +36,14 @@ class OrdenServicioRepository implements IRepository
         }
         return $sum;
     } 
-    public function GetOrdenesByEmpleados($usuario_id)
+    public function GetOrdenesByEmpleados($empleado_id)
     {
-        return OrdenEncabezado ::where('usuario_id',$usuario_id) ->get();       
+        return OrdenEncabezado::where('empleado_id',$empleado_id) ->get();       
     }
 
     public function GetAll()
     {
-       return OrdenEncabezado ::all();
+       return OrdenEncabezado::all();
     }
     public  function GetTiempoCoccion($detalles)
     {
@@ -199,15 +202,17 @@ class OrdenServicioRepository implements IRepository
             $producto_id=$item->producto_id;
             $producto=$this->_productoRepository->Find($producto_id);
                         $foraneo=$producto!=null?$producto->foraneo:0;
-            if($foraneo==1){
+            if($foraneo==1)
+            {
                 $viewInventario =$this->_existenciaRepository-> getInventario(['producto',$item->cantidad,$producto_id],
                                         ['tipo','total_inventario','id']);                                        
-                if(count($viewInventario)==0){                    
-                    $errors[]=[
-                            'La cantidad de '.$item->detalleOrden .' pedida en esta 
-                            orden es mayor a la cantidad que hay en el inventario',                        
-                        ];                     
-                    
+                if(count($viewInventario)==0)
+                {                    
+
+                    $errors[]=['La cantidad de '.$item->detalleOrden .' pedida en esta 
+                                orden es mayor a la cantidad que hay en el inventario',];                 
+                    $this->_sesionRepository->delete($item->id);
+                
                 }             
             }
             else{
@@ -217,6 +222,7 @@ class OrdenServicioRepository implements IRepository
                     $errors[]=[
                         'El producto '.$item->detalleOrden .' no tiene ingrediente asignados',                        
                     ];                     
+                    $this->_sesionRepository->delete($item->id);
                 }
                 else{
                     foreach($ingredientes as $ingrediente){
@@ -228,12 +234,18 @@ class OrdenServicioRepository implements IRepository
                             $errors[]=[                                
                                 'La cantidad de '.$ingrediente->materia_prima->nombre .' pedida en esta                                 
                                 orden es mayor a la cantidad que hay en el inventario',                             
-                            ];                                             
+                            ];                                  
+                            $this->_sesionRepository->delete($item->id);           
                         }                    
                     }
                 }
             }
         }
-        return $errors;    
+        $detalles=session()->has('detalles')?$detalles=session('detalles'):[];
+        $data=[
+            'detalles'=>$detalles,
+            'errors'=>$errors,
+        ];
+        return $data;    
     }  
 }

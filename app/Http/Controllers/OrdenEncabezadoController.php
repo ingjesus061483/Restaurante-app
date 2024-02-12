@@ -43,12 +43,13 @@ class OrdenEncabezadoController extends Controller
         }        
         if (session()->has('detalles'))
         {
-          return  redirect()->to('ordendetalles');
+          return  redirect()->to('ordenservicio/create');
         }    
         $user=Auth::user();
-        if($user->role_id==3)
+        if($user->role_id==5)
         {
-            $ordenes=$this->_ordenServicioRepository-> GetOrdenesByEmpleados($user->id);
+            $empleado=$user->empleados->first();
+            $ordenes=$this->_ordenServicioRepository-> GetOrdenesByEmpleados($empleado->id);
         }
         else
         {
@@ -69,24 +70,16 @@ class OrdenEncabezadoController extends Controller
         {
             return redirect()->to('login');
         }                
-        if(!session()->has('detalles')){
-            return back()->withErrors('Escoje un producto antes de ordenar!');
-        }
         $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();    
         $cabana=null;
         if(session()->has('cabana'))
         {    
             $cabana=session('cabana');
         }
-        /*if(count($cabañas)==0)
-        {
-            return back()->withErrors('No hay cabañas disponibles en en elmomento!');
-        }*/
-        $detalles=session('detalles');
-        $errors=$this->_ordenServicioRepository->ComprobarExistenciaProductoDetalle($detalles);
-        if (count($errors)>0){
-            return back()->withErrors($errors);
-        }
+        $detalles=session()->has('detalles')?$detalles=session('detalles'):[];
+        $datacomprobacion=$this->_ordenServicioRepository->ComprobarExistenciaProductoDetalle($detalles);    
+        $detalles=$datacomprobacion["detalles"];
+        $errors=$datacomprobacion["errors"];
         $tiempoCoccion=$this->_ordenServicioRepository-> GetTiempoCoccion($detalles);        
         $now=date_create();        
         date_add($now,date_interval_create_from_date_string($tiempoCoccion.' minutes'));     
@@ -103,6 +96,9 @@ class OrdenEncabezadoController extends Controller
             'cliente'=>$cliente,
             'orden_detalle'=>$detalles
         ];
+        if (count($errors)>0){
+            return view('Orden.create',$data)->withErrors($errors);
+        }
         return view('Orden.create',$data);
         //
     }
@@ -150,7 +146,7 @@ class OrdenEncabezadoController extends Controller
         {
             return back()->withErrors('El cliente ya tiene un orden en espera asociada a el');
         }
-        $id=$this->_ordenServicioRepository->Store($request);
+        $id=$this->_ordenServicioRepository->Store($request);        
         session()->forget('detalles');        
         if(session()->has('cabana')) 
         {

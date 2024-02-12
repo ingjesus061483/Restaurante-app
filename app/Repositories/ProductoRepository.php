@@ -10,17 +10,36 @@ class ProductoRepository implements IRepository{
     public function __construct(FileRepository $fileRepository) {
         $this->_filerepository = $fileRepository;
     }
-    public function buscarproductosBynombre($nombre){
+    public function ProductosVendidosByFecha($request)    
+    {
+        $fechaIni=$request->fechaIni;
+        $fechaFin=$request->fechaFin;
+        return Producto::select('productos.codigo','productos.nombre')
+                       ->selectRaw('SUM(orden_detalles.cantidad) as total_cantidad_vendidas')
+                       ->selectRaw('SUM( orden_detalles.total)as ventas')
+                       ->join('orden_detalles','productos.id','=','orden_detalles.producto_id')
+                       ->join('orden_encabezados','orden_Encabezados.id','=','orden_detalles.orden_encabezado_id')
+                       ->where('orden_encabezados.estado_id',3)
+                       ->whereBetween('orden_encabezados.fecha',[$fechaIni,$fechaFin])
+                       ->groupby('productos.codigo')
+                       ->groupby('productos.nombre')                       
+                       ->get();            
+    } 
+    public function buscarproductosBynombre($nombre)
+    {
         return Producto::where('nombre','like','%'.$nombre.'%')->get();
     }
-    public function BuscarProductoEnOrdenServicio($productos){
+    public function BuscarProductoEnOrdenServicio($productos)
+    {
         return Producto::whereNotIn('id',$productos)->get();
-     } 
-    public function ingredientes($id){
+    } 
+    public function ingredientes($id)
+    {
        $producto= $this->Find($id);
        return $producto-> preparacions()->select('materia_prima_id')->where('producto_id',$id)->get();        
     }
-    public function  existencias( $id,$entrada=0){                
+    public function  existencias( $id,$entrada=0)
+    {                
         $producto= $this->Find($id);
         return $producto->existencias()->where('entrada',$entrada)->get();    
     }    
@@ -83,7 +102,6 @@ class ProductoRepository implements IRepository{
         $producto->unidad_medida_id =$request->input('unidad_medida') ;
         $producto->categoria_id=$request->input('categoria');
         $producto->save();       
-
     }
     public function Delete($id)
     {

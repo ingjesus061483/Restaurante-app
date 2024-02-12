@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Configuracion;
 use App\Models\Impresora;
 use App\Models\OrdenEncabezado;
+use App\Repositories\CabanaRepository;
 use App\Repositories\ConfiguracionRepository;
+use App\Repositories\EmpleadoRepository;
 use App\Repositories\ExistenciaRepository;
 use App\Repositories\FileRepository;
 use App\Repositories\PlantillasRepository;
+use App\Repositories\ProductoRepository;
 use Exception;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
@@ -19,8 +23,29 @@ class ReportesController extends Controller
 {
     protected ConfiguracionRepository $_configuracionRepository;
     protected ExistenciaRepository  $_existenciaRepository;
+    protected CabanaRepository $_cabanaRepository;
     protected FileRepository $_fileRepository;
     protected PlantillasRepository $_plantillaRepository;
+    protected EmpleadoRepository $_empleadoRepository;
+    protected ProductoRepository $_productoRepository;
+    public function __construct(ExistenciaRepository $existenciaRepository,
+                                PlantillasRepository $plantillasRepository,
+                                FileRepository $fileRepository,
+                                CabanaRepository $cabanaRepository,
+                                ConfiguracionRepository $configuracionRepository,
+                                EmpleadoRepository $empleadoRepository,
+                                ProductoRepository $productoRepository,)
+
+    {
+        $this->_cabanaRepository=$cabanaRepository;
+        $this->_productoRepository=$productoRepository;
+        $this->_empleadoRepository=$empleadoRepository;
+        $this->_configuracionRepository=$configuracionRepository;
+        $this->_plantillaRepository=$plantillasRepository;
+        $this ->_fileRepository=$fileRepository;
+        $this->_existenciaRepository = $existenciaRepository;
+
+    }
     private function Detalles_impresora($orden_detalles,$impresora ){
 
         $detalles=$orden_detalles;
@@ -33,19 +58,8 @@ class ReportesController extends Controller
             }                
         }
         return $detalles_impresora;
-
     }
-    public function __construct(ExistenciaRepository $existenciaRepository,
-                                PlantillasRepository $plantillasRepository,
-                                FileRepository $fileRepository,
-                                ConfiguracionRepository $configuracionRepository)
-    {
-        $this->_configuracionRepository=$configuracionRepository;
-        $this->_plantillaRepository=$plantillasRepository;
-        $this ->_fileRepository=$fileRepository;
-        $this->_existenciaRepository = $existenciaRepository;
-
-    }
+    
     function printComanda($id)
     {
         try
@@ -89,7 +103,6 @@ class ReportesController extends Controller
             if (count($err)>0)
             {
                 return back()->withErrors($err);
-
             }            
             return redirect()->to('ordenservicio');        
         }
@@ -145,16 +158,13 @@ class ReportesController extends Controller
             if (count($err)>0)
             {
                 return back()->withErrors($err);
-
             }            
             return redirect()->to('ordenservicio');        
         }
         catch(Exception $ex)
         {
             return back()->withErrors($ex->getMessage());
-        }   
-        
- 
+        }    
     }
     public function inventarioPdf()
     {
@@ -169,7 +179,44 @@ class ReportesController extends Controller
         ];
        // return view('Reporte.inventario',$data);
        return $this->_fileRepository->GetPdf('Reporte.inventario',$data);
-
+    }
+    public function VentasByMesasPdf()
+    {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        $ventas=$this->_cabanaRepository->GetVentasByCabanas();
+        $data=[
+            'ventas'=>$ventas
+        ];
+         //return view('Reporte.VentasByMesas',$data);
+         return $this->_fileRepository->GetPdf('Reporte.VentasByMesas',$data);   
+    }
+    public function PropinasByEmpleadoPdf()
+    {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        $data=[
+            'propinas'=>$this->_empleadoRepository->propinasByEmpleado()        
+        ];
+//       return view ('Reporte.PropinasByEmpleado',$data);
+       return $this->_fileRepository->GetPdf('Reporte.PropinasByEmpleado',$data);
+    }
+    public function ProductosVendidosByFechaPdf(Request $request)
+    {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }        
+        $data=[
+            'productosvendidos'=>$this->_productoRepository->ProductosVendidosByFecha($request),
+        ];
+        return $this->_fileRepository->GetPdf('Reporte.ProductosVendidosByFecha',$data);
+        //return view('Reporte.ProductosVendidosByFecha',$data)
     }
     //
+
 }

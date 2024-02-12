@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo',)->unique();
+            $table->string('codigo',50)->unique();
             $table->date('fecha_hora');
             $table->decimal('subtotal',10,2);
             $table->decimal('impuesto',10,2);

@@ -6,7 +6,8 @@ use App\Models\CajaMovimiento;
 
 class CajaMovimientoRepository implements IRepository
 {
-    public function ValorByIngreso($caja_id,$ingreso=0){
+    public function ValorByIngreso($caja_id,$ingreso=0)
+    {
         return CajaMovimiento::selectRaw('SUM(valor)Valor_total')
                              ->where('caja_id',$caja_id)
                              ->where('ingreso',$ingreso)

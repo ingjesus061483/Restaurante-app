@@ -6,7 +6,8 @@ use App\Models\Caja;
 
 class CajaRepository implements IRepository{
     protected CajaMovimientoRepository $_cajaMovimientoRepository;
-    public function __construct(CajaMovimientoRepository $cajaMovimientoRepository) {
+    public function __construct(CajaMovimientoRepository $cajaMovimientoRepository) 
+    {
         $this->_cajaMovimientoRepository = $cajaMovimientoRepository;
     }
     public function EsAbierta(Caja $caja)
@@ -41,14 +42,15 @@ class CajaRepository implements IRepository{
             'descripcion'=>$request->descripcion,
             'valor_inicial'=>$request->valor_inicial
         ]);
-        $CajaMovimiento=(object)['fecha_hora'=>date("Y-m-d H:i:s"),
+        $CajaMovimiento=(object)
+        [
+            'fecha_hora'=>date("Y-m-d H:i:s"),
                 'concepto'=>'ingreso inicial',                
                 'valor'=>$caja->valor_inicial,                
                 'ingreso'=>1,
                 'caja_id'=>$caja->id
-            ];
+        ];
         $this->_cajaMovimientoRepository->Store($CajaMovimiento);
-
     }
     public function Update($id, $request)
     {

@@ -8,7 +8,7 @@ class PlantillasRepository
         $encabezado=$ordenservicio->impresora->tamaño_fuente_encabezado;
         $contenido=$ordenservicio->impresora->tamaño_fuente_contenido;
         $valorDomicilio=$ordenservicio->orden_encabezado->domicilio==1?$ordenservicio->domicilio:0;
-        $propina=$ordenservicio->prpina;
+        $propina=$ordenservicio->propina;
         $printer ->setTextSize($encabezado,$encabezado);      
         $printer -> text("========================\n");    
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
@@ -98,17 +98,17 @@ class PlantillasRepository
                 {
                     $printer->text("Valor domicilio: $".number_format($valorDomicilio)."\n");
                 }
-                $printer ->setTextSize($encabezado,$encabezado);              
-                $printer->text("**************\n");         
-                $printer->text("Total a pagar: $".number_format( $item->total_pagar+$valorDomicilio)."\n");
-                $printer->text("**************\n");                         
-                $printer ->setTextSize($contenido,$contenido);     
-                $printer->text("Recibido: $".number_format( $item->recibido)."\n");  
-                $printer->text("Cambio: $".number_format( $item->cambio)."\n");
                 if($propina!=0)
                 {
                     $printer->text("Propina voluntaria:  $".number_format( $item->total_pagar*$propina )."\n");                
                 }
+                $printer ->setTextSize($encabezado,$encabezado);              
+                $printer->text("**************\n");         
+                $printer->text("Total a pagar: $".number_format( $item->total_pagar+$valorDomicilio+$item->total_pagar*$propina)."\n");
+                $printer->text("**************\n");                         
+                $printer ->setTextSize($contenido,$contenido);     
+                $printer->text("Recibido: $".number_format( $item->recibido)."\n");  
+                $printer->text("Cambio: $".number_format( $item->cambio)."\n");             
                 $printer->text("Observaciones: ".$item->observaciones."\n");                
             }  
             $printer ->setTextSize($encabezado,$encabezado);              
@@ -120,7 +120,6 @@ class PlantillasRepository
     {
         $encabezado=$ordenservicio->impresora->tamaño_fuente_encabezado;
         $contenido=$ordenservicio->impresora->tamaño_fuente_contenido;
-
         $printer ->setTextSize($encabezado,$encabezado);      
         $printer -> text("========================\n");    
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
@@ -128,8 +127,16 @@ class PlantillasRepository
         $printer ->setTextSize($contenido,$contenido);
         $printer->text($ordenservicio->empresa->nit."\n" );        
         $printer ->setTextSize($encabezado,$encabezado);                      
+        $printer->setJustification(Printer::JUSTIFY_CENTER);                
+        $printer->text("========================\n");        
+        $printer->text("=======Encabezado=======\n");
+        $printer->setJustification(Printer::JUSTIFY_LEFT);        
+        $printer ->setTextSize($contenido,$contenido);    
+        $printer->text("Mesero:".$ordenservicio->orden_encabezado->empleado->nombre.' '.$ordenservicio->orden_encabezado->empleado->apellido  .  "\n");        
+        $printer->text("Fecha/hora:".$ordenservicio->orden_encabezado->fecha." ". $ordenservicio->orden_encabezado->hora."\n");
+        $printer->text("Hora entrega:".$ordenservicio->orden_encabezado->hora_entrega ."\n");        
+        $printer ->setTextSize($encabezado,$encabezado);                      
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
-        $printer ->setTextSize($encabezado,$encabezado);              
         $printer->text("========================\n");    
         $printer->text("=========Detalle========\n");
         $printer->setJustification(Printer::JUSTIFY_LEFT);        

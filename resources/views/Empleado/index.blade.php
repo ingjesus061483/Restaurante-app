@@ -13,6 +13,9 @@
 <div class="card mb-4">
     <div class="card-header">
         <a href="{{url('/empleados/create')}}" class="btn btn-primary">Crear empleado </a>
+        <a href="{{url('reportes/propinasByEmpleado')}}" target="blank" class="btn btn-danger">
+            PDF
+        </a>
     </div>
     <div class="card-body">
         <table id="datatablesSimple">

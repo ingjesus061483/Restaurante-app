@@ -4,7 +4,8 @@ namespace App\Repositories;
 use App\Contracts\IRepository;
 use App\Models\Cliente;
 
-class ClienteRepository implements IRepository{
+class ClienteRepository implements IRepository
+{
     protected UserRepository $_UserRepository;        
     public function __construct( UserRepository $userRepository) {
         $this->_UserRepository = $userRepository;

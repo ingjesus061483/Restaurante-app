@@ -15,7 +15,7 @@ class ConfiguracionSeeder extends Seeder
     {
         DB::table('configuracions')->insert([
             ['nombre'=>'ImpoConsumo','valor'=>'0.08'],
-            ['nombre'=>'propina','valor'=>''], 
+            ['nombre'=>'propina','valor'=>'0'], 
             ['nombre'=>'descuento','valor'=>''],                      
             ['nombre'=>'Valor_Domicilio','valor'=>'0'],                     
         ]);

@@ -85,7 +85,7 @@ class CabanaController extends Controller
         session(['cabana' => $cabana]);   
         if (session()->has('detalles'))
         {
-          return  redirect()->to('ordendetalles');
+          return  redirect()->to('ordenservicio/create');
         }    
         else
         {

@@ -1,10 +1,12 @@
 
-<div class="nav">
+<div class="nav">    
     <div class="sb-sidenav-menu-heading">Aplicaciones</div>
+    @if(auth()->user()->role_id==1||auth()->user()->role_id==2)
     <a class="nav-link" href="{{url('/existencias')}}">
         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
         Inventario
     </a>
+    @endif
    <!--<a class="nav-link" href="{{url('/')}}">
         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
         Alquiler
@@ -13,10 +15,11 @@
         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
         Orden de servicio
     </a>                            
+    @if(auth()->user()->role_id==1||auth()->user()->role_id==2)
     <a class="nav-link" href="{{url('/cuentascobrar')}}">
         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
         Cartera
-    </a>      
+    </a>          
     <a class="nav-link" href="{{url('/pagos')}}">
         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
         Pagos
@@ -46,4 +49,5 @@
             <a class="nav-link" href="{{url('/observaciones')}}">Observaciones</a> 
         </nav>
     </div>                         
+    @endif
 </div>

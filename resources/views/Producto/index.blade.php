@@ -3,7 +3,37 @@
 @section('content')  
 <div class="card mb-4">
     <div class="card-header">
-        <a href="{{url('/productos/create')}}" class="btn btn-primary">Crear productos </a>
+        <div class="row">
+            <div class="col-3">             
+                <br>                           
+                <a href="{{url('/productos/create')}}" class="btn btn-primary">Crear productos </a>
+            </div>
+            <div class="col-9">
+                <form target="blank" action="{{url('reportes/ProductosVendidosByFecha')}}">
+                    <div class="row">
+                        <div class="col-4" >
+                            <label class="form-label" for="codigo">                        
+                                Fecha inicio                                           
+                            </label>                    
+                            <input name="fechaIni" value=""  class="form-control" type="date"/>                                        
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label" for="codigo">                        
+                                Fecha fin                                           
+                            </label>                                        
+                            <input name="fechaFin" class="form-control" value="" type="date"/>
+                        </div>
+                        <div class="col-4">
+                            <br>                    
+                            <button type="submit" class="btn btn-danger">PDF </button>    
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
     </div>
     <div class="card-body">
         <table id="datatablesSimple">

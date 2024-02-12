@@ -6,9 +6,24 @@ use App\Models\Empleado;
 
 class EmpleadoRepository implements IRepository
 {
-    protected UserRepository $_UserRepository;
+    protected UserRepository $_UserRepository;    
     public function __construct( UserRepository $userRepository) {
         $this->_UserRepository = $userRepository;
+    }
+    public function propinasByEmpleado()
+    {
+        $subquery="SELECT valor FROM configuracions WHERE nombre ='propina'";
+        return Empleado::select('empleados.identificacion')
+                       ->selectRaw("CONCAT( empleados.nombre,' ',empleados.apellido)as nombre_completo")
+                       ->selectRaw('SUM( pagos.total_pagar )total_ventas')
+                       ->selectRaw('COUNT(orden_encabezados.id) canidad_ordeneses_vendidas')
+                       ->selectRaw("SUM( pagos.total_pagar*($subquery))total_propina")
+                       ->join('orden_encabezados','Empleados.id','=','orden_encabezados.empleado_id')
+                       ->join('pagos','orden_encabezados.id','=','pagos.orden_id')
+                       ->whereRaw('orden_encabezados.fecha=CURDATE()')
+                       ->where('orden_encabezados.estado_id',3)
+                       ->groupby('empleados.identificacion')
+                       ->groupbyRaw("CONCAT( empleados.nombre,' ',empleados.apellido)")->get();
     }
     public function GetEmpleadoByUser($user){
         return Empleado::where('user_id',$user->id)->first();
