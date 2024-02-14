@@ -157,14 +157,18 @@
                                 <td>${{number_format( $item->valor_unitario)}}</td>
                                 <td>${{number_format( $item->total)}} </td>                                                   
                                 <td>
-                                    <a onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning"> Editar</a>
+                                    <a onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning">
+                                        <i class="fa-solid fa-pen"></i>                                        
+                                    </a>
                                 </td>                                                                                       
                                 <td>                
                                     <form action="{{url('/ordendetalles')}}/{{$item->id}}" 
                                         onsubmit="return validar('Desea eliminar este registro?');" method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class="btn btn-danger" type="submit"> Cancelar</button>
+                                        <button class="btn btn-danger" type="submit"> 
+                                            <i class="fa-solid fa-trash"></i>    
+                                        </button>
                                     </form>
                                 </td>
                             </tr>                    

@@ -33,7 +33,7 @@
                     <td>{{$item->descripcion}}</td>
                     <td>
                         <a class="btn btn-warning" href="{{url('/unidad_medida')}}/{{$item->id}}/edit">
-                            Editar 
+                            <i class="fa-solid fa-pen"></i>                    
                         </a>
                     </td>
                     <td>                

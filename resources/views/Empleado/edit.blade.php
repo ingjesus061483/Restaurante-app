@@ -57,6 +57,24 @@
                 </label>
                 <input type="text" name="email" readonly id="email" value="{{$empleado->usuario->email}}" class="form-control">        
             </div>
+            <div class ="mb-3">
+                <label class="form-label" for="usuario">
+                    usuario
+                </label>
+                <input type="text" name="name" id="name" value="{{$empleado->usuario->name}}" class="form-control">        
+            </div>
+            <div class ="mb-3">
+                <label class="form-label" for="password">
+                    Contraseña
+                </label>
+                <input type="password" name="password" id="password" value="{{old('password')}}" class="form-control">        
+            </div> 
+            <div class ="mb-3">
+                <label class="form-label" for="password-confirmation">
+                    Confirmar Contraseña
+                </label>
+                <input type="password" name="password_confirmation" id="password" class="form-control">        
+            </div>
             <div class="mb-3">
                 <label class="form-label" for="role">
                     Role                

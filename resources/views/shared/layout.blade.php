@@ -53,7 +53,10 @@
                              onsubmit="return validar('Desea cerrar la sesion?')" method="post">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-danger"  >Cerrar sesion</button>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                
+                            </button>
                         </form>                    
                     </div>
                 </nav>

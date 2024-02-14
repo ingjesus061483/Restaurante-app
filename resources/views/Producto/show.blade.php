@@ -142,7 +142,7 @@
                             <td>{{$item->cantidad}}</td>           
                             <td>
                                 <a class="btn btn-warning" onclick="editar_ingredientes(this);">
-                                    Editar 
+                                    <i class="fa-solid fa-pen"></i>  
                                 </a>
                             </td>
                             <td>                
@@ -150,7 +150,9 @@
                                     onsubmit="return validar('Desea eliminar este registro?');" method="post">
                                     @csrf
                                     @method('delete')
-                                    <button class="btn btn-danger" type="submit"> Eliminar</button>
+                                    <button class="btn btn-danger" type="submit"> 
+                                        <i class="fa-solid fa-trash"></i>                                        
+                                    </button>
                                 </form>
                             </td>
                         </tr>

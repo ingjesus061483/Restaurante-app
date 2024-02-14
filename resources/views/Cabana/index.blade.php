@@ -4,7 +4,10 @@
 <div class="card mb-4">
     <div class="card-header">
         <a href="{{url('/')}}/cabañas/create" class="btn btn-primary">Crear cabañas </a>
-       <a href="{{url('/reportes/ventasbycabaña')}}" target="blank" class="btn btn-danger">Pdf</a>
+        <a href="{{url('/reportes/ventasbycabaña')}}" target="blank" class="btn btn-danger">
+            <i class="fa-solid fa-file-pdf"></i>&nbsp;          
+            Pdf       
+        </a>
     </div>
     <div class="card-body">
         <table id="datatablesSimple">
@@ -43,14 +46,16 @@
                     <td>{{$item->capacidad_maxima}}</td>
                     <td>
                         <a class="btn btn-warning" href="{{url('/')}}/cabañas/{{$item->id}}/edit">
-                            Editar 
+                            <i class="fa-solid fa-pen"></i> 
                         </a>
                     </td>
                     <td>                
                         <form action="{{url('/')}}/cabañas/{{$item->id}}" onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> Eliminar</button>
+                            <button class="btn btn-danger" type="submit"> 
+                                <i class="fa-solid fa-trash"></i>    
+                            </button>
                         </form>
                     </td>
                 </tr>

@@ -28,7 +28,7 @@
                     <td>{{$item->valor}}</td>
                     <td>
                         <a class="btn btn-warning" href="{{url('/')}}/configuracion/{{$item->id}}/edit">
-                            Editar 
+                            <i class="fa-solid fa-pen"></i>                        
                         </a>
                     </td>
                 </tr>

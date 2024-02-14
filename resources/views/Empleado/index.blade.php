@@ -14,7 +14,7 @@
     <div class="card-header">
         <a href="{{url('/empleados/create')}}" class="btn btn-primary">Crear empleado </a>
         <a href="{{url('reportes/propinasByEmpleado')}}" target="blank" class="btn btn-danger">
-            PDF
+            <i class="fa-solid fa-file-pdf"></i>&nbsp;PDF
         </a>
     </div>
     <div class="card-body">
@@ -66,14 +66,16 @@
                     <td>{{$item->usuario->empresa->nombre}}</td>            
                     <td>
                         <a class="btn btn-warning" href="{{url('/empleados/'.$item->id.'/edit')}}">
-                            Editar 
+                            <i class="fa-solid fa-pen"></i>
                         </a>
                     </td>
                     <td>                
                         <form onsubmit="return validar('Desea eliminar este registro?');" action="{{url('/')}}/empleados/{{$item->id}}" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> Eliminar</button>
+                            <button class="btn btn-danger" type="submit"> 
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         </form>
                     </td>        
                 </tr>

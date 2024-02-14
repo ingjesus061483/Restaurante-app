@@ -33,7 +33,10 @@
                         @endif
                     </td>                                            
                     <td>                        
-                        <a  onclick="ordenservicio({{$item->id}});" class="btn btn-primary">Comprar</a>                      
+                        <a  onclick="ordenservicio({{$item->id}});" class="btn btn-primary">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        
+                        </a>                      
                     </td>
                 </tr>
                 @endforeach
@@ -43,13 +46,11 @@
     <div class="card-footer">
         <div class="row">
             <div col-auto>
-
             </div>            
             <div col-auto>
                 <a class="btn btn-primary" href="{{isset($orden_id)?url('/ordenservicio'):url('/ordendetalles')}}">                    
                     Regresar                
-                </a>                 
-              
+                </a>              
             </div>
         </div>        
     </div>

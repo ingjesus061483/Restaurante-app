@@ -12,7 +12,7 @@
                         @foreach($cabanas as $item)
                         <div class="col-4"> 
                             <div style="padding: 5px">
-                                <a class ="btn btn-primary" href="{{url('/cabañas')}}/{{$item->id}}"> {{$item->nombre}}  </a>                            
+                                <a class ="btn btn-primary" href="{{url('/cabañas')}}/{{$item->id}}"><img src="{{url('/img/mesa.png')}}" height="50"width="50"> {{$item->nombre}}  </a>                            
                             </div>                           
                         </div>                             
                         @endforeach 

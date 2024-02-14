@@ -63,7 +63,8 @@
                     Contraseña
                 </label>
                 <input type="password" name="password" id="password" value="{{old('password')}}" class="form-control">        
-            </div> <div class ="mb-3">
+            </div> 
+            <div class ="mb-3">
                 <label class="form-label" for="password-confirmation">
                     Confirmar Contraseña
                 </label>

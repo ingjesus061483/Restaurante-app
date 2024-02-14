@@ -40,7 +40,7 @@
                     <td>{{$item->unidad_medida->nombre}}</td>
                     <td>{{$item->categoria->nombre}}</td>
                     <td>
-                        <a class="btn btn-success" onclick="InsertarIgredientes(this);" >Abrir formulario</a>
+                        <a class="btn btn-success" onclick="InsertarIgredientes(this);" ><i class="fa-solid fa-square-plus"></i></a>
                     </td>
                 </tr>
                 @endforeach   

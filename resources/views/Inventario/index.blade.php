@@ -5,7 +5,7 @@
     <div class="card-header">
         <div class="row">
             <div class="col-4">
-                <a href="{{url('/reportes/inventario')}}" target="blank" class="btn btn-danger">PDF </a>        
+                <a href="{{url('/reportes/inventario')}}" target="blank" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i>&nbsp; PDF </a>        
             </div>
             <div class="col-4">
             </div>            
@@ -66,7 +66,10 @@
                     <td>{{number_format($item->total_inventario)}}</td>
                     <td>
                         <a class="btn btn-success" 
-                        href="{{url('/')}}/{{$item->tipo=='producto'?'productos':'materiaprimas'}}/{{$item->id}}">Ver</a>
+                            href="{{url('/')}}/{{$item->tipo=='producto'?'productos':'materiaprimas'}}/{{$item->id}}">
+                            <i class="fa-solid fa-eye"></i>
+                    
+                        </a>
                     </td>
                 </tr>
                 @endforeach   

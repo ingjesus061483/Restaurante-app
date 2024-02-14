@@ -3,7 +3,8 @@
     <div class="sb-sidenav-menu-heading">Aplicaciones</div>
     @if(auth()->user()->role_id==1||auth()->user()->role_id==2)
     <a class="nav-link" href="{{url('/existencias')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+        <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+
         Inventario
     </a>
     @endif
@@ -12,22 +13,22 @@
         Alquiler
     </a>-->
     <a class="nav-link" href="{{url('/ordenservicio')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+        <div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-list"></i></div>
         Orden de servicio
     </a>                            
     @if(auth()->user()->role_id==1||auth()->user()->role_id==2)
     <a class="nav-link" href="{{url('/cuentascobrar')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+        <div class="sb-nav-link-icon"><i class="fa-regular fa-credit-card"></i></div>
         Cartera
     </a>          
     <a class="nav-link" href="{{url('/pagos')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+        <div class="sb-nav-link-icon"><i class="fa-regular fa-money-bill-1"></i></div>
         Pagos
     </a>      
     <div class="sb-sidenav-menu-heading">Administracion del sistema</div>
     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-        Administrador
+        <div class="sb-nav-link-icon"><i class="fa-solid fa-gears"></i></div>
+        Administracion
         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
     </a>
     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">

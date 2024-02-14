@@ -3,7 +3,7 @@ namespace App\Repositories;
 
 use App\Contracts\IRepository;
 use App\Models\Empleado;
-
+use Illuminate\Support\Facades\Hash;
 class EmpleadoRepository implements IRepository
 {
     protected UserRepository $_UserRepository;    
@@ -64,6 +64,7 @@ class EmpleadoRepository implements IRepository
         $empleado->save();
         $user->role_id=$request->role;
         $user->caja_id=$request->caja;
+        $user->password=hash::make( $request->password);
         $user->save();    
     }
     public function Delete($id)

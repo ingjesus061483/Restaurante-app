@@ -53,7 +53,9 @@
                     <td>${{number_format($item->monto+$item->interes)}}</td>
                     <td>{{$item->tipo_cobro}}</td>
                     <td>
-                        <a class="btn btn-success" href="{{url('/cuentascobrar')}}/{{$item->id}}">Ver detalles</a>                                        
+                        <a class="btn btn-success" href="{{url('/cuentascobrar')}}/{{$item->id}}">
+                            <i class="fa-solid fa-eye"></i>                        
+                        </a>                                        
                     </td>
                 </tr>
                 @endforeach   

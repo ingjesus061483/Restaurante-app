@@ -79,8 +79,7 @@ class EmpleadoController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -149,6 +148,8 @@ class EmpleadoController extends Controller
             'direccion'=>'required|max:50',
             'telefono'=>'required|max:50',
             'email'=>'required|email|max:255',
+            'name'=>'required',
+            'password'=>['required','confirmed',Password::default()],            
             'role'=>'required'
         ]);
         if($request->role==3){

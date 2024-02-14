@@ -25,7 +25,10 @@
                         </div>
                         <div class="col-4">
                             <br>                    
-                            <button type="submit" class="btn btn-danger">PDF </button>    
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-file-pdf"></i>&nbsp;
+                                PDF 
+                            </button>    
                         </div>
                     </div>
                 </form>
@@ -91,15 +94,20 @@
                     <td>{{$item->impresora->nombre}}</td>
                     <td>
                         @if($item->foraneo)
-                        <button onclick="existencias(this,'producto');" class="btn btn-info" >Existencias </button>
+                        <button onclick="existencias(this,'producto');" class="btn btn-info" >
+                            <i class="fa-solid fa-warehouse"></i>
+                            
+                        </button>
                         @endif
                     </td>
                     <td>
-                        <a class="btn btn-success" href="{{url('/productos')}}/{{$item->id}}">Ver</a>
+                        <a class="btn btn-success" href="{{url('/productos')}}/{{$item->id}}">
+                            <i class="fa-solid fa-eye"></i>                            
+                        </a>
                     </td>                    
                     <td>
                         <a class="btn btn-warning" href="{{url('/productos')}}/{{$item->id}}/edit">
-                            Editar 
+                            <i class="fa-solid fa-pen"></i>  
                         </a>
                     </td>
                     <td>                
@@ -107,7 +115,9 @@
                             onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> Eliminar</button>
+                            <button class="btn btn-danger" type="submit"> 
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         </form>
                     </td>
                 </tr>

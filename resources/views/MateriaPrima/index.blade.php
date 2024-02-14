@@ -48,14 +48,18 @@
                     <td>{{$item->unidad_medida->nombre}}</td>
                     <td>{{$item->categoria->nombre}}</td>
                     <td>
-                        <a class="btn btn-success" href="{{url('/materiaprimas')}}/{{$item->id}}">Ver</a>
+                        <a class="btn btn-success" href="{{url('/materiaprimas')}}/{{$item->id}}">
+                            <i class="fa-solid fa-eye"></i>                            
+                        </a>
                     </td>
                     <td>
-                        <button onclick="existencias(this,'materia_prima');" class="btn btn-info" >Existencias </button>
+                        <button onclick="existencias(this,'materia_prima');" class="btn btn-info" >
+                            <i class="fa-solid fa-warehouse"></i>    
+                        </button>
                     </td>
                     <td>
                         <a class="btn btn-warning" href="{{url('/materiaprimas')}}/{{$item->id}}/edit">
-                            Editar 
+                            <i class="fa-solid fa-pen"></i>
                         </a>
                     </td>
                     <td>                
@@ -63,7 +67,9 @@
                             onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> Eliminar</button>
+                            <button class="btn btn-danger" type="submit"> 
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         </form>
                     </td>
                 </tr>
