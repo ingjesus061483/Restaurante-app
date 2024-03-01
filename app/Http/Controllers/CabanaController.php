@@ -66,9 +66,8 @@ class CabanaController extends Controller
             'codigo'=>'required|unique:cabañas|max:50',            
             'nombre'=>'required|max:50',           
             'capacidad'=>'required|numeric',
-            'precio'=>'required|numeric',
         ]);
-        $this->_repository->Store((object)$request->all());          
+        $this->_repository->Store($request);          
         return redirect()->to(url('/cabañas'));         
     }
 
@@ -82,6 +81,10 @@ class CabanaController extends Controller
             return redirect()->to('login');
         }    
         $cabana =$this->_repository->Find($id);
+        if ($cabana->ocupado==1)
+        {
+            return back()->withErrors("La mesa no se encuentra disponible");
+        }
         session(['cabana' => $cabana]);   
         if (session()->has('detalles'))
         {
@@ -133,10 +136,9 @@ class CabanaController extends Controller
         $validacion=$request->validate([
             'codigo'=>'required|max:50|unique:cabañas,codigo,'.$id,            
             'nombre'=>'required|max:50',           
-            'capacidad'=>'required|numeric',
-            'precio'=>'required|numeric',
+            'capacidad'=>'required|numeric',            
         ]);
-        $this->_repository->Update($id,(object)$request->all());   
+        $this->_repository->Update($id,$request);   
         return redirect()->to(url('/cabañas'));       
         //
     }

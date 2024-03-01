@@ -56,7 +56,7 @@
                     <td>{{$item->slogan}}</td>
                     <td>{{$item->tipo_regimen->nombre}}</td>
                     <td>
-                        <a class="btn btn-warning" href="{{url('/empresas/'.$item->id.'/edit')}}">
+                        <a title="Editar" class="btn btn-warning" href="{{url('/empresas/'.$item->id.'/edit')}}">
                             <i class="fa-solid fa-pen"></i>
                         </a>
                     </td>
@@ -64,7 +64,7 @@
                         <form onsubmit="return validar('Desea eliminar este registro?');" action="{{url('/')}}/empresas/{{$item->id}}" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> 
+                            <button title="Eliminar" class="btn btn-danger" type="submit"> 
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>

@@ -44,7 +44,7 @@
                     <td>{{$item->tamaño_fuente_contenido}}</td>
                     <td>{{$item->descripcion}}</td>
                     <td>
-                        <a class="btn btn-warning" href="{{url('/impresoras')}}/{{$item->id}}/edit">
+                        <a title="Editar" class="btn btn-warning" href="{{url('/impresoras')}}/{{$item->id}}/edit">
                             <i class="fa-solid fa-pen"></i>
                         </a>
                     </td>
@@ -53,7 +53,7 @@
                              onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> 
+                            <button title="Eliminar" class="btn btn-danger" type="submit"> 
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>

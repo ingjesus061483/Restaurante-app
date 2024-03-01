@@ -19,8 +19,7 @@
                     Codigo
                 </label>
                 <input type="text" name="codigo" value="{{old('codigo')}}" class="form-control" id="codigo">
-            </div>
-            
+            </div>            
             <div class="mb-3">
                 <label class="form-label" for="nombre">
                     Nombre
@@ -40,20 +39,7 @@
                 </label>
                 <input type="text" name="precio" value="{{old('precio')}}" class="form-control"
                  id="precio">
-            </div>         
-            <div class="mb-3" id="coccion" >
-                <label class="form-label" for="tiempo_coccion">
-                    Tiempo coccion
-                </label>
-                <input type="text" name="tiempo_coccion" value="{{old('tiempo_coccion')}}" class="form-control"
-                 id="tiempo_coccion">
-            </div>         
-            <div class="mb-3">
-                <label class="form-label" for="foraneo">
-                    Foraneo
-                </label>
-                <input type="checkbox" name="foraneo" class="form-check-inline" id="foraneo">
-            </div>                     
+            </div>                                 
             <div class="mb-3">
                 <label class="form-label" for="categoria">
                     Categoria                
@@ -71,7 +57,7 @@
                     Impressoras               
                 </label>
                 <select type="text" name="impresora" class="form-select"
-                 id="categoria">
+                 id="impresora">
                  <option value="">seleccione una impresora</option>
                  @foreach($impresoras as $item)
                  <option value="{{$item->id}}">{{$item->codigo.' - '.$item->nombre}}</option>
@@ -95,8 +81,28 @@
                     Imagen
                 </label>
                 <input type="file" name="imagen" accept="image/*"   class="form-control" id="imagen">
+            </div>         
+            <div class="mb-3">
+                <label class="form-label" for="foraneo">
+                    Foraneo
+                </label>
+                <input type="checkbox" name="foraneo" class="form-check-inline" id="foraneo">
+            </div>                     
+            <div class="mb-3" id="coccion" >
+                <label class="form-label" for="tiempo_coccion">
+                    Tiempo coccion
+                </label>
+                <input type="text" name="tiempo_coccion" value="{{old('tiempo_coccion')}}" class="form-control"
+                 id="tiempo_coccion">
+            </div>
+            <div class="mb-3" id="inventario" >
+                <label class="form-label" for="tiempo_coccion">
+                    Existencias
+                </label>
+                <input type="text" name="existencias" value="{{old('tiempo_coccion')}}" class="form-control"
+                 id="existencia">
             </div>                        
-            <div class ="mb-3" id="descripcion">
+            <div class ="mb-3" id="preparacion">
                 <label class="form-label" for="preparacion">
                     Preparacion
                 </label>
@@ -105,7 +111,7 @@
                  {{old('preparacion')}}
                 </textarea>
             </div>
-            <div class ="mb-3" id="descripcion">
+            <div class ="mb-3" >
                 <label class="form-label" for="preparacion">
                     Descripcion
                 </label>

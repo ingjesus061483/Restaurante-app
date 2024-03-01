@@ -85,7 +85,7 @@ class CuentasCobrarController extends Controller
         $cliente =$ordenServicio->cliente;
         $configuracion=$this->_ConfiguracionRepository->getConfigByNombre('interes');        
         $monto=$ordenServicio->total;
-        $interes=$configuracion->valor *$monto;
+        $interes=$configuracion!=null?  $configuracion->valor *$monto:0;
         $data=[
             "orden_id"=>$ordenServicio->id,
             "valorRecibido"=>$valorRecibido,

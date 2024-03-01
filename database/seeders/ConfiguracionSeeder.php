@@ -17,7 +17,10 @@ class ConfiguracionSeeder extends Seeder
             ['nombre'=>'ImpoConsumo','valor'=>'0.08'],
             ['nombre'=>'propina','valor'=>'0'], 
             ['nombre'=>'descuento','valor'=>''],                      
-            ['nombre'=>'Valor_Domicilio','valor'=>'0'],                     
+            ['nombre'=>'Valor_Domicilio','valor'=>'0'],     
+            ['nombre'=>'Impresora_cajero','valor'=>''],		
+            ['nombre'=> 'comision_bebidas','valor'=>''],	
+            ['nombre'=>'comision_comidas','valor'=>''],        
         ]);
         //
     }

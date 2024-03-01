@@ -188,10 +188,11 @@ class PagoController extends Controller
             'total_pagar'=>'required|numeric',                     
         ]);
         $pagoDetalles=[];  
-        if(session()->has('pagodetalles'))
+        if(!session()->has('pagodetalles'))
         {
-            $pagoDetalles=session('pagodetalles');
+           return back()->withErrors("Debe crear por lo menos un detalle de pago") ;
         }
+        $pagoDetalles=session('pagodetalles');
         $recibido =$request->input('acumulado');
         $total_pagar= $request->input('total_pagar');
         settype($recibido,"double");

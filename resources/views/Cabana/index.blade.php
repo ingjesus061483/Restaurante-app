@@ -16,8 +16,7 @@
                     <th>Id</th>
                     <th>Codigo</th>
                     <th>Nombre</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
+                    <th>Descripcion</th>                    
                     <th>Capacidad</th>
                     <th></th>
                     <th></th>
@@ -28,8 +27,7 @@
                     <th>Id</th>
                     <th>Codigo</th>
                     <th>Nombre</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
+                    <th>Descripcion</th>                    
                     <th>Capacidad</th>
                     <th></th>
                     <th></th>
@@ -42,10 +40,9 @@
                     <td>{{$item->codigo}}</td>
                     <td>{{$item->nombre}}</td>            
                     <td>{{$item->descripcion}}</td>
-                    <td>${{number_format($item->precio)}}</td>
                     <td>{{$item->capacidad_maxima}}</td>
                     <td>
-                        <a class="btn btn-warning" href="{{url('/')}}/cabañas/{{$item->id}}/edit">
+                        <a title="Editar" class="btn btn-warning" href="{{url('/')}}/cabañas/{{$item->id}}/edit">
                             <i class="fa-solid fa-pen"></i> 
                         </a>
                     </td>
@@ -53,8 +50,8 @@
                         <form action="{{url('/')}}/cabañas/{{$item->id}}" onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> 
-                                <i class="fa-solid fa-trash"></i>    
+                            <button title="Eliminar" class="btn btn-danger" type="submit"> 
+                                <i class="fa-solid fa-trash"></i>                                    
                             </button>
                         </form>
                     </td>

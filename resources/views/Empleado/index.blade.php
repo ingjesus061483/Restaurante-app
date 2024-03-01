@@ -13,8 +13,8 @@
 <div class="card mb-4">
     <div class="card-header">
         <a href="{{url('/empleados/create')}}" class="btn btn-primary">Crear empleado </a>
-        <a href="{{url('reportes/propinasByEmpleado')}}" target="blank" class="btn btn-danger">
-            <i class="fa-solid fa-file-pdf"></i>&nbsp;PDF
+        <a title="Ver reporte" href="{{url('reportes/propinasByEmpleado')}}" target="blank" class="btn btn-danger">
+            <i class="fa-solid fa-file-pdf"></i>
         </a>
     </div>
     <div class="card-body">
@@ -24,6 +24,7 @@
                     <th>Id</th>
                     <th>Identificacion</th>
                     <th>Nombre completo </th>            
+                    <th>Fecha nacimiento</th>
                     <th>Direccion</th>
                     <th>Telefono</th>
                     <th>Email</th>
@@ -40,6 +41,7 @@
                     <th>Id</th>
                     <th>Identificacion</th>
                     <th>Nombre completo </th>            
+                    <th>Fecha nacimiento</th>
                     <th>Direccion</th>
                     <th>Telefono</th>
                     <th>Email</th>
@@ -57,6 +59,7 @@
                     <td>{{$item->id}}</td>            
                     <td>{{$item->identificacion}}</td>
                     <td>{{$item->nombre .' '.$item->apellido}}</td>            
+                    <td>{{$item->fecha_nacimiento}}</td>
                     <td>{{$item->direccion}}</td>
                     <td>{{$item->telefono}}</td>
                     <td>{{$item->usuario->email}}</td>
@@ -65,7 +68,7 @@
                     <td>{{$item->usuario->caja!=null?$item->usuario->caja->nombre:''}}</td>
                     <td>{{$item->usuario->empresa->nombre}}</td>            
                     <td>
-                        <a class="btn btn-warning" href="{{url('/empleados/'.$item->id.'/edit')}}">
+                        <a title="Editar" class="btn btn-warning" href="{{url('/empleados/'.$item->id.'/edit')}}">
                             <i class="fa-solid fa-pen"></i>
                         </a>
                     </td>
@@ -73,7 +76,7 @@
                         <form onsubmit="return validar('Desea eliminar este registro?');" action="{{url('/')}}/empleados/{{$item->id}}" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> 
+                            <button title="Eliminar" class="btn btn-danger" type="submit"> 
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>

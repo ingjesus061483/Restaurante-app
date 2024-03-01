@@ -17,14 +17,14 @@ use Illuminate\Support\Facades\DB;
 
 class MateriaPrimaController extends Controller
 {
-    protected MateriaPrimaRepository $_materiaPrimaRepositry;
+    protected MateriaPrimaRepository $_materiaPrimaRepository;
     protected UnidadMedidaRepository $_unidadMedidaRepository;
     protected CategoriaRepository $_categoriaRepository;
-    public function __construct(MateriaPrimaRepository $materiaPrimaRepositry,
+    public function __construct(MateriaPrimaRepository $materiaPrimaRepository,
                                 UnidadMedidaRepository $unidadMedidaRepository,
                                 CategoriaRepository $categoriaRepository) 
     {
-        $this->_materiaPrimaRepositry=$materiaPrimaRepositry;
+        $this->_materiaPrimaRepository=$materiaPrimaRepository;
         $this->_unidadMedidaRepository = $unidadMedidaRepository;
         $this->_categoriaRepository=$categoriaRepository;
     }
@@ -45,7 +45,7 @@ class MateriaPrimaController extends Controller
         {
             return redirect()->to('login');
         }        
-        $materiaprimas=$this->_materiaPrimaRepositry->GetAll();
+        $materiaprimas=$this->_materiaPrimaRepository->GetAll();
         $data=[            
             'materiaprimas'=>$materiaprimas
         ];
@@ -95,17 +95,11 @@ class MateriaPrimaController extends Controller
             'costo_unitario'=>'required|numeric',            
             'unidad_medida'=>'required',
             'categoria'=>'required' ,            
-        ]); 
-        $this->_materiaPrimaRepositry->Store($request);        
-        return redirect()->to(url('/materiaprimas'));                
+            'existencias'=>'required|numeric'
+        ]);
+        $insumo= $this->_materiaPrimaRepository->Store($request);        
+        return redirect()->to(url("/materiaprimas/$insumo->id"));                
         //
-    }
-    public function totalizar($existencias){
-        $sum=0;
-        foreach($existencias as $item){
-            $sum=$item->cantidad+$sum;
-        }
-        return $sum;
     }
 
     /**
@@ -121,11 +115,11 @@ class MateriaPrimaController extends Controller
         {
             return back();
         }
-        $materiaprima=$this->_materiaPrimaRepositry->Find($id); //materiaprima::find($id);
-        $entradas=$this->_materiaPrimaRepositry->existencias($id,1); //Existencia:: where('entrada',1)->where('materia_prima_id',$id)->get();
-        $salidas=$this->_materiaPrimaRepositry->existencias($id);// Existencia:: where('entrada',0)->where('materia_prima_id',$id)->get();
-        $total_entrada=$this->_materiaPrimaRepositry ->totalizarExistencia($id,1);
-        $total_salida=$this->_materiaPrimaRepositry-> totalizarExistencia($id);        
+        $materiaprima=$this->_materiaPrimaRepository->Find($id); //materiaprima::find($id);
+        $entradas=$this->_materiaPrimaRepository->existencias($id,1); //Existencia:: where('entrada',1)->where('materia_prima_id',$id)->get();
+        $salidas=$this->_materiaPrimaRepository->existencias($id);// Existencia:: where('entrada',0)->where('materia_prima_id',$id)->get();
+        $total_entrada=$this->_materiaPrimaRepository ->totalizarExistencia($id,1);
+        $total_salida=$this->_materiaPrimaRepository-> totalizarExistencia($id);        
         $data=[
             "materiaprima"=>$materiaprima,         
             "entradas"=>$entradas,
@@ -133,8 +127,7 @@ class MateriaPrimaController extends Controller
             "total_entrada"=>$total_entrada,
             "total_salida"=>$total_salida
         ];
-        return view("MateriaPrima.show",$data);
-    
+        return view("MateriaPrima.show",$data);        
         //
     }
 
@@ -151,7 +144,7 @@ class MateriaPrimaController extends Controller
         {
             return back();
         }        
-        $materiaprima=$this-> _materiaPrimaRepositry->Find($id);
+        $materiaprima=$this-> _materiaPrimaRepository->Find($id);
         $categoria=$this->_categoriaRepository->GetAll();
         $unidadmedida=$this->_unidadMedidaRepository->GetAll();
         $data=[            
@@ -183,7 +176,7 @@ class MateriaPrimaController extends Controller
             'unidad_medida'=>'required',
             'categoria'=>'required' 
         ]);    
-        $this->_materiaPrimaRepositry->Update($id ,$request);            
+        $this->_materiaPrimaRepository->Update($id ,$request);            
         return redirect()->to(url('/materiaprimas'));                
         //
     }
@@ -201,7 +194,7 @@ class MateriaPrimaController extends Controller
         {
             return back();
         }        
-        $this->_materiaPrimaRepositry->Delete($id);
+        $this->_materiaPrimaRepository->Delete($id);
         return redirect()->to(url('/materiaprimas'));                
         //
     }

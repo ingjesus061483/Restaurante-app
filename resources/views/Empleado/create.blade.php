@@ -32,6 +32,12 @@
                 </label>
                 <input type="text" name="apellido" value="{{old('apellido')}}" class="form-control" id="apellido">
             </div>
+            <div class="mb-3">
+                <label class="form-label" for="nombre">
+                    Fecha de nacimiento
+                </label>
+                <input type="date" name="fecha_nacimiento" value="{{old('fecha_nacimiento')}}" class="form-control" id="fecha_nacimiento">
+            </div>
             <div class ="mb-3">
                 <label class="form-label" for="direccion">
                     Direccion

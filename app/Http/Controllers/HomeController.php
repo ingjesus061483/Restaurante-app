@@ -23,7 +23,7 @@ class HomeController extends Controller
         {
             return redirect()->to('login');
         }        
-        $cabanas=$this->_cabanaRepository->GetCabanasDesocupadas();
+        $cabanas=$this->_cabanaRepository->GetAll();
         $data=["cabanas"=>$cabanas];
         return view('Home.index',$data);
         //

@@ -43,7 +43,8 @@ class OrdenServicioRepository implements IRepository
 
     public function GetAll()
     {
-       return OrdenEncabezado::all();
+       return OrdenEncabezado::all()
+                             ->sortDesc();
     }
     public  function GetTiempoCoccion($detalles)
     {

@@ -5,6 +5,9 @@ use App\Models\Existencia;
 use Illuminate\Support\Facades\DB;
 class ExistenciaRepository implements IRepository
 {
+    protected ProductoRepository $_productoRepository;
+    protected MateriaPrimaRepository $_materiaprimaRepository;
+    
     public function TotalizarInventario(){        
         $sum=0;        
         foreach($this-> getInventario() as $item)                    
@@ -13,7 +16,8 @@ class ExistenciaRepository implements IRepository
         }            
         return $sum;    
     }     
-    public function GetAll(){
+    public function GetAll()
+    {
         return $this-> getInventario();        
     }
     public function Find($id)
@@ -29,6 +33,7 @@ class ExistenciaRepository implements IRepository
         $existencia->entrada=$request->esEntrada;
         $existencia->materia_prima_id=$tipo=='materia_prima'? $request->materiaprima_id:null;
         $existencia->producto_id=$tipo=='producto'? $request->materiaprima_id:null;
+        $existencia->insumo_id=$tipo=='insumo'?$request->materiaprima_id:null;
         $existencia->save();
     }
     public function Update($id, $request)

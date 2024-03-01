@@ -32,7 +32,7 @@
                     <td>{{$item->nombre}}</td>            
                     <td>{{$item->descripcion}}</td>
                     <td>
-                        <a class="btn btn-warning" href="{{url('/')}}/categorias/{{$item->id}}/edit">
+                        <a title="Editar" class="btn btn-warning" href="{{url('/')}}/categorias/{{$item->id}}/edit">
                             <i class="fa-solid fa-pen"></i>
                         
                         </a>
@@ -41,7 +41,7 @@
                         <form action="{{url('/')}}/categorias/{{$item->id}}" onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> 
+                            <button title="Eliminar" class="btn btn-danger" type="submit"> 
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>

@@ -72,7 +72,7 @@
                     <td>${{number_format($item->recibido)}}</td>
                     <td>${{number_format($item->cambio)}}</td>  
                     <td>
-                        <a href="{{url('/pagos')}}/{{$item->id}}" class="btn btn-success">
+                        <a title="Ver detalles" href="{{url('/pagos')}}/{{$item->id}}" class="btn btn-success">
                             <i class="fa-solid fa-eye"></i>    
                         </a>
                     </td>

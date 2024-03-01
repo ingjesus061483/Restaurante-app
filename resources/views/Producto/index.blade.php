@@ -1,6 +1,15 @@
 @extends('shared/layout')
 @section('title','Listado de productos')
 @section('content')  
+@if($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{$error}}</li>                    
+        @endforeach
+    </ul>
+</div>
+@endif
 <div class="card mb-4">
     <div class="card-header">
         <div class="row">
@@ -25,9 +34,9 @@
                         </div>
                         <div class="col-4">
                             <br>                    
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fa-solid fa-file-pdf"></i>&nbsp;
-                                PDF 
+                            <button title="Ver reporte" type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                
                             </button>    
                         </div>
                     </div>
@@ -52,7 +61,7 @@
                     <th>Unidad medida</th>
                     <th>Categoria</th>
                     <th>Foraneo</th>
-                    <th>impresora</th>
+                    <th>Total existencias</th>
                     <th></th>
                     <th></th>                    
                     <th></th>
@@ -71,7 +80,7 @@
                     <th>Unidad medida</th>
                     <th>Categoria</th>
                     <th>Foraneo</th>
-                    <th>impresora</th>
+                    <th>Total existencias</th>
                     <th></th>
                     <th></th>                    
                     <th></th>
@@ -88,25 +97,25 @@
                     <td>${{number_format($item->costo_unitario)}}</td>                    
                     <td>${{ number_format($item->precio)}}</td>
                     <td>{{$item->tiempo_coccion}}</td>
-                    <td>{{$item->unidad_medida!=null?$item->unidad_medida->nombre:''}}</td>
-                    <td>{{$item->categoria->nombre}}</td>
+                    <td>{{$item->unidad_medida}}</td>
+                    <td>{{$item->categoria}}</td>
                     <td>{{$item->foraneo==1?'Si':'No'}}</td>
-                    <td>{{$item->impresora->nombre}}</td>
+                    <td>{{number_format($item->total_inventario)}}</td>
                     <td>
                         @if($item->foraneo)
-                        <button onclick="existencias(this,'producto');" class="btn btn-info" >
+                        <button title="Existencias" onclick="existencias(this,'producto');" class="btn btn-info" >
                             <i class="fa-solid fa-warehouse"></i>
                             
                         </button>
                         @endif
                     </td>
                     <td>
-                        <a class="btn btn-success" href="{{url('/productos')}}/{{$item->id}}">
+                        <a title="Ver detalles" class="btn btn-success" href="{{url('/productos')}}/{{$item->id}}">
                             <i class="fa-solid fa-eye"></i>                            
                         </a>
                     </td>                    
                     <td>
-                        <a class="btn btn-warning" href="{{url('/productos')}}/{{$item->id}}/edit">
+                        <a title="Editar" class="btn btn-warning" href="{{url('/productos')}}/{{$item->id}}/edit">
                             <i class="fa-solid fa-pen"></i>  
                         </a>
                     </td>
@@ -115,7 +124,7 @@
                             onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" type="submit"> 
+                            <button title="Eliminar" class="btn btn-danger" type="submit"> 
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>

@@ -71,18 +71,18 @@
                 <tr style="{{$item->estado_id==2?'color:green':'color:black'}}">
                     <td>
                         @if($item->estado_id==1)
-                        <a class="btn btn-primary" style="" href="{{url('/ordendetalles/'.$item->id.'/edit')}}">                    
+                        <a title="añadir item" class="btn btn-primary" style="" href="{{url('/ordendetalles/'.$item->id.'/edit')}}">                    
                             <i class="fa-solid fa-file-circle-plus"></i>       
                         </a>                 
                         @endif
                     </td>
                     <td>
-                        <a class="btn btn-info" style="" href="{{url('/ordenservicio')}}/{{$item->id}}">
+                        <a title="Ver detalles" class="btn btn-info" style="" href="{{url('/ordenservicio')}}/{{$item->id}}">
                             <i class="fa-solid fa-eye"></i>
                         </a>
                     </td>
-                    <td>
-                        <a class="btn btn-warning" style="font-size: 10px" href="{{url('/reportes/printordenservicio/'.$item->id)}}">
+                    <td>                        
+                        <a  class="btn btn-warning" style="font-size: 10px" href="{{url('/reportes/printordenservicio/'.$item->id)}}">
                             <i class="fa-solid fa-print"></i> &nbsp; Orden 
                         </a>
                     </td>
@@ -97,7 +97,7 @@
                             onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-danger" style="" type="submit"> 
+                            <button title="Cancelar orden de pedido" class="btn btn-danger" style="" type="submit"> 
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>
@@ -110,7 +110,7 @@
                                     onsubmit="return validar('Desea entregar esta orden?');" method="post">
                                     @csrf
                                     @method('patch')
-                                    <button class="btn btn-success" style="" type="submit">
+                                    <button title="Entregar orden" class="btn btn-success" style="" type="submit">
                                         <i class="fa-solid fa-truck-ramp-box"></i>                                    
                                     </button>
                                 </form>                                
@@ -118,7 +118,7 @@
                             @case(2)
                                 <form action="{{url('pagos/create')}}" method="get">
                                     <input type="hidden" value="{{$item->id}}" name="id">
-                                    <button type="submit" class="btn btn-success" style="">
+                                    <button title="Cobrar" type="submit" class="btn btn-success" style="">
                                         <i class="fa-solid fa-cash-register"></i>    
                                     </button>                                
                                 </form>                           
@@ -126,7 +126,7 @@
                             @case(4)
                                 <form action="{{url('pagos/create')}}" method="get">
                                     <input type="hidden" value="{{$item->id}}" name="id">
-                                    <button type="submit" class="btn btn-success" style="">
+                                    <button title="Cobrar" type="submit" class="btn btn-success" style="">
                                         <i class="fa-solid fa-cash-register"></i>
                                     </button>                                
                                 </form>                           

@@ -5,6 +5,22 @@ use App\Contracts\IRepository;
 use App\Models\Cabaña;
 class CabanaRepository implements IRepository
 {
+    protected FileRepository $_fileRepository;
+    public function __construct(FileRepository $fileRepository ) 
+    {
+        $this->_fileRepository = $fileRepository;
+    }
+    public function TotalVentaByCabana()
+    {
+       $ventas= $this->GetVentasByCabanas();
+       $sum=0;
+       foreach($ventas as $item )
+       {
+            $sum=$sum+ $item->venta;        
+       }
+       return $sum;
+
+    }
     public function GetVentasByCabanas()
     {
         return Cabaña::select('cabañas.codigo')
@@ -22,7 +38,10 @@ class CabanaRepository implements IRepository
     }
     public function GetAll()
     {
-        return Cabaña::all();
+        return Cabaña::select ("id","codigo","nombre","ocupado","descripcion","capacidad_maxima","imagen")
+                     ->selectRaw("IFNULL((SELECT  SUM(orden_encabezados.total) FROM orden_encabezados WHERE cabaña_id=cabañas.id AND fecha=CURDATE() AND  estado_id=3),0) as venta_diaria")
+                     ->orderby('venta_diaria') ->get();
+
     }
     public function desocuparCabana(Cabaña $cabaña)
     {        
@@ -47,11 +66,12 @@ class CabanaRepository implements IRepository
     }
     public function Store($request)
     {
+        $nombreimagen=$this->_fileRepository-> getImage($request, $request->codigo.'-'.$request->nombre);       
         $cabana=new Cabaña();
         $cabana->codigo=$request->codigo;
         $cabana->nombre=$request->nombre;
         $cabana->capacidad_maxima=$request->capacidad;
-        $cabana->precio=$request->precio;
+        $cabana->imagen=$nombreimagen;
         $cabana->descripcion=$request->descripcion;
         $cabana->save();
     }
@@ -62,16 +82,23 @@ class CabanaRepository implements IRepository
     public function Update($id,$request)
     {
         $cabana= $this->Find($id);
+        $nombreimagen=$this->_fileRepository-> getImage($request, $request->codigo.'-'.$request->nombre);       
         $cabana->codigo=$request->codigo;
         $cabana->nombre=$request->nombre;
         $cabana->capacidad_maxima=$request->capacidad;
-        $cabana->precio=$request->precio;
+        $cabana->imagen=$nombreimagen;
         $cabana->descripcion=$request->descripcion;
         $cabana->save();
     }
     public function Delete($id)
     {
         $cabana= $this->Find($id);
+        if ($cabana->imagen!=null)
+        {
+            $ruta=public_path("img/");
+            unlink($ruta.$cabana->imagen);
+        }       
+ 
         $cabana->delete();
     }
 }

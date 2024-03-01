@@ -112,6 +112,7 @@ class ProductosController extends Controller
                 'precio'=>'required|numeric',            
                 'categoria'=>'required' ,   
                 'impresora'=>'required' ,              
+                'existencias'=>'required|numeric'
             ]); 
         }
         else{
@@ -126,8 +127,8 @@ class ProductosController extends Controller
                 'impresora'=>'required' ,  
             ]); 
         }
-        $this->_productoRepository->Store($request);      
-        return redirect()->to(url('/productos'));//
+        $producto=$this->_productoRepository->Store($request);      
+        return redirect()->to(url("/productos/$producto->id"));//
     }
 
     /**
@@ -142,21 +143,38 @@ class ProductosController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();
-        }                 
-        $entradas=$this->_productoRepository->existencias($id,1); //Existencia:: where('entrada',1)->where('producto_id',$id)->get();
-        $salidas=$this->_productoRepository->existencias($id);//Existencia:: where('entrada',0)->where('producto_id',$id)->get();
-        $total_entrada= $this->_productoRepository->totalizarExistencia($id,1);//$entradas!=null? $this->totalizar($entradas):0;
-        $total_salida=$this->_productoRepository->totalizarExistencia($id);//$salidas!=null?$this->totalizar($salidas):0;        
-        $data=[
-            'producto'=> $this->_productoRepository->Find($id),
-            'unidad_medida'=>$this-> _unidadMedidaRepository->GetAll(),
-            "entradas"=>$entradas,
-            "salidas"=>$salidas,
-            "total_entrada"=>$total_entrada,
-            "total_salida"=>$total_salida
-        ];     
-        return view('Producto.show',$data);
+        }         
+        $producto= $this->_productoRepository->Find($id);
+        if($producto-> foraneo==1)
+        {
+            $entradas=$this->_productoRepository->existencias($id,1); //Existencia:: where('entrada',1)->where('producto_id',$id)->get();
+            $salidas=$this->_productoRepository->existencias($id);//Existencia:: where('entrada',0)->where('producto_id',$id)->get();
+            $total_entrada= $this->_productoRepository->totalizarExistencia($id,1);//$entradas!=null? $this->totalizar($entradas):0;            
+            $total_salida=$this->_productoRepository->totalizarExistencia($id);//$salidas!=null?$this->totalizar($salidas):0;
+            $data=[                
+                'producto'=>$producto,                 
+                'unidad_medida'=>$this-> _unidadMedidaRepository->GetAll(),                
+                "entradas"=>$entradas,
+                "salidas"=>$salidas,
+                "total_entrada"=>$total_entrada,
+                "total_salida"=>$total_salida
+            ];     
+        }
+        else
+        {
+            $preparacions =$producto->preparacions;
+            if(count($preparacions)==0)
+            {
+                session(['producto' => $producto]);
+                return redirect()->to(url('ingredientes/create'));   
+            }
+            
+            $data=[                
+                'producto'=>$producto,                 
+            ];  
         
+        }
+        return view('Producto.show',$data);
     }    
     /**
      * Show the form for editing the specified resource.
@@ -173,12 +191,12 @@ class ProductosController extends Controller
         }            
        $categoria= $this-> _categoriaRepository->GetAll();
        $unidadmedida=$this-> _unidadMedidaRepository->GetAll();
-       $impresora=$this->_impresoraRepository->GetAll();
+       $impresoras=$this->_impresoraRepository->GetAll();
        $data=[        
         'categorias'=>$categoria,
         'unidad_medida'=>$unidadmedida,
         'producto'=>$this->_productoRepository->Find($id),
-        'impresoras'=>$this->_impresoraRepository->GetAll(),
+        'impresoras'=>$impresoras,
         ];
         return view('Producto.edit',$data);
 

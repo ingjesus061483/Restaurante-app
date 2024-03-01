@@ -27,7 +27,7 @@
                     <td>{{$item->nombre}}</td>            
                     <td>{{$item->valor}}</td>
                     <td>
-                        <a class="btn btn-warning" href="{{url('/')}}/configuracion/{{$item->id}}/edit">
+                        <a title="Editar" class="btn btn-warning" href="{{url('/')}}/configuracion/{{$item->id}}/edit">
                             <i class="fa-solid fa-pen"></i>                        
                         </a>
                     </td>

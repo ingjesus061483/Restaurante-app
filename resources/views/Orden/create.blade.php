@@ -116,7 +116,7 @@
                     @endif
                     <div class ="mb-3">                    
                         <label class="form-label" for="descripcion">                        
-                            credito                                    
+                            Credito                                    
                         </label>                    
                         <input type="checkbox" name="credito" id="">
                     </div>
@@ -157,7 +157,7 @@
                                 <td>${{number_format( $item->valor_unitario)}}</td>
                                 <td>${{number_format( $item->total)}} </td>                                                   
                                 <td>
-                                    <a onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning">
+                                    <a title="Editar" onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning">
                                         <i class="fa-solid fa-pen"></i>                                        
                                     </a>
                                 </td>                                                                                       
@@ -166,7 +166,7 @@
                                         onsubmit="return validar('Desea eliminar este registro?');" method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class="btn btn-danger" type="submit"> 
+                                        <button title="Eliminar" class="btn btn-danger" type="submit"> 
                                             <i class="fa-solid fa-trash"></i>    
                                         </button>
                                     </form>

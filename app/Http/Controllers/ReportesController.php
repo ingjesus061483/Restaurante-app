@@ -11,6 +11,7 @@ use App\Repositories\ConfiguracionRepository;
 use App\Repositories\EmpleadoRepository;
 use App\Repositories\ExistenciaRepository;
 use App\Repositories\FileRepository;
+use App\Repositories\MateriaPrimaRepository;
 use App\Repositories\PlantillasRepository;
 use App\Repositories\ProductoRepository;
 use Exception;
@@ -27,6 +28,7 @@ class ReportesController extends Controller
     protected FileRepository $_fileRepository;
     protected PlantillasRepository $_plantillaRepository;
     protected EmpleadoRepository $_empleadoRepository;
+    protected MateriaPrimaRepository $_materiaPrimarepository;
     protected ProductoRepository $_productoRepository;
     public function __construct(ExistenciaRepository $existenciaRepository,
                                 PlantillasRepository $plantillasRepository,
@@ -34,7 +36,8 @@ class ReportesController extends Controller
                                 CabanaRepository $cabanaRepository,
                                 ConfiguracionRepository $configuracionRepository,
                                 EmpleadoRepository $empleadoRepository,
-                                ProductoRepository $productoRepository,)
+                                ProductoRepository $productoRepository,
+                                MateriaPrimaRepository $materiaPrimarepository)
 
     {
         $this->_cabanaRepository=$cabanaRepository;
@@ -44,6 +47,7 @@ class ReportesController extends Controller
         $this->_plantillaRepository=$plantillasRepository;
         $this ->_fileRepository=$fileRepository;
         $this->_existenciaRepository = $existenciaRepository;
+        $this->_materiaPrimarepository=$materiaPrimarepository;
 
     }
     private function Detalles_impresora($orden_detalles,$impresora ){
@@ -59,7 +63,16 @@ class ReportesController extends Controller
         }
         return $detalles_impresora;
     }
-    
+    function GetPrinter($recurso_compartido,$ordenservicio)
+    {
+        $conector=new WindowsPrintConnector($recurso_compartido);                    
+        $printer =new Printer($conector);                            
+        $printer ->initialize();                        
+        $this->_plantillaRepository->ImprimirPlantillaOrdenServicio($printer,$ordenservicio);                    
+        $printer->pulse();
+        $printer -> cut();                    
+        $printer->close();                                          
+    } 
     function printComanda($id)
     {
         try
@@ -131,28 +144,38 @@ class ReportesController extends Controller
                                     "propina"=>$this->_configuracionRepository->getConfigByNombre("propina")->valor,
                                    ];
             $err=[];
-            foreach( $impresoras as $item )            
-            {   
+            $recurso_compartido=$this->_configuracionRepository->getConfigByNombre('Impresora_cajero')->valor;
+            if($recurso_compartido!="")
+            {
                 try
-                {              
-                    $detalles=$ordenEncabezado->orden_detalles;
-                    $detalles_impresora=$this->Detalles_impresora($detalles,$item);               
-                    if(count( $detalles_impresora)>0)
-                    {
-                        $ordenservicio->detalles=(object)$detalles_impresora;                    
-                        $ordenservicio->impresora=$item;
-                        $conector=new WindowsPrintConnector($item->recurso_compartido);                    
-                        $printer =new Printer($conector);                            
-                        $printer ->initialize();                    
-                        $this->_plantillaRepository->ImprimirPlantillaOrdenServicio($printer,$ordenservicio);                    
-                        $printer->pulse();
-                        $printer -> cut();                    
-                        $printer->close();                                    
-                    }                
-                }                
+                {
+                    $ordenservicio->detalles= $ordenEncabezado->orden_detalles;         
+                    $this->GetPrinter($recurso_compartido,$ordenservicio);
+                }
                 catch(Exception $ex)
                 {
                     $err[]=$ex->getMessage();
+                }
+
+            }            
+            else
+            {
+                foreach( $impresoras as $item )            
+                {   
+                    try
+                    {              
+                        $detalles=$ordenEncabezado->orden_detalles;
+                        $detalles_impresora=$this->Detalles_impresora($detalles,$item);               
+                        if(count( $detalles_impresora)>0)
+                        {
+                            $ordenservicio->detalles=(object)$detalles_impresora;                    
+                            $ordenservicio->impresora=$item;
+                            $this->GetPrinter($item->recurso_compartido,$ordenservicio);                    }                
+                    }                
+                    catch(Exception $ex)
+                    {
+                        $err[]=$ex->getMessage();
+                    }
                 }
             }
             if (count($err)>0)
@@ -172,6 +195,10 @@ class ReportesController extends Controller
         {
             return redirect()->to('login');
         }
+        $productos =$this->_productoRepository->GetProductos();
+        $materiaprimas=$this->_materiaPrimarepository->GetMateriaPrima();
+        $union= $materiaprimas->union($productos)->get();
+
         $inventario_view=$this->_existenciaRepository->GetAll();
         $data=[
             'inventario'=> $inventario_view,          
@@ -187,8 +214,10 @@ class ReportesController extends Controller
             return redirect()->to('login');
         }
         $ventas=$this->_cabanaRepository->GetVentasByCabanas();
+
         $data=[
-            'ventas'=>$ventas
+            'ventas'=>$ventas,
+            'total_venta'=>$this->_cabanaRepository->TotalVentaByCabana(),
         ];
          //return view('Reporte.VentasByMesas',$data);
          return $this->_fileRepository->GetPdf('Reporte.VentasByMesas',$data);   
@@ -210,12 +239,19 @@ class ReportesController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }
+        $validacion=$request->validate([
+            'fechaIni'=>'required',
+            'fechaFin'=>'required|after_or_equal:fechaIni',
+        ]);
+
+        $ventas= $this->_productoRepository->ProductosVendidosByFecha($request);
         $data=[
-            'productosvendidos'=>$this->_productoRepository->ProductosVendidosByFecha($request),
+            'productosvendidos'=>$ventas,
+            'total_vemtas'=>$this->_productoRepository-> TotalVentaProductos($ventas)
         ];
-        return $this->_fileRepository->GetPdf('Reporte.ProductosVendidosByFecha',$data);
-        //return view('Reporte.ProductosVendidosByFecha',$data)
+       // return view ('Reporte.ProductosVendidosByFecha',$data);
+        return $this->_fileRepository->GetPdf('Reporte.ProductosVendidosByFecha',$data);        
     }
     //
 

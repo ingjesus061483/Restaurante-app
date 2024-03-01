@@ -96,6 +96,9 @@
         <script src="{{url('/')}}/js/restaurante-app.js">                       
         </script>  
         <script  type="text/javascript">    
+           $(function(){
+                $( document ).tooltip();
+           });
            var observacions=[];               
            var clientes=[];
            var opcion='';
@@ -217,21 +220,48 @@
             $("#observaciones").autocomplete({                
                 source:observacions             
             });  
-            if($("#foraneo")!=null&&$("#foraneo").checked)
+            if($("#foraneo")!=null)
             {
-                $("#coccion").fadeOut();                
-                $("#descripcion").fadeOut();
+                if($("#foraneo").prop('checked'))
+                {
+                    if( $("#inventario")!=null)
+                    {
+                        $("#inventario").fadeIn();                    
+                    }
+                    $("#coccion").fadeOut();                      
+                    $("#preparacion").fadeOut();
+                }
+                else
+                {
+                    if( $("#inventario")!=null)
+                    {
+                        $("#inventario").fadeOut();                    
+                    }                    
+                    $("#coccion").fadeIn();                      
+                    $("#preparacion").fadeIn();
+                }
+
             }
             $("#foraneo").change( function(){
                 //alert(this.checked);
+
                 if(this.checked)
                 {
+                    if( $("#inventario")!=null)
+                    {
+                        $("#inventario").fadeIn();
+                    }
                     $("#coccion").fadeOut();
-                    $("#descripcion").fadeOut();
+                    $("#preparacion").fadeOut();
                 }
-                else{
+                else
+                {
+                    if( $("#inventario")!=null)
+                    {
+                        $("#inventario").fadeOut();
+                    }
                     $("#coccion").fadeIn();
-                    $("#descripcion").fadeIn();
+                    $("#preparacion").fadeIn();
                 }            
             });
             $("#forma-pago").change(function(){
@@ -622,7 +652,7 @@
                 },               
                 success: function (result){                        
                     alertify.success(result.mensaje);          
-                    var modulo=result.tipo=="materia_prima"?"materiaprimas":"productos";   
+                    var modulo=result.tipo=="materia_prima"?"materiaprimas":result.tipo=="insumo"?"insumos":"productos";   
                     window.location.href="{{url('/')}}/"+modulo+"/"+result.id;                    
                 }
             }); 

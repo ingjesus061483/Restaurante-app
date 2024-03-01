@@ -45,14 +45,15 @@ class PreparacionController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back();
-        }            
-        $producto_id=request()->input('producto');
+        }
+        $producto=session()->has('producto')?session('producto'):null;
+        $producto_id=$producto!=null ?$producto->id: request()->input('producto');    
         $preparacions=$this->_productoRepository->ingredientes($producto_id);// Preparacion::select('materia_prima_id')->where('producto_id',$producto_id)->get();        
         $materiaprimas=$this->_materiaprimaRepository->BuscarMateriaPrimaEnIgrediente($preparacions);
         $data=[
             'materiaprimas'=>$materiaprimas,// MateriaPrima::whereNotIn('id',$preparacions)->get(),
             'producto_id'=>$producto_id,
-        ];
+        ];        
         return view ('Ingrediente.create',$data);
 
         
@@ -71,17 +72,23 @@ class PreparacionController extends Controller
         }         
         if(!$this-> autorizar(Auth::user()))
         {
-            return back();
+            return back()->withErrors("Ud. No tiene privilegio para realizar esta operacion ");
         }            
         $materia_prima_id=$request->input('materia_prima_id');        
         $producto_id =$request->input('producto_id');                      
         $preparacion=$this->_ingredienteRepository->BuscarIngredientesMateriaprimaproducto($materia_prima_id,$producto_id) ; 
         if($preparacion!=null){
-            $arr=['message'=>'La materia prima ya se encuentra registrada en estos ingredientes'];
+            $arr=[
+                'error'=>true,
+                'message'=>'Este insumo ya se encuentra registrado como un ingredientes'];
             return json_encode($arr);            
         }
         $this->_ingredienteRepository->Store($request);           
-        return json_encode(['message'=>'Se ha registrado um ingrediente']);
+        session()->forget(['producto']);
+        return json_encode([
+                            'error'=>false,
+                            'message'=>'Se ha registrado um ingrediente'
+                           ]);
         //
     }
 

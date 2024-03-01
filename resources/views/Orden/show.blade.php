@@ -162,7 +162,9 @@
                                         <td>${{number_format($item->total)}} </td>    
                                         <td>
                                             @if($ordenEncabezado->estado_id==1)                                           
-                                            <a onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning"> Editar</a>
+                                            <a title="Editar" onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning">
+                                                <i class="fa-solid fa-pen"></i>    
+                                            </a>
                                             @endif
                                         </td>                                                                                       
                                         <td>
@@ -172,7 +174,9 @@
                                                 @csrf                                                
                                                 @method('delete')
                                                 <input type="hidden" name="orden_id"value="{{$ordenEncabezado->id}}" >                                                
-                                                <button class="btn btn-danger" type="submit"> Eliminar</button>
+                                                <button title="Eliminar item" class="btn btn-danger" type="submit">
+                                                    <i class="fa-solid fa-trash"></i>    
+                                                </button>
                                             </form>
                                             @endif
                                         

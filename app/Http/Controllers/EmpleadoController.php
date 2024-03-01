@@ -88,6 +88,7 @@ class EmpleadoController extends Controller
             'identificacion'=>'required|unique:empleados|max:50',
             'nombre'=>'required|max:50',
             'apellido'=>'required|max:50',
+            'fecha_nacimiento'=>'required',
             'direccion'=>'required|max:50',
             'telefono'=>'required|max:50',
             'role'=>'required',
@@ -102,6 +103,19 @@ class EmpleadoController extends Controller
         $this->_empleadoRepository->Store((object) $request->all());
         return redirect()->to(url('/empleados'));    
         //
+    }
+    public function ListaCumpleaños($id)
+    {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }  
+        if(!$this-> autorizar(Auth::user()))
+        {
+            return back();            
+        }
+        $data=['empleados'=> $this->_empleadoRepository->GetAll()];
+        return view('Empleado.Cumpleaños',$data);
     }
 
     /**
@@ -145,6 +159,7 @@ class EmpleadoController extends Controller
             'identificacion'=>'required|max:50|unique:empleados,identificacion,'.$id,
             'nombre'=>'required|max:50',
             'apellido'=>'required|max:50',
+            'fecha_nacimiento'=>'required',
             'direccion'=>'required|max:50',
             'telefono'=>'required|max:50',
             'email'=>'required|email|max:255',

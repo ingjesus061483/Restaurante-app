@@ -64,6 +64,13 @@
                 </label>
                 <input type="file" name="imagen" accept="image/*"   class="form-control" id="imagen">
             </div>                        
+            <div class="mb-3">
+                <label class="form-label" for="costo_unitario">
+                    Existencias
+                </label>
+                <input type="text" name="existencias" value="{{old('existencia')}}" class="form-control">
+            </div>            
+
             <div class ="mb-3">
                 <label class="form-label" for="descripcion">
                     Descripcion

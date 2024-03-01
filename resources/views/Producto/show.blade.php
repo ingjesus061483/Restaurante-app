@@ -61,7 +61,7 @@
                                     </label>                            
                                     {{$producto->unidad_medida!=null?$producto->unidad_medida->nombre:''}}                        
                                 </div>                    
-                            </div>                        
+                            </div>                                                    
                         </div>   
                         <div class="row">
                             <div class="col-4">                        
@@ -70,6 +70,14 @@
                                         Foraneo                            
                                     </label>                            
                                     {{$producto->foraneo==1?'si':'no'}}                                                    
+                                </div>                    
+                            </div>                        
+                            <div class="col-4">                        
+                                <div class="mb-3">                            
+                                    <label class="form-label" for="costo_unitario">                                
+                                        Impresora asociada                            
+                                    </label>                            
+                                    {{$producto->impresora->nombre}}                                                    
                                 </div>                    
                             </div>                        
                         </div>             
@@ -82,7 +90,7 @@
                                         {{$producto->preparacion}}                                                        
                                 </div>      
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                     <div class="col-6">
                         @if($producto->imagen!=null)
@@ -141,7 +149,7 @@
                             <td>{{$item->materia_prima->codigo.' - '.$item->materia_prima->nombre}}</td>
                             <td>{{$item->cantidad}}</td>           
                             <td>
-                                <a class="btn btn-warning" onclick="editar_ingredientes(this);">
+                                <a title="Editar" class="btn btn-warning" onclick="editar_ingredientes(this);">
                                     <i class="fa-solid fa-pen"></i>  
                                 </a>
                             </td>
@@ -150,7 +158,7 @@
                                     onsubmit="return validar('Desea eliminar este registro?');" method="post">
                                     @csrf
                                     @method('delete')
-                                    <button class="btn btn-danger" type="submit"> 
+                                    <button title="Eliminar" class="btn btn-danger" type="submit"> 
                                         <i class="fa-solid fa-trash"></i>                                        
                                     </button>
                                 </form>

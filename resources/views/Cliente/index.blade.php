@@ -44,7 +44,7 @@
                     <td>{{$item->usuario!=null?$item->usuario->email:''}}</td>
                     <td>{{$item->usuario!=null?$item->usuario->name:''}}</td>                  
                     <td>
-                        <a class="btn btn-warning" href="{{url('/clientes/'.$item->id.'/edit')}}">
+                        <a title="Editar" class="btn btn-warning" href="{{url('/clientes/'.$item->id.'/edit')}}">
                             <i class="fa-solid fa-pen"></i>
                         </a>
                     </td>
@@ -53,7 +53,7 @@
                             @csrf
                             @method('delete')
                             <button class="btn btn-danger" type="submit"> 
-                                <i class="fa-solid fa-trash"></i>
+                                <i title="Eliminar"  class="fa-solid fa-trash"></i>
                             </button>
                         </form>
                     </td>        

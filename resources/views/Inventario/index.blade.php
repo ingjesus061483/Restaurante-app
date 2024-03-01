@@ -65,7 +65,7 @@
                     <td>{{number_format($item->total_salida)}}</td>
                     <td>{{number_format($item->total_inventario)}}</td>
                     <td>
-                        <a class="btn btn-success" 
+                        <a title="Ver detalles" class="btn btn-success" 
                             href="{{url('/')}}/{{$item->tipo=='producto'?'productos':'materiaprimas'}}/{{$item->id}}">
                             <i class="fa-solid fa-eye"></i>
                     

@@ -12,7 +12,7 @@
             </ul>
         </div>
         @endif
-        <form action="{{url('/')}}/cabañas" autocomplete="off" method="post">
+        <form action="{{url('/')}}/cabañas" enctype="multipart/form-data" autocomplete="off" method="post">
             @csrf
             <div class="mb-3">
                 <label class="form-label" for="codigo">
@@ -38,11 +38,11 @@
                 </textarea>
             </div>
             <div class="mb-3">
-                <label class="form-label" for="precio">
-                    Precio
+                <label class="form-label" for="imagen">
+                    Imagen
                 </label>
-                <input type="text" name="precio" value="{{old('precio')}}" class="form-control" id="precio">
-            </div>
+                <input type="file" name="imagen" accept="image/*"   class="form-control" id="imagen">
+            </div>         
             <div class="mb-3">
                 <label class="form-label" for="capacidad">
                     Capacidad

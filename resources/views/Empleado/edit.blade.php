@@ -36,6 +36,12 @@
                 <input type="text" name="apellido" class="form-control" value="{{$empleado->apellido}}" 
                 id="apellido">
             </div>
+            <div class="mb-3">
+                <label class="form-label" for="nombre">
+                    Fecha de nacimiento
+                </label>
+                <input type="date" name="fecha_nacimiento" value="{{$empleado->fecha_nacimiento}}" class="form-control" id="fecha_nacimiento">
+            </div>
             <div class ="mb-3">
                 <label class="form-label" for="direccion">
                     Direccion

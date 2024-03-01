@@ -47,6 +47,7 @@ class EmpleadoRepository implements IRepository
         $empleado->identificacion=$request->identificacion;
         $empleado->nombre=$request->nombre;
         $empleado->apellido=$request->apellido;
+        $empleado->fecha_nacimiento=$request->fecha_nacimiento;
         $empleado->direccion=$request->direccion;
         $empleado->telefono=$request->telefono;
         $empleado->user_id=$user->id;
@@ -59,6 +60,7 @@ class EmpleadoRepository implements IRepository
         $empleado->identificacion=$request->identificacion;
         $empleado->nombre=$request->nombre;
         $empleado->apellido=$request->apellido;
+        $empleado->fecha_nacimiento=$request->fecha_nacimiento;
         $empleado->direccion=$request->direccion;
         $empleado->telefono=$request->telefono;
         $empleado->save();

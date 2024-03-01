@@ -33,9 +33,8 @@
                         @endif
                     </td>                                            
                     <td>                        
-                        <a  onclick="ordenservicio({{$item->id}});" class="btn btn-primary">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        
+                        <a title="Comprar"  onclick="ordenservicio({{$item->id}});" class="btn btn-primary">
+                            <i class="fa-solid fa-cart-shopping"></i>                        
                         </a>                      
                     </td>
                 </tr>
