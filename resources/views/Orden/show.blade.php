@@ -119,12 +119,6 @@
                     </div>
                     <div class ="mb-3">                    
                         <label class="form-label" for="descripcion">                        
-                            Observaciones                    
-                        </label>                    
-                        {{$ordenEncabezado->observaciones}}
-                    </div>                          
-                    <div class ="mb-3">                    
-                        <label class="form-label" for="descripcion">                        
                             Estado
                         </label>                    
                         {{$ordenEncabezado->estado->nombre}}
@@ -146,7 +140,8 @@
                                         <th>Id</th>                                                 
                                         <th>Cantidad</th>                                    
                                         <th>Detalle</th>                                    
-                                        <th>Valor Unitario </th>                                                        
+                                        <th>Observaciones</th>
+                                        <th>Valor Unitario </th>                                                                                                
                                         <th>Total</th> 
                                         <th></th>  
                                         <th></th>                                                           
@@ -158,6 +153,7 @@
                                         <td>{{$item->id}}</td>
                                         <td>{{number_format($item->cantidad)}}</td>
                                         <td>{{$item->producto->nombre}}</td>
+                                        <td>{{$item->observaciones}}</td>
                                         <td>${{number_format($item->valor_unitario)}}</td>
                                         <td>${{number_format($item->total)}} </td>    
                                         <td>

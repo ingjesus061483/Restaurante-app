@@ -64,6 +64,7 @@ class SessionRepository implements IRepository
             {
                $detalles[$i]->cantidad=$request->cantidad;
                $detalles[$i]->total=$request->total; 
+               $detalles[$i]->observaciones=$request->observaciones; 
                break;                
             }
         }
@@ -96,7 +97,9 @@ class SessionRepository implements IRepository
                 'cantidad'=>$request-> cantidad,            
                 'detalleOrden'=>$request->detalleOrden,            
                 'valor_unitario'=>$request->valor_unitario,            
-                'total'=>$request-> total        
+                'total'=>$request-> total,
+                'observaciones'  =>$request->observaciones
+
             ];                            
             session(['detalles' => $detalles]);        
             return true;                     

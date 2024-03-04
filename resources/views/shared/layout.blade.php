@@ -438,6 +438,7 @@
                 var orden_id=document.getElementById('orden_id').value;
                 var producto_id=document.getElementById('producto_id').value;
                 var cantidad=document.getElementById('cantidadDetalleOrden').value;
+                var observaciones=document.getElementById('observaciones') .value;                
                 if(cantidad==""){
                     alertify.error("este campo no puede ser nulo");
                     return;
@@ -455,6 +456,7 @@
                                 orden_id:orden_id,                            
                                 producto_id:producto_id,                            
                                 cantidad:cantidad,                              
+                                observaciones:observaciones
                             },                        
                             success: function (result){                                                                                    
                                 if(!result.encontrado)                            
@@ -481,7 +483,8 @@
                                 _method: 'PATCH',  
                                 orden_id:orden_id,                         
                                 producto_id:producto_id,                            
-                                cantidad:cantidad,                              
+                                cantidad:cantidad,  
+                                observaciones:observaciones                            
                             },                        
                             success: function (result){                                                 
                                 alertify.success(result.message);                                       
@@ -504,6 +507,7 @@
                         document.getElementById('cantidadDetalleOrden').value=detalle.cantidad;
                         document.getElementById('producto_id').value=detalle.producto_id;
                         document.getElementById('detalleOrden').value=detalle.detalleOrden;
+                        document.getElementById('observaciones').value=detalle.observaciones;
                         document.getElementById('ValorUnitarioDetalleOrden').value=detalle.valor_unitario;
                         document.getElementById('producto_img').src="{{url('/')}}/img/"+detalle.imagen;
                         dialogDetalleOrden.dialog('open');

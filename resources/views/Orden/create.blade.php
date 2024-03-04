@@ -95,17 +95,8 @@
                             Hora entrega                
                         </label>
                         <input type="time" name="hora_entrega" value="{{$tiempo_entrega}}" class="form-control"
-                        id="hora">
-                    </div>
-                    <div class ="mb-3">                    
-                        <label class="form-label" for="descripcion">                        
-                            Observaciones                    
-                        </label>                    
-                        <textarea name="observaciones" id="observaciones"  class="form-control"
-                            cols="30" rows="10">                        
-                            {{old('observaciones')}}                    
-                        </textarea>                
-                    </div>
+                        id="hora_entrega">
+                    </div>                   
                     @if($cabana==null)
                     <div class ="mb-3">                    
                         <label class="form-label" for="descripcion">                        
@@ -142,7 +133,8 @@
                                 <th>Id</th>             
                                 <th>Cantidad  </th>
                                 <th>Detalle</th>
-                                <th>Valor Unitario </th>                    
+                                <th>Observaciones</th>
+                                <th>Valor Unitario </th>                                                    
                                 <th>Total</th>                                                                                            
                                 <th></th>
                                 <th></th>
@@ -154,6 +146,7 @@
                                 <td>{{$item->id}}</td>
                                 <td>{{number_format( $item->cantidad)}}</td>
                                 <td>{{$item->detalleOrden}}</td>
+                                <td>{{$item->observaciones}}</td>
                                 <td>${{number_format( $item->valor_unitario)}}</td>
                                 <td>${{number_format( $item->total)}} </td>                                                   
                                 <td>

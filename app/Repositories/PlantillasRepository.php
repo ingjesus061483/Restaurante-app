@@ -70,17 +70,6 @@ class PlantillasRepository
         $printer ->setTextSize($encabezado,$encabezado);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer->text("________________________\n");                          
-        if($ordenservicio->orden_encabezado->observaciones!="")
-        {   $printer->setJustification(Printer::JUSTIFY_LEFT);        
-            $printer ->setTextSize($contenido,$contenido);                        
-            $printer->text("Observaciones\n");
-            $printer->setJustification(Printer::JUSTIFY_LEFT);        
-            $printer ->setTextSize($contenido,$contenido);              
-            $printer->text($ordenservicio->orden_encabezado->observaciones."\n");
-            $printer ->setTextSize($encabezado,$encabezado);              
-            $printer->setJustification(Printer::JUSTIFY_CENTER);        
-            $printer->text("________________________\n");                          
-        }        
         if(count($ordenservicio->orden_encabezado->pagos)>0)
         {
             $printer->text("________________________\n");                          
@@ -158,8 +147,12 @@ class PlantillasRepository
         {   
 	    $printer ->setTextSize($encabezado,$encabezado);      
             $printer->text("--------------\n");                                         
-            $printer->text("Cantidad:".$item->cantidad."\n");
-            $printer->text("Producto:".$item->producto->nombre." \n");
+            $printer->text("Cantidad: ".$item->cantidad."\n");
+            $printer->text("Producto: ".$item->producto->nombre." \n");
+            if ($item->observaciones!='')
+            {
+                $printer->text("Observaciones: ".$item->observaciones."\n");            
+            }
             $printer->text("--------------\n");    
 	    $printer ->setTextSize($contenido,$contenido);                                         
             if($item->producto->foraneo==0){
@@ -176,15 +169,6 @@ class PlantillasRepository
         $printer ->setTextSize($encabezado,$encabezado);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer->text("========================\n");      
-        if($ordenservicio->orden_encabezado->observaciones!="")
-        {              
-            $printer->text("====Observaciones===\n");
-            $printer->setJustification(Printer::JUSTIFY_LEFT);        
-            $printer ->setTextSize($contenido,$contenido);              
-            $printer->text($ordenservicio->orden_encabezado->observaciones."\n");
-            $printer ->setTextSize($encabezado,$encabezado);              
-            $printer->setJustification(Printer::JUSTIFY_CENTER);        
-            $printer->text("========================\n");    
-        }        
+      
     }
 }

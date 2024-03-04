@@ -169,6 +169,12 @@
                             <input class="form-control" type="text"  name="ValorUnitarioDetalleOrden" 
                             id="ValorUnitarioDetalleOrden">
                         </div>                                                       
+                        <div class="mb-3">
+                            <label class="form-label" for="unidad_medida">
+                                Observaciones
+                            </label>
+                            <textarea class="form-control" name="" id="observaciones" cols="30" rows="10"></textarea>                          
+                        </div>                                                       
                     </div>
                     <div class="col-5">
                         <img id="producto_img" src="" alt="" style="width:90%;heigth:100%">

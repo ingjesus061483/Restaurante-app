@@ -14,9 +14,10 @@ class OrdenDetalleRepository implements IRepository
     }
     public function  GetdetalleByProducto($request)
     {
-        $cantidad=$request->input('cantidad');
-        $producto_id=$request->input('producto_id');
+        $cantidad=$request->cantidad;
+        $producto_id=$request->producto_id;
         $producto=$this->_productoRepository->Find($producto_id);
+        $observaciones=$request->observaciones;
         $total=$cantidad*$producto->precio;        
         $data =(object) [
             "cantidad"=>$cantidad,            
@@ -25,6 +26,7 @@ class OrdenDetalleRepository implements IRepository
             "valor_unitario"=>$producto->precio ,
             "total"=>$total,
             "orden_id"=>$request->orden_id,
+            "observaciones"=>$observaciones,
         ];    
         return $data;
     }
@@ -33,7 +35,8 @@ class OrdenDetalleRepository implements IRepository
         $OrdenDetalle=new OrdenDetalle();
         $OrdenDetalle->cantidad =$request-> cantidad;
         $OrdenDetalle->valor_unitario=$request-> valor_unitario;
-        $OrdenDetalle->total=$request-> total;            
+        $OrdenDetalle->total=$request-> total; 
+        $OrdenDetalle->observaciones=$request->observaciones;           
         $OrdenDetalle->orden_encabezado_id=$request-> orden_id;            
         $OrdenDetalle->producto_id=$request-> producto_id;            
         $OrdenDetalle->save();        
@@ -48,6 +51,7 @@ class OrdenDetalleRepository implements IRepository
         $detalle=OrdenDetalle::select('orden_detalles.orden_encabezado_id as orden_id',
                                       'orden_detalles.id as detalle_id',
                                       'productos.id as producto_id',
+                                      'orden_detalles.observaciones',
                                       'cantidad',
                                       'productos.nombre as detalleOrden',
                                       'productos.imagen',
@@ -66,6 +70,7 @@ class OrdenDetalleRepository implements IRepository
     {
         $detalle=OrdenDetalle::find($id);
         $detalle->cantidad=$request->cantidad;
+        $detalle->observaciones=$request->observaciones;
         $detalle->total=$request->total;
         $detalle->update();
     }

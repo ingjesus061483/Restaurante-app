@@ -35,8 +35,7 @@
                     <th>Cliente</th>
                     <th>Mesero</th>                    
                     <th>Total</th>
-                    <th>Cantidad de productos ordenados</th>
-                    <th>Observaciones</th> 
+                    <th>Cantidad de productos ordenados</th>                    
                     <th>credito</th>              
                     <th>Domicilio</th>     
                     <th>Estado</th>                    
@@ -59,8 +58,7 @@
                     <th>Cliente</th>
                     <th>Mesero</th>                    
                     <th>Total</th>
-                    <th>Cantidad de productos ordenados</th>
-                    <th>Observaciones</th>       
+                    <th>Cantidad de productos ordenados</th>                    
                     <th>credito</th>       
                     <th>Domicilio</th>                 
                     <th>Estado</th>                    
@@ -143,8 +141,7 @@
                     <td><a onmouseover="mostrar( {{$item->cliente!=null?$item->cliente->identificacion:'0'}})" href="{{url('/clientes')}}/{{$item->cliente!=null?$item->cliente->id:"0"}}">{{$item->cliente!=null?$item->cliente->nombre.' '.$item->cliente->apellido:""}}</a></td>
                     <td>{{$item->empleado->nombre. ' '.$item->empleado->apellido}}</td>                    
                     <td>${{number_format($item->total)}}</td>
-                    <td>{{$item->orden_detalles->count()}}</td>
-                    <td>{{$item->observaciones}}</td>  
+                    <td>{{$item->orden_detalles->count()}}</td>                    
                     <td>{{$item->credito==1?'Si':'No'}}</td>  
                     <td>{{$item->domicilio==1?'Si':'No'}}</td>  
                     <td>{{$item->estado->nombre}}</td>                    
