@@ -48,16 +48,21 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logueado como:</div>
-                        {{auth()->user()->name}}                        
-                        <form action="{{url('/login')}}/{{auth()->user()->id }}"
-                             onsubmit="return validar('Desea cerrar la sesion?')" method="post">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fa-solid fa-right-from-bracket"></i>
-                                
-                            </button>
-                        </form>                    
+                        <div class="row">
+                            <div class="col-6">                        
+                                {{auth()->user()->name}}                        
+                            </div>
+                            <div class="col-6">                                                        
+                                <form action="{{url('/login')}}/{{auth()->user()->id }}"
+                                    onsubmit="return validar('Desea cerrar la sesion?')" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button title="Cerrar sesion" type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-right-from-bracket"></i>                                
+                                    </button>
+                                </form>                    
+                            </div>
+                        </div>
                     </div>
                 </nav>
             </div>
@@ -71,7 +76,7 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website {{date('Y')}}</div>
+                            <div class="text-muted">Copyright &copy;  {{auth()->user()->empresa->nombre.' '.date('Y')}}</div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;
@@ -91,6 +96,7 @@
         <script src="{{url('/')}}/js/scripts.js"></script>        
         <script src="{{url('/')}}/js/datatables-simple-demo.js"></script>
         <script src="{{url('/')}}/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
         <script src="{{ url('/')}}/alertifyjs/alertify.min.js"></script>        
         <link href="{{ url('/')}}/alertifyjs/css/alertify.min.css" rel="stylesheet">     
         <script src="{{url('/')}}/js/restaurante-app.js">                       
@@ -98,6 +104,14 @@
         <script  type="text/javascript">    
            $(function(){
                 $( document ).tooltip();
+           });
+           $(".slider").bxSlider({
+            minSlides: 3,
+            maxSlides: 3,            
+            slideWidth: 360,            
+            slideMargin: 5,            
+            ticker: true,
+            speed: 60000
            });
            var observacions=[];               
            var clientes=[];

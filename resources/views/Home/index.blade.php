@@ -18,24 +18,20 @@
             <hr class="my-4">            
             <div class="card mb-4">
                 <div class="card-body">
-                    <div class="row">           
-                        @foreach($cabanas as $item)                                                
-                        <div class="col-4"> 
-                            <div style="padding: 5px">
-                                <a title="{{$item->ocupado==1?'La mesa esta ocupada':'La mesa esta libre'}}" class ="{{$item->ocupado==1?'btn btn-danger':'btn btn-primary'}}" href="{{url('/cabañas')}}/{{$item->id}}">
-                                    @if($item->imagen!=null)
-                                    <img src="{{url("/img/$item->imagen")}}" height="50"width="50">
-                                    @endif                                
-                                    {{$item->nombre}}&nbsp; ${{number_format($item->venta_diaria)}}
-
-                                </a>                            
-                            </div>                           
-                        </div>                             
-                        @endforeach 
-                    </div>                  
+                    <ul class="slider">                        
+                        @foreach($cabanas as $item)                                                                        
+                        <li style="padding: 5px">                            
+                            <a title="{{$item->ocupado==1?'La mesa esta ocupada':'La mesa esta libre'}}" class ="{{$item->ocupado==1?'btn btn-danger':'btn btn-primary'}}" href="{{url('/cabañas')}}/{{$item->id}}">                                
+                            @if($item->imagen!=null)                            
+                            <img src="{{url("/img/$item->imagen")}}" height="50"width="50">
+                            @endif                                                            
+                            {{$item->nombre}}&nbsp; ${{number_format($item->venta_diaria)}}                        
+                            </a>                                                    
+                        </li>                                                   
+                        @endforeach          
+                    </ul>
                 </div>
-            </div>
-            
+            </div>            
         </div>
         <div class="col-12">           
             <hr class="my-4">
