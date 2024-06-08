@@ -44,6 +44,8 @@ class PagoRepository implements IRepository{
         return Pago::find($id);
     }
     public function Store($request){
+       // print_r($request->all());
+      // exit();
         $pago= Pago::create ([
             'codigo'=>$request->codigo,
             'fecha_hora'=>$request->fecha_hora,
@@ -51,6 +53,7 @@ class PagoRepository implements IRepository{
             'impuesto'=>$request->impuesto,
             'descuento'=>$request->descuento,
             'total_pagar'=>$request->total_pagar,
+            'servicio_voluntario'=>$request->serviciovol,
             'recibido'=>$request->acumulado,
             'cambio'=>-1*$request-> faltante,  
             'observaciones'=>$request->observaciones,

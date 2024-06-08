@@ -6,14 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Repositories\CabanaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Repositories\OrdenServicioRepository;
 class CabanaController extends Controller
 {
    private CabanaRepository $_repository;
-    public function __construct( CabanaRepository $repository)     
+   private OrdenServicioRepository $_ordenServicioRepository;
+    public function __construct( CabanaRepository $repository, OrdenServicioRepository $OrdenServicioRepository)     
     {
         $this->_repository=$repository;
-        
+        $this->_ordenServicioRepository=$OrdenServicioRepository;
     }
     /**
      * Display a listing of the resource.
@@ -74,26 +75,27 @@ class CabanaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $mesa)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }    
-        $cabana =$this->_repository->Find($id);
-        if ($cabana->ocupado==1)
+        }   
+       // $arr=explode("-",$mesa) ;
+
+        $cabana=$this->_repository->Find($mesa);
+        if($cabana->ocupado==1)
         {
-            return back()->withErrors("La mesa no se encuentra disponible");
+            $ordenservicio=$this->_ordenServicioRepository-> GetOrdenByMesa($mesa);
+            return redirect()->to(url('/ordendetalles/'.$ordenservicio->id.'/edit'));           
+          //  return back()->withErrors("La mesa no se encuentra disponible");
         }
         session(['cabana' => $cabana]);   
-        if (session()->has('detalles'))
+        if (!session()->has('detalles'))
         {
-          return  redirect()->to('ordenservicio/create');
+            return redirect()->to(url('/ordendetalles/create'));           
         }    
-        else
-        {
-            return redirect()->to(url('/ordendetalles/create'));        
-        }
+        return  redirect()->to('ordenservicio/create');
         //
     }
 

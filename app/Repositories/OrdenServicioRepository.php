@@ -28,6 +28,13 @@ class OrdenServicioRepository implements IRepository
         $this->_OrdenDetalleRepository=$ordenDetalleRepository ;
         $this->_sesionRepository=$sessionRepository;
     }
+    public function GetOrdenByMesa($mesa_id)
+    {
+        return OrdenEncabezado::where('cabaña_id',$mesa_id)
+                              ->where('estado_id',1) 
+                              ->first();       
+    }
+
     public function totalizarOrden($detalles){
         $sum=0;
         foreach($detalles as $item)
@@ -100,6 +107,12 @@ class OrdenServicioRepository implements IRepository
         $ordenservicio=$this->find($id);
         $detalles=$ordenservicio->orden_detalles;
         $total=$this->totalizarOrden($detalles);
+        $pagos=$ordenservicio->pagos;
+        foreach($pagos as $pago)
+        {
+            $total=$total+ $pago->servicio_voluntario+$pago->impuesto-$pago->descuento;
+        }
+
         $ordenservicio->total=$total;
         $ordenservicio->update();    
 

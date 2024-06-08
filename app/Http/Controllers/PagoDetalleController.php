@@ -160,8 +160,29 @@ class PagoDetalleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PagoDetalle $pagoDetalle)
-    {
+    public function destroy(int $id)
+    {  
+        $i=0;     
+        $orden_id=request()->input('orden_id');           
+        $newdetalle=[];        
+        $detalles=session('pagodetalles');    
+        foreach($detalles as $item)
+        {
+            if($item->id!=$id)
+            {
+                $newdetalle[$i]=$item;
+                $i++;
+            }
+        }
+        if(count($newdetalle)==0)
+        {
+            session()->forget(['pagodetalles']);
+            
+        }
+        else{
+            session(['pagodetalles' => $newdetalle]);
+        }
+          return redirect()->to(url('/pagos/create?id='.$orden_id));     
         //
     }
 }

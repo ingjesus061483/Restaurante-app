@@ -17,11 +17,13 @@ use App\Repositories\OrdenServicioRepository;
 use App\Repositories\PagoRepository;
 use App\Repositories\CuentasCobrarRepository;
 use App\Repositories\DetalleCuentasCobrarRepository;
+use App\Repositories\ConfiguracionRepository;
 
 use Illuminate\Support\Facades\Auth;
 
 class PagoController extends Controller
 {
+    protected ConfiguracionRepository $_configuracionRepository;
     protected CabanaRepository $_cabanaRepository;
     protected PagoRepository $_pagoRepository;
     protected FormaPagoRepository $_formapagoRepository;
@@ -32,7 +34,7 @@ class PagoController extends Controller
     protected CajaMovimientoRepository $_cajaMovimientoRepository;
     protected CuentasCobrarRepository $_cuentasCobrarRepository;
     private DetalleCuentasCobrarRepository $_DetalleCuentasCobrarRepository;
-    public function __construct(
+    public function __construct(                                
                                 CabanaRepository $cabanaRepository,
                                 PagoRepository $pagoRepository,    
                                 ImpuestoRepository $impuestoRepository,
@@ -42,7 +44,8 @@ class PagoController extends Controller
                                CajaRepository $cajaRepository,
                                CajaMovimientoRepository $cajaMovimientoRepository,
                                CuentasCobrarRepository $cuentasCobrarRepository,
-                               DetalleCuentasCobrarRepository $DetalleCuentasCobrarRepository)                               
+                               DetalleCuentasCobrarRepository $DetalleCuentasCobrarRepository,
+                               ConfiguracionRepository $configuracionRepository)                               
     {
         $this->_cabanaRepository=$cabanaRepository;        
         $this->_pagoRepository=$pagoRepository;        
@@ -54,10 +57,11 @@ class PagoController extends Controller
         $this->_cajaMovimientoRepository=$cajaMovimientoRepository;    
         $this->_cuentasCobrarRepository=$cuentasCobrarRepository ;
         $this->_DetalleCuentasCobrarRepository=$DetalleCuentasCobrarRepository;
+        $this->_configuracionRepository= $configuracionRepository;
     }   
     function pagoStore(Request $request,$pagoDetalles,$caja)
     {
-        $this->_pagoRepository->Store((object)$request->all());        
+        $this->_pagoRepository->Store($request);        
         foreach($pagoDetalles as $item)        
         {            
             if($item->forma_pago_id==1)                        
@@ -121,7 +125,8 @@ class PagoController extends Controller
         }
 
         $orden_id=request()->input('id');           
-        $ordenServicio=$this->_ordenServicioRepository->Find($orden_id);        
+        $ordenServicio=$this->_ordenServicioRepository->Find($orden_id);    
+        $configuracion=$this->_configuracionRepository -> getConfigByNombre("propina");    
         $acum=0;        
         if($ordenServicio->credito==1)
         {
@@ -154,9 +159,11 @@ class PagoController extends Controller
             $impuesto=$this->_impuestoRepository->CalcularImpuestos($subtotal);
         }
         $totalpagar=$subtotal+$impuesto;
+        $propina=$totalpagar*$configuracion->valor;
         $faltante=$totalpagar-$acum;
         $data=[   
             'forma_pago'=>$this->_formapagoRepository->GetAll(),    
+            "propina"=>$propina,
             'ordenServicio'=>$ordenServicio,  
             'orden_detalle'=>   $ordenServicio->orden_detalles,
             'subtotal'=>$subtotal,
@@ -177,6 +184,8 @@ class PagoController extends Controller
         {
             return redirect()->to('login');   
         }
+    //    print_r($request->all());
+      //  exit();
         $user=Auth::user();                   
         $caja=$user->caja;
         $validacion=$request->validate([
@@ -207,7 +216,8 @@ class PagoController extends Controller
                 return back()->withErrors('No se ha recibido el monto total de pago');
             }                   
             $this->pagoStore($request,$pagoDetalles ,$caja);       
-            $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);            
+            $this->_ordenServicioRepository->PagarOrden($ordenServicio->id);    
+            $this->_ordenServicioRepository-> ActualizarTotalPagarOrdenservicio($ordenServicio-> id);        
             return redirect()->to(url("/reportes/printordenservicio/$ordenServicio->id"));  
         }
         else
@@ -219,6 +229,7 @@ class PagoController extends Controller
                 $credito=(object)["orden_id"=>$ordenServicio->id,"valor_recibido"=>$recibido];
                 session(['cuentascobrar' => $credito]);  
                 $this->_ordenServicioRepository->AcreditarOrden($ordenServicio->id);
+                $this->_ordenServicioRepository-> ActualizarTotalPagarOrdenservicio($ordenServicio->id);        
                 return redirect()->to(url('/cuentascobrar/create'));                                                                              
             }
             else

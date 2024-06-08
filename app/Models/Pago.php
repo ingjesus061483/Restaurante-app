@@ -16,6 +16,6 @@ class Pago extends Model
     }
     protected $fillable=[
         'codigo','fecha_hora', 'subtotal','impuesto','descuento','total_pagar',
-        'recibido','cambio',  'observaciones','orden_id'
+        'recibido','cambio',  'observaciones','orden_id','servicio_voluntario'
     ];
 }

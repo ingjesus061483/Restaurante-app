@@ -184,16 +184,55 @@
                         </div>
                     </div>
                     <div class="row">
+                        @foreach($ordenEncabezado->pagos as $pago)
+                        <div class="row" >
+                            <div class="col-4" ></div>
+                            <div class="col-4" ></div>
+                            <div class="col-4" >
+                                <div class ="mb-3">                    
+                                    <label class="form-label" for="descripcion">                        
+                                        Sub Total:
+                                    </label>                    
+                                    ${{number_format($pago->subtotal)}}
+                                </div>                                    
+                            </div>
+                        </div>
+                        <div class="row" >
+                            <div class="col-4" ></div>
+                            <div class="col-4" ></div>
+                            <div class="col-4" >
+                                <div class ="mb-3">                    
+                                    <label class="form-label" for="descripcion">                        
+                                        Serv. vol:
+                                    </label>                    
+                                    ${{number_format($pago->servicio_voluntario)}}
+                                </div>                                    
+                            </div>
+                        </div><div class="row" >
+                            <div class="col-4" ></div>
+                            <div class="col-4" ></div>
+                            <div class="col-4" >
+                                <div class ="mb-3">                    
+                                    <label class="form-label" for="descripcion">                        
+                                        cambio:
+                                    </label>                    
+                                    ${{number_format($pago->cambio)}}
+                                </div>                                    
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="row">
+                        
                         <div class="col-4" ></div>
                         <div class="col-4" ></div>
                         <div class="col-4" >
                             <div class ="mb-3">                    
                                 <label class="form-label" for="descripcion">                        
-                                    Total
+                                    Total a pagar:
                                 </label>                    
                                 ${{number_format($ordenEncabezado->total)}}
-                            </div>
-                                    
+                            </div>                                    
                         </div>
                     </div>
 

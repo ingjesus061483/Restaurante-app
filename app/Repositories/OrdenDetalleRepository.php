@@ -14,22 +14,28 @@ class OrdenDetalleRepository implements IRepository
     }
     public function  GetdetalleByProducto($request)
     {
-        $cantidad=$request->cantidad;
+        $venta_costo=$request->venta_costo=="true"?1:0;        
+        $cantidad=(double)$request->cantidad;
         $producto_id=$request->producto_id;
         $producto=$this->_productoRepository->Find($producto_id);
         $observaciones=$request->observaciones;
-        $total=$cantidad*$producto->precio;        
+        $valor_unitario=(double)$venta_costo==1 ?$producto->costo_unitario:$producto->precio;
+        $total=$cantidad*$valor_unitario;        
         $data =(object) [
-            "cantidad"=>$cantidad,            
+            "cantidad"=>$cantidad,                        
+            'producto'=>$producto,
+            'impreso'=>0,
             "detalleOrden"=>$producto->nombre,
             "producto_id"=>$producto->id,
-            "valor_unitario"=>$producto->precio ,
+            "venta_costo"=>$venta_costo,
+            "valor_unitario"=>$valor_unitario ,
             "total"=>$total,
             "orden_id"=>$request->orden_id,
             "observaciones"=>$observaciones,
         ];    
         return $data;
     }
+  
     public function Store($request)
     {
         $OrdenDetalle=new OrdenDetalle();
@@ -74,5 +80,16 @@ class OrdenDetalleRepository implements IRepository
         $detalle->total=$request->total;
         $detalle->update();
     }
+    public function ActualizarImpresos($id)
+    {
+        $detalles_impresos=OrdenDetalle::where('impreso',0) ->where('orden_encabezado_id',$id)->get();
+        foreach($detalles_impresos as $item)
+        {                
+            $item->impreso=1;
+            $item->save();
+        }
+
+    }
+
  
 }

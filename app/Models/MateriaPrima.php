@@ -21,10 +21,10 @@ class MateriaPrima extends Model
         return $this->hasMany(Preparacion::class,'materia_prima_id');
     }
   
-     protected $fillable=[
-                            'codigo','nombre','descripcion',
+     protected $fillable=[  'codigo','nombre','marca',
+                            'referencia','descripcion',
                             'costo_unitario','imagen',
                             'unidad_medida_id','categoria_id',
-                         ];
+                            ];
  
 }

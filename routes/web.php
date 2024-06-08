@@ -92,3 +92,4 @@ Route::get('reportes/printordenservicio/{id}',[ReportesController::class,'printO
 Route::get('reportes/printComanda/{id}',[ReportesController::class,'printComanda']);
 Route::get('reportes/inventario',[ReportesController::class,'inventarioPdf']);
 Route::get('reportes/ProductosVendidosByFecha',[ReportesController::class,'ProductosVendidosByFechaPdf']);
+Route::get('reportes/printComandaSesion/{id}', [ReportesController::class,'printComandaSesion']);

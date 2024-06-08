@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
         <title>@yield('title')</title>   
         <link rel="shortcut icon" type="image/x-icon" href="{{url('/')}}/restaurante-app.ico" />             
         <link rel="stylesheet" href="{{url('/')}}/jquery-ui-1.12.1.custom/jquery-ui.css">
@@ -105,14 +106,20 @@
            $(function(){
                 $( document ).tooltip();
            });
-           $(".slider").bxSlider({
+           /*$(".slider").bxSlider({
             minSlides: 3,
             maxSlides: 3,            
             slideWidth: 360,            
             slideMargin: 5,            
             ticker: true,
             speed: 60000
+           });*/
+          var slider= $(".slider").bxSlider({
+            slideWidth: 1000, 
+            mode: 'fade',           
+            slideMargin: 10, 
            });
+           var producto=null;
            var observacions=[];               
            var clientes=[];
            var opcion='';
@@ -145,21 +152,6 @@
                     }
                 }            
             });     
-            var CancelarOrden=$("#CancelarOrden").dialog({
-                autoOpen: false,
-                height:450,
-                width: 600,
-                modal: true,
-                buttons: 
-                {
-                    "Eliminar orden": function(){EliminarOrdenServicio()},
-                    "Cerrar": function() 
-                    {
-                        dialogformasPagos.dialog( "close" );                    
-                    }
-                }
-
-            });
             var dialogformasPagos=$("#formasPagos").dialog({
                 autoOpen: false,
                 height:450,
@@ -228,6 +220,22 @@
                     "Cerrar": function() {dialogexistencia.dialog( "close" );}
                 }
             });    
+            $("#venta_costo").change(function(){
+                if($("#venta_costo").prop('checked')){
+                    document.getElementById('ValorUnitarioDetalleOrden').value=producto.costo_unitario.toLocaleString();                  
+                }
+                else
+                {
+                    document.getElementById('ValorUnitarioDetalleOrden').value=producto.precio.toLocaleString();                    
+                }
+            });
+         $("#ordenServicio").click(function(){
+            console.log (slider);
+            var current=slider.getCurrentSlideElement();
+            var mesa = current[0].children[0].children[0].innerText;
+            window.location.href="{{url('/cabañas')}}/"+mesa;
+            console.log (current[0].children[0].children[0].innerText/*.find("#mesa-id")*/);
+         })
             $("#cliente").autocomplete({
                 source:clientes
             });
@@ -315,7 +323,7 @@
                     return;
                 }
                 dialogformasPagos.dialog("open");                
-            });
+            });        
             $("#chkcliente").change( function(){
                 //alert(this.checked);
                 if(this.checked)
@@ -452,7 +460,8 @@
                 var orden_id=document.getElementById('orden_id').value;
                 var producto_id=document.getElementById('producto_id').value;
                 var cantidad=document.getElementById('cantidadDetalleOrden').value;
-                var observaciones=document.getElementById('observaciones') .value;                
+                var observaciones=document.getElementById('observaciones') .value;      
+                var  venta_costo=$("#venta_costo").prop('checked');          
                 if(cantidad==""){
                     alertify.error("este campo no puede ser nulo");
                     return;
@@ -469,7 +478,8 @@
                                 _token:"{{csrf_token()}}",                                 
                                 orden_id:orden_id,                            
                                 producto_id:producto_id,                            
-                                cantidad:cantidad,                              
+                                cantidad:cantidad,
+                                venta_costo:venta_costo,                              
                                 observaciones:observaciones
                             },                        
                             success: function (result){                                                                                    
@@ -480,7 +490,7 @@
                                 else                                                            
                                 {                                    
                                     alertify.success(result.message);                                
-                                    window.location.href=result.orden_id==0?"{{url('/ordenservicio/create/')}}":"{{url('/ordenservicio/')}}/"+result.orden_id                                                    
+                                    window.location.href=result.orden_id==0?"{{url('/ordendetalles/create/')}}":"{{url('/reportes/printComandaSesion/')}}/"+result.orden_id                                                    
                                 }                       
                             }                    
                         });  
@@ -498,6 +508,7 @@
                                 orden_id:orden_id,                         
                                 producto_id:producto_id,                            
                                 cantidad:cantidad,  
+                                venta_costo:venta_costo,                              
                                 observaciones:observaciones                            
                             },                        
                             success: function (result){                                                 
@@ -515,8 +526,9 @@
                     type: "GET",               
                     dataType: "json",                
                     success: function (result){
-                        var detalle=result.detalle;                   
-                        document.getElementById('orden_id').value=detalle.orden_id;         
+                        var detalle=result.detalle;     
+                        producto=result.producto              
+                        document.getElementById('orden_id').value=detalle.orden_id;                       
                         document.getElementById('ordendetalle_id').value=detalle.detalle_id;
                         document.getElementById('cantidadDetalleOrden').value=detalle.cantidad;
                         document.getElementById('producto_id').value=detalle.producto_id;
@@ -524,6 +536,7 @@
                         document.getElementById('observaciones').value=detalle.observaciones;
                         document.getElementById('ValorUnitarioDetalleOrden').value=detalle.valor_unitario;
                         document.getElementById('producto_img').src="{{url('/')}}/img/"+detalle.imagen;
+                        $("#venta_costo").prop('checked',detalle.venta_costo);
                         dialogDetalleOrden.dialog('open');
                         opcion="editar";
                     }                
@@ -537,11 +550,11 @@
                     type: "GET",               
                     dataType: "json",                
                     success: function (result){
-                        var producto=result.producto;        
-                        document.getElementById('producto_id').value=producto.id
-                        document.getElementById('detalleOrden').value=producto.nombre
-                        document.getElementById('ValorUnitarioDetalleOrden').value=producto.precio
-                        document.getElementById('producto_img').src="{{url('/')}}/img/"+producto.imagen
+                        producto=result.producto;        
+                        document.getElementById('producto_id').value=producto.id;
+                        document.getElementById('detalleOrden').value=producto.nombre;
+                        document.getElementById('ValorUnitarioDetalleOrden').value=producto.precio.toLocaleString();
+                        document.getElementById('producto_img').src="{{url('/')}}/img/"+producto.imagen;
                         dialogDetalleOrden.dialog('open');
                         opcion='guardar';
                     }                

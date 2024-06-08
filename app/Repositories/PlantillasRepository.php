@@ -60,12 +60,56 @@ class PlantillasRepository
         foreach( $detalles as $item)
         {
             $printer->text( number_format($item->cantidad) );
-	        $sub=substr($item->producto->nombre, 0, 11);
+	        $sub=substr($item->producto->nombre,0, 11);
+            $tamsub=strlen($sub);            
+            $tampr=strlen($item->producto->nombre);
+            $tam=$tampr-$tamsub; 
 	        $printer->text( str_repeat(" ",11). $sub);
-	        $faltante=11-strlen($sub);
-	        $faltante=$faltante==0?7:$faltante+7;
-            $printer->text( str_repeat(" ",$faltante).number_format($item->valor_unitario));
-            $printer->text(str_repeat(" ",5).number_format($item->total)."\n");           
+            if($tam>11)
+            {
+                $tam=0;                
+            }            
+	        switch(strlen("$".number_format($item->valor_unitario)))
+            {
+                case 6:
+                {
+                    $printer->text(str_repeat(" ",6+$tam)."$".number_format($item->valor_unitario));
+                    break;
+                }
+                case 7:
+                    {
+                        $printer->text(str_repeat(" ",5+$tam)."$".number_format($item->valor_unitario));
+                        break;
+                    }                    
+                case 8:                    
+                    {
+                        $printer->text(str_repeat(" ",4+$tam)."$".number_format($item->valor_unitario));                        
+                        break;                   
+                    }                
+            }        
+            switch(strlen("$".number_format($item->total)))            
+            {
+                case 6:
+                    {
+                        $printer->text(str_repeat(" ",7)."$".number_format($item->total)."\n");           
+                        break;
+                    }
+                    case 7:
+                    { 
+                        $printer->text(str_repeat(" ",6)."$".number_format($item->total)."\n");           
+                        break;
+                    }
+                    case 8:
+                        {
+                            $printer->text(str_repeat(" ",5)."$".number_format($item->total)."\n");           
+                        break;
+                        }
+
+
+
+
+        }
+            
         }
         $printer ->setTextSize($encabezado,$encabezado);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
@@ -97,12 +141,12 @@ class PlantillasRepository
                 }
                 if($propina!=0)
                 {
-                    $printer->text("Serv. vol:  $".number_format( $item->total_pagar*$propina )."\n");                
+                    $printer->text("Serv.vol.:  $".number_format( $item->servicio_voluntario==0? $item->total_pagar*$propina:$item->servicio_voluntario )."\n");                
                 }
-                $printer->text("Recibido: $".number_format( $item->recibido)."\n");  
+             //   $printer->text("Recibido: $".number_format( $item->recibido)."\n");  
                 $printer->text("Cambio: $".number_format( $item->cambio)."\n");             
                 $printer ->setTextSize($encabezado,$encabezado);                              
-                $printer->text("Total a pagar: $".number_format( $item->total_pagar+$valorDomicilio+$item->total_pagar*$propina)."\n");                
+                $printer->text("Total a pagar: $".number_format( $item->total_pagar+$valorDomicilio+$item->servicio_voluntario)."\n");                
                 //$printer->text("Observaciones: ".$item->observaciones."\n");                
             }  
             $printer ->setTextSize($encabezado,$encabezado);              

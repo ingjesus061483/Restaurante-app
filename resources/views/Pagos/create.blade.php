@@ -15,7 +15,7 @@
                 </div>
                 @endif
                 <form action="{{url('/pagos')}}" enctype="multipart/form-data" autocomplete="off" method="post">
-                    <input type="hidden" name="acumulado"value="{{$acumulado}}" >
+                    <input type="hidden" name="acumulado"value="{{$acumulado}}" >        
                     <input type="hidden" name="faltante" value="{{$faltante}}">
                     <input type="hidden" name="orden_id" value="{{$ordenServicio->id}}">
                     @csrf
@@ -60,6 +60,16 @@
                         <input type="text" name="total_pagar"  class="form-control"
                         id="total_pagar" value={{$subtotal+$impuesto}}>
                     </div>
+                    @if($propina>0)
+                     <div class="mb-3">
+                        <label class="form-label" for="unidad_medida">
+                            Servicio voluntario                
+                        </label>                  
+                        <input type="text" name="serviciovol" value="{{$propina}}" class="form-control"
+                        id="serviciovol">
+                    </div>
+                    @endif
+                    
                     <div class ="mb-3">                    
                         <label class="form-label" for="descripcion">                        
                             Observaciones                    
@@ -115,7 +125,8 @@
                                     <th>Id</th>                                                           
                                     <th > Forma pago </th>                                
                                     <th> Detalle pago</th>                                
-                                    <th> Valor recibido</th>                                
+                                    <th> Valor recibido</th>    
+                                    <th></th>                            
                                 </tr>                        
                             </thead>                         
                             <tbody>                            
@@ -125,6 +136,16 @@
                                     <td >{{$item->forma_pago}}</td>
                                     <td>{{$item->detalle_pago}}</td>                               
                                     <td>{{$item->valor_recibido}}</td>                                                                  
+                                    <td>                
+                                        <form action="{{url('/pagodetalle')}}/{{$item->id}}" onsubmit="return validar('Desea eliminar este registro?');" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="orden_id" value="{{$ordenServicio->id}}">
+                                            <button title="Eliminar" class="btn btn-danger" type="submit"> 
+                                            <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>                            
                                 @endforeach                            
                             </tbody>                   
@@ -136,7 +157,7 @@
                         <strong> acumulado:</strong> {{$acumulado}}
                     </div>
                     <div class="col-6">
-                        <strong>{{$faltante>0?'Faltante:':'Sobrante:'}} </strong>{{ $faltante<0?-1*$faltante:$faltante}}
+                        <strong>{{$faltante>0?'Faltante:':'Sobrante:'}} </strong>{{$faltante<0?-1*$faltante:$faltante }}
                     </div>
                     
                 </div>            

@@ -33,6 +33,7 @@
                     <th>Impuesto</th>
                     <th>Descuento  </th>                    
                     <th>Total pagar</th>
+                    <th>Servicio voluntario</th>
                     <th>Recibido</th>
                     <th>Cambio</th>
                     <th></th>
@@ -50,6 +51,7 @@
                     <th>Impuesto</th>
                     <th>Descuento  </th>                    
                     <th>Total pagar</th>
+                    <th>Servicio voluntario</th>
                     <th>Recibido</th>
                     <th>Cambio</th>
                     <th></th>
@@ -69,6 +71,7 @@
                     <td>${{number_format($item->impuesto)}}</td>
                     <td>${{number_format($item->descuento)}}  </td>                    
                     <td>${{number_format($item->total_pagar)}}</td>
+                    <td>${{number_format($item->servicio_voluntario)}}</td>
                     <td>${{number_format($item->recibido)}}</td>
                     <td>${{number_format($item->cambio)}}</td>  
                     <td>

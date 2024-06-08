@@ -162,6 +162,13 @@
                             <input class="form-control" type="text"  name="detalleOrden" 
                             id="detalleOrden">
                         </div>
+                        <!--<div class="mb-3">
+                            <label class="form-label" for="codigo">
+                                Venta a costo
+                            </label>
+                            <input class="form-check-inline" type="checkbox"  name="venta_costo" 
+                            id="venta_costo">-->
+                        </div>
                         <div class="mb-3">
                             <label class="form-label" for="unidad_medida">
                                 Valor unitario

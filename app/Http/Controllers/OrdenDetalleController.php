@@ -127,19 +127,46 @@ class OrdenDetalleController extends Controller
         }
         else
         {
-            $this->_OrdenDetalleRepository->store($detalle);
+            $deta=$detalle; 
+            session(['detalle' => $deta]);        
+            $orden=$this->_ordenServicioRepository->Find($detalle->orden_id);
+            $detalles=$orden->orden_detalles;
+            $encontrado=false;
+            $ordendetalle=null;
+            foreach($detalles as $detail )
+            {
+                if($detail->producto_id == $detalle->producto_id)
+                {
+                    $encontrado=true;
+                    $ordendetalle=$detail;
+                    break;
+                }
+            }
+            $mensaje='';
+            if(!$encontrado)
+            {
+                $this->_OrdenDetalleRepository->store($detalle);
+                $mensaje='Has insertado un detalle';
+            }
+            else
+            {
+                
+                $detalle->cantidad=$detalle->cantidad+ $ordendetalle->cantidad;
+                $update=   $this->_OrdenDetalleRepository-> GetdetalleByproducto($deta);                
+                $this->_OrdenDetalleRepository->update($ordendetalle-> id,$update);                    
+                $mensaje='Se ha actualizado un detalle';
+            }
             $this->_ordenServicioRepository->ActualizarTotalPagarOrdenservicio($request->orden_id);
+            $deta->cantidad= (int)$request->cantidad;
             $data=[
                 'orden_id'=>$request->orden_id,
-                'message'=>'Has insertado un detalle',
+                'message'=>$mensaje,
                 'encontrado'=>true
             ];                
-
         }
         return json_encode($data);        
         //
     }
-
     /**
      * Display the specified resource.
      */
@@ -161,14 +188,15 @@ class OrdenDetalleController extends Controller
      */
     public function edit($id)
     {       
-        $orden_servicio=$this->_ordenServicioRepository->Find($id);        
-        $ordendetalles=$orden_servicio->orden_detalles;        
+        $orden_servicio=$this->_ordenServicioRepository->Find($id);  
+  $productos =$this->_productoRepository->GetAll();      
+/*        $ordendetalles=$orden_servicio->orden_detalles;        
         $productosSession=[];                                
         foreach($ordendetalles as $item)        
         {            
             $productosSession[]=$item->producto_id;        
         }
-        $productos= $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession);
+        $productos= $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession);*/
         $data=[
             "orden_id"=>$orden_servicio->id,
             'categorias'=>$this->_categoriaRepository->GetAll(),
