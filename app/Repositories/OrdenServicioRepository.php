@@ -45,7 +45,7 @@ class OrdenServicioRepository implements IRepository
     } 
     public function GetOrdenesByEmpleados($empleado_id)
     {
-        return OrdenEncabezado::where('empleado_id',$empleado_id) ->get();       
+        return OrdenEncabezado::where('empleado_id',$empleado_id)->orderBy('id', 'DESC')->get();       
     }
 
     public function GetAll()
