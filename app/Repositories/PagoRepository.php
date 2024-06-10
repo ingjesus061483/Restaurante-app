@@ -53,7 +53,7 @@ class PagoRepository implements IRepository{
             'impuesto'=>$request->impuesto,
             'descuento'=>$request->descuento,
             'total_pagar'=>$request->total_pagar,
-            'servicio_voluntario'=>$request->serviciovol,
+            'servicio_voluntario'=>$request->serviciovol==null?0:$request->serviciovol,
             'recibido'=>$request->acumulado,
             'cambio'=>-1*$request-> faltante,  
             'observaciones'=>$request->observaciones,

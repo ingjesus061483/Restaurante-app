@@ -60,14 +60,12 @@ class PlantillasRepository
         foreach( $detalles as $item)
         {
             $printer->text( number_format($item->cantidad) );
-	        $sub=substr($item->producto->nombre,0, 11);
-            $tamsub=strlen($sub);            
-            $tampr=strlen($item->producto->nombre);
-            $tam=$tampr-$tamsub; 
+	        $sub=substr($item->producto->nombre,0, 11);                   
+            $tampr=strlen($item->producto->nombre);            
 	        $printer->text( str_repeat(" ",11). $sub);
-            if($tam>11)
+            if($tampr <=11)
             {
-                $tam=0;                
+                $tam=11-$tampr;                
             }            
 	        switch(strlen("$".number_format($item->valor_unitario)))
             {
