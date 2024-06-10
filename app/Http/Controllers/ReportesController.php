@@ -152,8 +152,7 @@ class ReportesController extends Controller
                         $printer -> cut();                    
                         $printer->close();   
                         $cont++;
-                    }                
-              
+                    }            
                 }
                 catch(Exception $ex)
                 {                    
@@ -175,8 +174,7 @@ class ReportesController extends Controller
         catch(Exception $ex)
         {
             return back()->withErrors($ex->getMessage());
-        }     
-
+        }
     }
     public function printComandaSesion($id)    
     {
