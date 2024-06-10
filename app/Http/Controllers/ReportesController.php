@@ -121,7 +121,7 @@ class ReportesController extends Controller
         $printer -> cut();                    
         $printer->close();                                          
     } 
-    function printComanda($id)
+     function printComanda($id)
     {
         try
         {
@@ -133,31 +133,38 @@ class ReportesController extends Controller
             $impresoras=$this->_impresoraRepository->GetAll();          
             $err=[];
             $accion="comanda";
+            $detalles=$ordenservicio-> orden_encabezado->orden_detalles; 
+            $cont=0;
             foreach( $impresoras as $item )            
             {   
                 try
                 {              
                     $detalles=$ordenservicio-> orden_encabezado->orden_detalles;
                     $detalles_impresora=$this->Detalles_impresora($detalles,$item,$accion);               
-                    if(count( $detalles_impresora)==0)                    
+                    if(count( $detalles_impresora)!=0)                    
                     {
-                        throw new Exception("No se ha encontrado ningun producto para imprimir");                                                
+                        $ordenservicio->detalles=(object)$detalles_impresora;                    
+                        $ordenservicio->impresora=$item;
+                        $conector=new WindowsPrintConnector($item->recurso_compartido);                    
+                        $printer =new Printer($conector);                            
+                        $printer ->initialize();                    
+                        $this->_plantillaRepository->ImprimirPlantillaComanda($printer,$ordenservicio);                    
+                        $printer -> cut();                    
+                        $printer->close();   
+                        $cont++;
                     }                
-                    $ordenservicio->detalles=(object)$detalles_impresora;                    
-                    $ordenservicio->impresora=$item;
-                    $conector=new WindowsPrintConnector($item->recurso_compartido);                    
-                    $printer =new Printer($conector);                            
-                    $printer ->initialize();                    
-                    $this->_plantillaRepository->ImprimirPlantillaComanda($printer,$ordenservicio);                    
-                    $printer -> cut();                    
-                    $printer->close();   
+              
                 }
                 catch(Exception $ex)
                 {                    
                     $err[]=$ex->getMessage();
                     break;
                 }
-            }            
+            }           
+            if($cont==0)
+            {
+                throw new Exception("No hay productos para imprimir");
+            }
             if (count($err)>0)
             {
                 return back()->withErrors($err);
