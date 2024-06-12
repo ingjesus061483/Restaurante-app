@@ -3,6 +3,56 @@ namespace App\Repositories;
 use Mike42\Escpos\Printer;
 class PlantillasRepository
 {
+    private function GetFaltante($item)
+    {
+        $tampr=strlen($item->producto->nombre);            
+        $tam=0;
+        if($tampr<=11)
+        {
+            $tam=11-$tampr;                
+        }            
+        return $tam;
+    }
+    private function TextAlign($item,Printer $printer)
+    {        
+        $tam=$this->GetFaltante($item);        
+        switch(strlen("$".number_format($item->valor_unitario)))
+        {
+            case 6:                
+                {
+                    $printer->text(str_repeat(" ",6+$tam)."$".number_format($item->valor_unitario));                    
+                    break;                
+                }
+            case 7:
+                {
+                    $printer->text(str_repeat(" ",5+$tam)."$".number_format($item->valor_unitario));
+                    break;
+                }                    
+            case 8:                    
+                {
+                    $printer->text(str_repeat(" ",4+$tam)."$".number_format($item->valor_unitario));                        
+                    break;                   
+                }                
+        }        
+        switch(strlen("$".number_format($item->total)))            
+        {
+            case 6:
+                {
+                    $printer->text(str_repeat(" ",7)."$".number_format($item->total)."\n");           
+                    break;
+                }                    
+            case 7:
+                { 
+                    $printer->text(str_repeat(" ",6)."$".number_format($item->total)."\n");           
+                    break;
+                }                    
+            case 8:                    
+                {                        
+                    $printer->text(str_repeat(" ",5)."$".number_format($item->total)."\n");           
+                    break;
+                }                
+        }            
+    }
     public function ImprimirPlantillaOrdenServicio(Printer $printer,$ordenservicio)
     {
 	    $encabezado=$ordenservicio->impresora!=null?$ordenservicio->impresora->tamaño_fuente_encabezado:2;
@@ -43,8 +93,7 @@ class PlantillasRepository
         }          
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer->setTextSize($encabezado,$encabezado);              
-        $printer->text("________________________\n");                          
-             
+        $printer->text("________________________\n");                                       
         $printer->setTextSize($encabezado,$encabezado);              
         $printer->text("________________________\n\n");    
         $printer->setJustification(Printer::JUSTIFY_LEFT);       
@@ -55,59 +104,14 @@ class PlantillasRepository
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer->setTextSize($encabezado,$encabezado);  
         $printer->text("________________________\n\n"); 
-        $printer ->setTextSize($contenido,$contenido);  
+        $printer->setTextSize($contenido,$contenido);  
 	    $printer->setJustification(Printer::JUSTIFY_LEFT);                              
         foreach( $detalles as $item)
         {
-            $printer->text( number_format($item->cantidad) );
-	        $sub=substr($item->producto->nombre,0, 11);                   
-            $tampr=strlen($item->producto->nombre);            
-	        $printer->text( str_repeat(" ",11). $sub);
-            if($tampr <=11)
-            {
-                $tam=11-$tampr;                
-            }            
-	        switch(strlen("$".number_format($item->valor_unitario)))
-            {
-                case 6:
-                {
-                    $printer->text(str_repeat(" ",6+$tam)."$".number_format($item->valor_unitario));
-                    break;
-                }
-                case 7:
-                    {
-                        $printer->text(str_repeat(" ",5+$tam)."$".number_format($item->valor_unitario));
-                        break;
-                    }                    
-                case 8:                    
-                    {
-                        $printer->text(str_repeat(" ",4+$tam)."$".number_format($item->valor_unitario));                        
-                        break;                   
-                    }                
-            }        
-            switch(strlen("$".number_format($item->total)))            
-            {
-                case 6:
-                    {
-                        $printer->text(str_repeat(" ",7)."$".number_format($item->total)."\n");           
-                        break;
-                    }
-                    case 7:
-                    { 
-                        $printer->text(str_repeat(" ",6)."$".number_format($item->total)."\n");           
-                        break;
-                    }
-                    case 8:
-                        {
-                            $printer->text(str_repeat(" ",5)."$".number_format($item->total)."\n");           
-                        break;
-                        }
-
-
-
-
-        }
-            
+            $printer->text(number_format($item->cantidad));
+	        $sub=substr($item->producto->nombre,0, 11);                               
+	        $printer->text(str_repeat(" ",11).$sub);
+            $this->TextAlign($item,$printer);
         }
         $printer ->setTextSize($encabezado,$encabezado);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
@@ -151,7 +155,7 @@ class PlantillasRepository
             $printer->setJustification(Printer::JUSTIFY_CENTER);        
             $printer->text("________________________\n\n");
 	        $printer ->setTextSize($contenido,$contenido);              
-            $printer->text(" Gracias por su estancia en".$ordenservicio-> empresa->nombre.". \n");
+            $printer->text(" Gracias por su estancia en ".strtoupper($ordenservicio-> empresa->nombre).". \n");
             $printer->text(" Vuelve pronto. \n");
             $printer ->setTextSize($encabezado,$encabezado);                      
             $printer->text("________________________\n");                          
@@ -186,8 +190,8 @@ class PlantillasRepository
        
         $detalles=$ordenservicio->detalles;          
         foreach( $detalles as $item)
-        {   
-	    $printer ->setTextSize($encabezado,$encabezado);      
+        {               
+            $printer ->setTextSize($encabezado,$encabezado);      
             $printer->text("--------------\n");                                         
             $printer->text("Cantidad: ".$item->cantidad."\n");
             $printer->text("Producto: ".$item->producto->nombre." \n");
@@ -195,8 +199,8 @@ class PlantillasRepository
             {
                 $printer->text("Observaciones: ".$item->observaciones."\n");            
             }
-            $printer->text("--------------\n");    
-	    $printer ->setTextSize($contenido,$contenido);                                         
+            $printer->text("--------------\n");                
+            $printer ->setTextSize($contenido,$contenido);                                         
             if($item->producto->foraneo==0){
                 $ingredientes=$item->producto->preparacions;
                 foreach($ingredientes as $ingrediente)
@@ -210,7 +214,6 @@ class PlantillasRepository
         }
         $printer ->setTextSize($encabezado,$encabezado);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
-        $printer->text("========================\n");      
-      
+        $printer->text("========================\n");            
     }
 }
