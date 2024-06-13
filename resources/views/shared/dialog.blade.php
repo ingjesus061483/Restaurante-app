@@ -65,7 +65,8 @@
                     </form>
                 </div>
             </div>
-        </div>                   
+        </div>  
+    </div>                 
 </div>
 <div id="CancelarOrden">
     <div class="card mb-4">                
@@ -83,8 +84,7 @@
                 <input type="password" class="form-control" id="password"/>
             </div>        
         </div>
-    </div>
-    
+    </div>    
 </div>
 <div id="ingredientes" class="container">
     <div class="card mb-4">                
@@ -138,7 +138,8 @@
                     </form>
                 </div>
             </div>
-        </div>                                   
+        </div>
+    </div>                                      
 </div>
 <div id="DetalleOrden" class="container">
     <div class="card mb-4">                

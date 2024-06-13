@@ -53,7 +53,7 @@
                 </label>
                 <input type="text" name="email" id="email" value="{{old('email')}}" class="form-control">        
             </div>
-            <div class ="mb-3">
+           <!-- <div class ="mb-3">
                 <label class="form-label" for="usuario">
                     usuario
                 </label>
@@ -69,7 +69,7 @@
                     Confirmar Contraseña
                 </label>
                 <input type="password" name="password_confirmation" id="password" class="form-control">        
-            </div>
+            </div>-->
             <a class="btn btn-primary" href="{{url('/')}}/clientes">
                 Regresar
             </a> 

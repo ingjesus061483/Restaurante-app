@@ -55,7 +55,7 @@
                 <label class="form-label" for="direccion">
                     Email
                 </label>
-                <input type="text" name="email" readonly id="email" value="{{$cliente->usuario->email}}" class="form-control">        
+                <input type="text" name="email"  id="email" value="{{$cliente->email}}" class="form-control">        
             </div>
             <a class="btn btn-primary" href="{{url('/')}}/clientes">
                 Regresar

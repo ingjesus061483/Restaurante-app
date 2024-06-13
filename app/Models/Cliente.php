@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Cliente extends Model
 {
     use HasFactory;
-    public function usuario(){
+  /* public function usuario(){
         return  $this->belongsTo(User::class,'user_id');
-      }
+      }*/
     public function ordens(){
         return $this->hasMany(OrdenEncabezado::class,'cliente_id');
     }

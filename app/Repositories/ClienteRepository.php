@@ -27,14 +27,15 @@ class ClienteRepository implements IRepository
     }
     public function Store( $request)
     {  
-        $user=$this->_UserRepository->Store($request);
+       // $user=$this->_UserRepository->Store($request);
         $cliente=new Cliente();
         $cliente->identificacion=$request->identificacion;
         $cliente->nombre=$request->nombre;
         $cliente->apellido=$request->apellido;
         $cliente->direccion=$request->direccion;
         $cliente->telefono=$request->telefono;
-        $cliente->user_id=$user->id;
+        $cliente->email=$request->email;
+     //   $cliente->user_id=$user->id;
         $cliente->save();       
     }
     public function Find($id)
@@ -49,6 +50,7 @@ class ClienteRepository implements IRepository
         $cliente->apellido=$request->apellido;
         $cliente->direccion=$request->direccion;
         $cliente->telefono=$request->telefono;
+        $cliente->email=$request->email;
         $cliente->save();        
     }
     public function Delete($id)

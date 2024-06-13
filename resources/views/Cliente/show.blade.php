@@ -21,7 +21,7 @@
                     <td>{{$cliente->nombre .' '.$cliente->apellido}}</td>            
                     <td>{{$cliente->direccion}}</td>
                     <td>{{$cliente->telefono}}</td>
-                    <td>{{$cliente->usuario->email}}</td>                  
+                    <td>{{$cliente->email}}</td>                  
                 </tr>
             </tbody>        
         </table>

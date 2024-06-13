@@ -81,9 +81,9 @@ class ClienteController extends Controller
             'apellido'=>'required|max:50',
             'direccion'=>'required|max:50',
             'telefono'=>'required|max:50',            
-            'name'=>'required|unique:users',
-            'email'=>'required|email|max:255|unique:users',
-            'password'=>['required','confirmed',Password::default()],            
+        //    'name'=>'required|unique:users',
+            'email'=>'required|email',//|max:255|unique:users',
+            //'password'=>['required','confirmed',Password::default()],            
         ]);        
         $this->_repository->Store(((object)$request->all() ));
         return redirect()->to(url('/clientes'));
@@ -117,8 +117,7 @@ class ClienteController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {
-        
+    {        
         if(!Auth::check())
         {
             return redirect()->to('login');
