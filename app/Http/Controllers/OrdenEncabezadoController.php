@@ -45,17 +45,39 @@ class OrdenEncabezadoController extends Controller
         {
           return  redirect()->to('ordenservicio/create');
         }    
-        $user=Auth::user();
-        if($user->role_id==5)
+        $user=Auth::user();                
+        if(request()->fechaIni==null)
         {
-            $empleado=$user->empleados->first();
-            $ordenes=$this->_ordenServicioRepository-> GetOrdenesByEmpleados($empleado->id);
+            $fechaini=date_create();
+            date_add($fechaini, date_interval_create_from_date_string('-1 days'));
         }
         else
         {
-            $ordenes=$this->_ordenServicioRepository->GetAll();            
+            $fechaini=date_create(request()->fechaIni);
+        }
+        $fechafin=request()->fechaFin!=null ?date_create( request()->fechaFin):date_create();
+        if($fechaini>$fechafin)
+        {
+            $ordenes=[];
+            $data=[
+                'fechaIni'=>date_format($fechaini,'Y-m-d'),
+                'fechaFin'=>date_format($fechafin,'Y-m-d'),
+                'ordenes'=>$ordenes           
+            ];            
+            return view('Orden.index',$data)->withErrors("fecha inicial no puede ser mayor a la final.");
+        }
+        if($user->role_id==5)
+        {
+            $empleado=$user->empleados->first();
+            $ordenes=$this->_ordenServicioRepository-> GetOrdenesByEmpleados($empleado->id,$fechaini,$fechafin);
+        }
+        else
+        {
+            $ordenes=$this->_ordenServicioRepository->GetorderByDate($fechaini,$fechafin);            
         }
         $data=[
+            'fechaIni'=>date_format($fechaini,'Y-m-d'),
+            'fechaFin'=>date_format($fechafin,'Y-m-d'),
             'ordenes'=>$ordenes           
         ];
         return view('Orden.index',$data);
@@ -86,7 +108,7 @@ class OrdenEncabezadoController extends Controller
         $time=date_format($now, 'H:i:s');
         $user=Auth::user();
         $empleado=$this->_empleadoRepository->GetEmpleadoByUser($user);
-        $cliente=$this->_clienteRepository->GetclienteByUser($user);
+        $cliente=null;
         $data=[
             'tipo_documento'=>$this->_tipoDocumentoRepository->GetAll(),   
             'cabañas'=>$cabañas,  

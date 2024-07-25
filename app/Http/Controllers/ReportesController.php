@@ -159,15 +159,16 @@ class ReportesController extends Controller
                     $err[]=$ex->getMessage();
                     break;
                 }
-            }           
+            }  
+            if (count($err)>0)
+            {
+                return back()->withErrors($err);
+            }         
             if($cont==0)
             {
                 throw new Exception("No hay productos para imprimir");
             }
-            if (count($err)>0)
-            {
-                return back()->withErrors($err);
-            }
+         
             $this->_ordendetalleRepository->ActualizarImpresos($id);
             return redirect()->to('ordenservicio');        
         }

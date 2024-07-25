@@ -125,6 +125,7 @@ class PlantillasRepository
             $printer->setJustification(Printer::JUSTIFY_RIGHT);        
             foreach($ordenservicio->orden_encabezado->pagos as $item)
             {
+                $detallepagos=$item->pago_detalle;
               //  $printer->text("Codigo: ".$item->codigo."\n");
                // $printer->text("Fecga / hora: ".$item->fecha_hora."\n");
               //  $printer->text("Forma de pago: ".$item->forma_pago->nombre."\n");
@@ -147,7 +148,12 @@ class PlantillasRepository
                 }
              //   $printer->text("Recibido: $".number_format( $item->recibido)."\n");  
                 $printer->text("Cambio: $".number_format( $item->cambio)."\n");             
-                $printer ->setTextSize($encabezado,$encabezado);                              
+                foreach($detallepagos as $detallepago)
+                {
+                    $printer->text($detallepago->detalle_pago . ": $".number_format( $detallepago-> valor_recibido)."\n");
+
+                }                              
+                $printer ->setTextSize($encabezado,$encabezado);        
                 $printer->text("Total a pagar: $".number_format( $item->total_pagar+$valorDomicilio+$item->servicio_voluntario)."\n");                
                 //$printer->text("Observaciones: ".$item->observaciones."\n");                
             }  
@@ -182,7 +188,17 @@ class PlantillasRepository
         $printer->text("Fecha/hora:".$ordenservicio->orden_encabezado->fecha." ". $ordenservicio->orden_encabezado->hora."\n");
         $printer->text("Hora entrega:".$ordenservicio->orden_encabezado->hora_entrega ."\n");        
         $printer->setTextSize($encabezado,$encabezado);                      
-	    $printer->text("Mesa:".$ordenservicio->orden_encabezado->cabaña->nombre. "\n");        
+        if($ordenservicio->orden_encabezado->cabaña!=null)
+        {
+            $printer->text("Mesa:".$ordenservicio->orden_encabezado->cabaña->nombre. "\n");        
+            
+
+        }
+        else
+        {
+            $printer->text("Direccion domicilio:".$ordenservicio->orden_encabezado->cliente->direccion. "\n");        
+	        
+        }
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer->text("========================\n");    
         $printer->text("=========Detalle========\n");
@@ -200,7 +216,7 @@ class PlantillasRepository
                 $printer->text("Observaciones: ".$item->observaciones."\n");            
             }
             $printer->text("--------------\n");                
-            $printer ->setTextSize($contenido,$contenido);                                         
+        /*    $printer ->setTextSize($contenido,$contenido);                                         
             if($item->producto->foraneo==0){
                 $ingredientes=$item->producto->preparacions;
                 foreach($ingredientes as $ingrediente)
@@ -210,7 +226,7 @@ class PlantillasRepository
                     $printer->text("Ingrediente:".$ingrediente->materia_prima->codigo.' - '.$ingrediente->materia_prima->nombre." \n");
                     $printer->text("--------------\n");                                         
                 }
-            }      
+            }*/      
         }
         $printer ->setTextSize($encabezado,$encabezado);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
