@@ -87,8 +87,11 @@ class CabanaController extends Controller
         if($cabana->ocupado==1)
         {
             $ordenservicio=$this->_ordenServicioRepository-> GetOrdenByMesa($mesa);
-            return redirect()->to(url('/ordendetalles/'.$ordenservicio->id.'/edit'));           
-          //  return back()->withErrors("La mesa no se encuentra disponible");
+            if($ordenservicio!=null)
+            {
+                return redirect()->to(url('/ordendetalles/'.$ordenservicio->id.'/edit'));           
+            }
+            return back()->withErrors("La mesa no se encuentra disponible");
         }
         session(['cabana' => $cabana]);   
         if (!session()->has('detalles'))

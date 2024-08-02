@@ -40,7 +40,7 @@ class CabanaRepository implements IRepository
     {
         return Cabaña::select ("id","codigo","nombre","ocupado","descripcion","capacidad_maxima","imagen")
                      ->selectRaw("IFNULL((SELECT  SUM(orden_encabezados.total) FROM orden_encabezados WHERE cabaña_id=cabañas.id AND fecha=CURDATE() AND  estado_id=3),0) as venta_diaria")
-                     ->orderby('venta_diaria') ->get();
+                     ->orderby('venta_diaria','desc') ->get();
 
     }
     public function desocuparCabana(Cabaña $cabaña)

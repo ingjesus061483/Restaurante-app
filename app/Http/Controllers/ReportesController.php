@@ -159,15 +159,16 @@ class ReportesController extends Controller
                     $err[]=$ex->getMessage();
                     break;
                 }
-            }           
+            }  
+            if (count($err)>0)
+            {
+                return back()->withErrors($err);
+            }         
             if($cont==0)
             {
                 throw new Exception("No hay productos para imprimir");
             }
-            if (count($err)>0)
-            {
-                return back()->withErrors($err);
-            }
+         
             $this->_ordendetalleRepository->ActualizarImpresos($id);
             return redirect()->to('ordenservicio');        
         }
@@ -332,6 +333,32 @@ class ReportesController extends Controller
         ];
 //       return view ('Reporte.PropinasByEmpleado',$data);
        return $this->_fileRepository->GetPdf('Reporte.PropinasByEmpleado',$data);
+    }
+    public function OrdenesByFechaPdf(Request $request)
+    {
+   
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        $validacion=$request->validate([
+            'fechaIni'=>'required',
+            'fechaFin'=>'required|after_or_equal:fechaIni',
+        ]);
+        $fechaini=date_create(request()->fechaIni);
+        $fechafin=request()->fechaFin!=null ?date_create( request()->fechaFin):date_create();
+        $ordenes=$this->_ordenservicioRepository->GetorderByDate($fechaini,$fechafin)
+                                          ->where('estado_id',3)                                          
+                                          ->orderby('id','Desc')
+                                          ->get(); 
+        $data=[
+            'ordenes'=>$ordenes,            
+            'total'=>$this->_ordenservicioRepository-> Totalizar($ordenes)            
+        ];        
+        //return view ('Reporte.OrdenesByFechaPdf',$data);
+        return $this->_fileRepository->GetPdf('Reporte.OrdenesByFechaPdf',$data);        
+
+
     }
     public function ProductosVendidosByFechaPdf(Request $request)
     {

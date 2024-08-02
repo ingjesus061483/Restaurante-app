@@ -12,9 +12,39 @@
 @endif
 <div class="card mb-4">
     <div class="card-header">
-        <a href="{{url('/ordendetalles/create')}}" class="btn btn-primary">
-            Crear Orden de servicio 
-        </a>
+        <div class="row">
+            <div class="col-9">                
+                <form action="{{url('/ordenservicio')}}">                     
+                    <div class="row">
+                        <div class="col-4">
+                            <label class="form-label" for="codigo">                        
+                                Fecha inicio                                           
+                            </label>                    
+                            <input name="fechaIni" value="{{$fechaIni}}"  class="form-control" type="date"/>                                        
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label" for="codigo">                                  
+                                Fecha fin            
+                            </label>                                                                                   
+                            <input name="fechaFin" class="form-control" value="{{$fechaFin}}" type="date"/>
+                        </div>
+                        <div class="col-4">
+                            <br>
+                            <input type="submit"  name="accion" class="btn btn-primary" value= "Buscar">    
+                            <input  type="submit" formtarget="blank"  class="btn btn-danger" name="accion" value ="PDF" >
+                                
+                        </div>
+                    </div>                              
+                </form>
+            </div>
+            <div class="col-3">
+                <a href="{{url('/ordendetalles/create')}}" class="btn btn-primary">
+                    Crear Orden de servicio 
+                </a>
+                
+            </div>
+        </div>
+        
     </div>
     <div class="card-body">
         <table id="datatablesSimple">

@@ -207,8 +207,11 @@ class PagoController extends Controller
         settype($recibido,"double");
         settype($total_pagar,"double");
         $ordenServicio=$this->_ordenServicioRepository->Find($request->input('orden_id'));       
-        $cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;                  
-        $this->_cabanaRepository->desocuparCabana($cabana);
+        $cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;   
+	if($cabana!=null)
+	{               
+	     $this->_cabanaRepository->desocuparCabana($cabana);
+	}
         if($ordenServicio->credito==0)
         {
             if($total_pagar>$recibido)

@@ -91,5 +91,6 @@ Route::get('reportes/ventasbycabaña',[ReportesController::class,'VentasByMesasP
 Route::get('reportes/printordenservicio/{id}',[ReportesController::class,'printOrdenServicio']);
 Route::get('reportes/printComanda/{id}',[ReportesController::class,'printComanda']);
 Route::get('reportes/inventario',[ReportesController::class,'inventarioPdf']);
+Route::get('reportes/OrdenesByFechaPdf',[ReportesController::class,'OrdenesByFechaPdf']);
 Route::get('reportes/ProductosVendidosByFecha',[ReportesController::class,'ProductosVendidosByFechaPdf']);
 Route::get('reportes/printComandaSesion/{id}', [ReportesController::class,'printComandaSesion']);

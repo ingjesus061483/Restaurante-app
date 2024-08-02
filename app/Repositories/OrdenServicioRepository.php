@@ -34,7 +34,14 @@ class OrdenServicioRepository implements IRepository
                               ->where('estado_id',1) 
                               ->first();       
     }
-
+    public function totalizar($ordenes){
+        $sum=0;
+        foreach($ordenes as $item)
+        {
+            $sum =$sum +$item->total;
+        }
+        return $sum;
+    }
     public function totalizarOrden($detalles){
         $sum=0;
         foreach($detalles as $item)
@@ -43,15 +50,31 @@ class OrdenServicioRepository implements IRepository
         }
         return $sum;
     } 
-    public function GetOrdenesByEmpleados($empleado_id)
+    public function GetOrdenesByEmpleados($empleado_id,$fechaini,$fechaFin)
     {
-        return OrdenEncabezado::where('empleado_id',$empleado_id)->orderBy('id', 'DESC')->get();       
+        return OrdenEncabezado::where('empleado_id',$empleado_id)
+                              ->wherebetween('fecha',[date_format($fechaini,'Y-m-d'),
+                                                      date_format($fechaFin,'Y-m-d')])
+                              ->orderBy('id', 'DESC')
+                              ->get();       
+    }
+    public function GetorderByDate($fechaini,$fechaFin)
+    {
+        return OrdenEncabezado::wherebetween('fecha',[date_format($fechaini,'Y-m-d'),
+                                                      date_format($fechaFin,'Y-m-d')]);
+                      
+                              //->get();
     }
 
     public function GetAll()
     {
-       return OrdenEncabezado::all()
-                             ->sortDesc();
+        $fecha1 = date_create();        
+        date_add($fecha1, date_interval_create_from_date_string('-1 days'));
+        $fecha2=date_create();        
+        return OrdenEncabezado::wherebetween('fecha',[date_format($fecha1,'Y-m-d'),
+                                                      date_format($fecha2,'Y-m-d')])
+                              ->orderby('id','Desc') 
+                              ->get();
     }
     public  function GetTiempoCoccion($detalles)
     {
