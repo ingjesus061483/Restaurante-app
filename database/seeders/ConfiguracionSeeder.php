@@ -18,6 +18,7 @@ class ConfiguracionSeeder extends Seeder
             ['nombre'=>'propina','valor'=>'0'], 
             ['nombre'=>'descuento','valor'=>''],                      
             ['nombre'=>'Valor_Domicilio','valor'=>'0'],                     
+            ['nombre'=>'Impresora_cajero','valor'=>'pos'],
         ]);
         //
     }
