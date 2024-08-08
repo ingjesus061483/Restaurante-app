@@ -31,17 +31,16 @@
                         <div class="col-4">
                             <br>
                             <input type="submit"  name="accion" class="btn btn-primary" value= "Buscar">    
-                            <input  type="submit" formtarget="blank"  class="btn btn-danger" name="accion" value ="PDF" >
-                                
+                            <input  type="submit" formtarget="blank"  class="btn btn-danger" name="accion" value ="PDF" >                                                          
                         </div>
                     </div>                              
                 </form>
             </div>
             <div class="col-3">
+                <br>
                 <a href="{{url('/ordendetalles/create')}}" class="btn btn-primary">
                     Crear Orden de servicio 
                 </a>
-                
             </div>
         </div>
         

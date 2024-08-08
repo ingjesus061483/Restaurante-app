@@ -65,7 +65,6 @@ class OrdenServicioRepository implements IRepository
                       
                               //->get();
     }
-
     public function GetAll()
     {
         $fecha1 = date_create();        

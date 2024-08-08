@@ -44,7 +44,7 @@ class OrdenEncabezadoController extends Controller
         if (request()->accion=="PDF")
         {
             $request=request();
-            return redirect()->to("reportes/OrdenesByFechaPdf?fechaIni=$request->fechaIni&fechaFin=$request->fechaIni");
+            return redirect()->to("reportes/OrdenesByFechaPdf?fechaIni=$request->fechaIni&fechaFin=$request->fechaFin");
         }   
         if (session()->has('detalles'))
         {
@@ -78,9 +78,10 @@ class OrdenEncabezadoController extends Controller
         }
         else
         {
-            $ordenes=$this->_ordenServicioRepository->GetorderByDate($fechaini,$fechafin)
+           $ordenes=$this->_ordenServicioRepository->GetorderByDate($fechaini,$fechafin)
                                                     ->orderby('id','Desc') 
                                                     ->get();            
+
         }
         $data=[
             'fechaIni'=>date_format($fechaini,'Y-m-d'),
