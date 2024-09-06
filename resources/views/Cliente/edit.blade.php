@@ -12,9 +12,10 @@
             </ul>
         </div>
         @endif    
-        <form action="{{url('/')}}/clientes/{{$cliente->id}}" autocomplete="off" method="post">
+        <form action="{{url('/clientes')}}/{{$cliente->id}}" autocomplete="off" method="post">
             @csrf
             @method('patch')
+            <input type="hidden" name="id" value="{{$cliente->id}}">
             <div class="mb-3">
                 <label class="form-label" for="identificacion">
                     Identificacion

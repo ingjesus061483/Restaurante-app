@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCategoriaRequest;
-use App\Http\Requests\UpdateCategoriaRequest;
+use App\Http\Requests\Categoria\CreateRequest;
+use App\Http\Requests\Categoria\DeleteRequest;
+use App\Http\Requests\Categoria\IndexRequest;
+use App\Http\Requests\Categoria\StoreRequest;
+use App\Http\Requests\Categoria\UpdateRequest;
 use App\Repositories\CategoriaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,12 +23,12 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        if(!Auth::check())
+     /*   if(!Auth::check())
         {
             return redirect()->to('login');
-        }    
+        }    */
         $categorias=$this->_repository->GetAll();
         $data=[    
             'categorias'=>$categorias
@@ -37,16 +40,16 @@ class CategoriaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(CreateRequest $request)
     {
-        if(!Auth::check())
+    /*    if(!Auth::check())
         {
             return redirect()->to('login');
         }  
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }       
+        }       */
         return view('Categoria.create');
         //
     }
@@ -54,17 +57,19 @@ class CategoriaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        if(!Auth::check())
+       /* if(!Auth::check())
         {
             return redirect()->to('login');
         }
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }     
-        $validacion=$request->validate(['nombre'=>'required|max:50']);
+        } 
+        print_r($request->all());
+        exit();    
+        $validacion=$request->validate(['nombre'=>'required|max:50']);*/
         $this->_repository->Store((object)$request->all());
         return redirect()->to(url('/categorias'));       
         //
@@ -72,7 +77,7 @@ class CategoriaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Categoria $categoria)
+    public function show( $id)
     {
         //
     }
@@ -99,17 +104,17 @@ class CategoriaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id)
     {
-        if(!Auth::check())
+       /* if(!Auth::check())
         {
             return redirect()->to('login');
         }
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }     
-        $validacion=$request->validate(['nombre'=>'required|max:50']);
+        }    
+        $validacion=$request->validate(['nombre'=>'required|max:50']);*/
         $this->_repository->Update($id,(object)$request->all());
         return redirect()->to(url('/categorias'));        
         //
@@ -118,16 +123,16 @@ class CategoriaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(DeleteRequest $request,  string $id)
     {    
-        if(!Auth::check())
+       /* if(!Auth::check())
         {
             return redirect()->to('login');
         }
         if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }     
+        }*/     
         $this->_repository->Delete($id);
         return redirect()->to(url('/categorias'));    
         //

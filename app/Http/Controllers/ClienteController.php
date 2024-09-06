@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Cliente\StoreRequest;
+use App\Http\Requests\Cliente\UpdateRequest;
 use App\Repositories\ClienteRepository;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
@@ -65,16 +67,16 @@ class ClienteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {        
-        if(!Auth::check())
+       /* if(!Auth::check())
         {
             return redirect()->to('login');
         }
         /*if(!$this-> autorizar(Auth::user()))
         {
             return back();              
-        }*/
+        }
         $validacion=$request->validate([
             'identificacion'=>'required|unique:clientes|max:50',
             'nombre'=>'required|max:50',
@@ -84,7 +86,7 @@ class ClienteController extends Controller
         //    'name'=>'required|unique:users',
             'email'=>'required|email',//|max:255|unique:users',
             //'password'=>['required','confirmed',Password::default()],            
-        ]);        
+        ]);*/        
         $this->_repository->Store(((object)$request->all() ));
         return redirect()->to(url('/clientes'));
         //
@@ -136,9 +138,9 @@ class ClienteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {        
-        if(!Auth::check())
+        /*if(!Auth::check())
         {
             return redirect()->to('login');
         }
@@ -153,7 +155,7 @@ class ClienteController extends Controller
             'direccion'=>'required|max:50',
             'telefono'=>'required|max:50',
             'email'=>'required|email|max:255',            
-        ]);
+        ]);*/
         $this->_repository->Update($id,(object)$request->all());        
         return redirect()->to(url('/clientes'));
 

@@ -68,24 +68,6 @@
         </div>  
     </div>                 
 </div>
-<div id="CancelarOrden">
-    <div class="card mb-4">                
-        <div class="card-body">
-            <div class="mb-3">
-                <label class="form-label" for="codigo">
-                    Codigo
-                </label>
-                <span id="codigo"></span>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="codigo">
-                    Contraseña
-                </label>                
-                <input type="password" class="form-control" id="password"/>
-            </div>        
-        </div>
-    </div>    
-</div>
 <div id="ingredientes" class="container">
     <div class="card mb-4">                
         <div class="card-body">
@@ -163,12 +145,12 @@
                             <input class="form-control" type="text"  name="detalleOrden" 
                             id="detalleOrden">
                         </div>
-                        <!--<div class="mb-3">
+                        <div class="mb-3" style="display:none">
                             <label class="form-label" for="codigo">
                                 Venta a costo
                             </label>
                             <input class="form-check-inline" type="checkbox"  name="venta_costo" 
-                            id="venta_costo">-->
+                            id="venta_costo">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="unidad_medida">
@@ -187,12 +169,9 @@
                     <div class="col-5">
                         <img id="producto_img" src="" alt="" style="width:90%;heigth:100%">
 
-                    </div>
-                    
-                </div>                             
-                
-            </form>
-            
+                    </div>                    
+                </div>            
+            </form>            
         </div> 
     </div>                                  
 </div>

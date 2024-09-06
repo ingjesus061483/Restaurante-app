@@ -2,7 +2,7 @@
 namespace App\Repositories;
 use App\Contracts\IRepository;
 use App\Models\Impresora;
-class ImpresoraRepository implements IRepository
+class PrinterRepository implements IRepository
 {
     public function GetAll()    
     {

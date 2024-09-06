@@ -14,7 +14,7 @@
             </ul>
         </div>
         @endif
-        <form action="{{url('/')}}/login"  method="post">
+        <form action="{{url('/login')}}"  autocomplete="off" method="post">
             @csrf        
             <div class="form-floating mb-3">
                 <input class="form-control" name="email" id="inputEmail" 

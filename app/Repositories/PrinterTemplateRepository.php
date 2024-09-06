@@ -1,59 +1,16 @@
 <?php
 namespace App\Repositories;
 use Mike42\Escpos\Printer;
-class PlantillasRepository
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use App\Repositories\OrdenDetalleRepository;
+use Exception;
+class PrinterTemplateRepository
 {
-    private function GetFaltante($item)
-    {
-        $tampr=strlen($item->producto->nombre);            
-        $tam=0;
-        if($tampr<=11)
-        {
-            $tam=11-$tampr;                
-        }            
-        return $tam;
+    protected OrdenDetalleRepository $_ordendetalleRepository;
+    public function __construct(OrdenDetalleRepository $ordendetalleRepository) {
+        $this->_ordendetalleRepository = $ordendetalleRepository;
     }
-    private function TextAlign($item,Printer $printer)
-    {        
-        $tam=$this->GetFaltante($item);        
-        switch(strlen("$".number_format($item->valor_unitario)))
-        {
-            case 6:                
-                {
-                    $printer->text(str_repeat(" ",6+$tam)."$".number_format($item->valor_unitario));                    
-                    break;                
-                }
-            case 7:
-                {
-                    $printer->text(str_repeat(" ",5+$tam)."$".number_format($item->valor_unitario));
-                    break;
-                }                    
-            case 8:                    
-                {
-                    $printer->text(str_repeat(" ",4+$tam)."$".number_format($item->valor_unitario));                        
-                    break;                   
-                }                
-        }        
-        switch(strlen("$".number_format($item->total)))            
-        {
-            case 6:
-                {
-                    $printer->text(str_repeat(" ",7)."$".number_format($item->total)."\n");           
-                    break;
-                }                    
-            case 7:
-                { 
-                    $printer->text(str_repeat(" ",6)."$".number_format($item->total)."\n");           
-                    break;
-                }                    
-            case 8:                    
-                {                        
-                    $printer->text(str_repeat(" ",5)."$".number_format($item->total)."\n");           
-                    break;
-                }                
-        }            
-    }
-    public function ImprimirPlantillaOrdenServicio(Printer $printer,$ordenservicio)
+    private function ImprimirPlantillaOrdenServicio(Printer $printer,$ordenservicio)
     {
 	    $encabezado=$ordenservicio->impresora!=null?$ordenservicio->impresora->tamaño_fuente_encabezado:2;
         $contenido=$ordenservicio->impresora!=null?$ordenservicio->impresora->tamaño_fuente_contenido:1;
@@ -168,7 +125,8 @@ class PlantillasRepository
             $printer->text("------------------------\n");         
         }        
     }
-    public function ImprimirPlantillaComanda(Printer $printer,$ordenservicio )
+
+    private function ImprimirPlantillaComanda(Printer $printer,$ordenservicio )
     {
         $encabezado=$ordenservicio->impresora->tamaño_fuente_encabezado;
         $contenido=$ordenservicio->impresora->tamaño_fuente_contenido;
@@ -231,5 +189,140 @@ class PlantillasRepository
         $printer ->setTextSize($encabezado,$encabezado);              
         $printer->setJustification(Printer::JUSTIFY_CENTER);        
         $printer->text("========================\n");            
+    }    
+    private function GetFaltante($item)
+    {
+        $tampr=strlen($item->producto->nombre);            
+        $tam=0;
+        if($tampr<=11)
+        {
+            $tam=11-$tampr;                
+        }            
+        return $tam;
     }
+    private function TextAlign($item,Printer $printer)
+    {        
+        $tam=$this->GetFaltante($item);        
+        switch(strlen("$".number_format($item->valor_unitario)))
+        {
+            case 6:                
+                {
+                    $printer->text(str_repeat(" ",6+$tam)."$".number_format($item->valor_unitario));                    
+                    break;                
+                }
+            case 7:
+                {
+                    $printer->text(str_repeat(" ",5+$tam)."$".number_format($item->valor_unitario));
+                    break;
+                }                    
+            case 8:                    
+                {
+                    $printer->text(str_repeat(" ",4+$tam)."$".number_format($item->valor_unitario));                        
+                    break;                   
+                }                
+        }        
+        switch(strlen("$".number_format($item->total)))            
+        {
+            case 6:
+                {
+                    $printer->text(str_repeat(" ",7)."$".number_format($item->total)."\n");           
+                    break;
+                }                    
+            case 7:
+                { 
+                    $printer->text(str_repeat(" ",6)."$".number_format($item->total)."\n");           
+                    break;
+                }                    
+            case 8:                    
+                {                        
+                    $printer->text(str_repeat(" ",5)."$".number_format($item->total)."\n");           
+                    break;
+                }                
+        }            
+    }
+    private function GetPrinter($recurso_compartido)
+    {
+        try
+        {
+            $conector=new WindowsPrintConnector($recurso_compartido);       
+            $printer =new Printer($conector);                            
+            $printer ->initialize();  
+            return $printer;  
+        }
+        catch(Exception  $ex)
+        {
+            throw $ex;
+        }
+    }
+    function Factura($recurso_compartido,$impresoras,$ordenservicio,&$err)
+    {        
+        if($recurso_compartido!="")
+        {
+            try
+            {
+                $ordenservicio->detalles= $ordenservicio-> orden_encabezado->orden_detalles;                     
+                $printer= $this->GetPrinter($recurso_compartido);
+                $this->ImprimirPlantillaOrdenServicio($printer,$ordenservicio);                    
+                $printer->pulse();
+                $printer->cut();                    
+                $printer->close();                                         
+            }
+            catch(Exception $ex)
+            {
+                $err[]=$ex->getMessage();
+            }
+        }            
+        else
+        {            
+            $accion="orden";
+            foreach( $impresoras as $item )            
+            {   
+                try
+                {              
+                    $detalles=$ordenservicio->orden_encabezado->orden_detalles;
+                    $detalles_impresora=$this->_ordendetalleRepository->Detalles_impresora($detalles,$item,$accion);               
+                    if(count( $detalles_impresora)>0)
+                    {
+                        $ordenservicio->detalles=(object)$detalles_impresora;                    
+                        $ordenservicio->impresora=$item;
+                        $printer=$this->GetPrinter($item->recurso_compartido,$ordenservicio); 
+                        $this->ImprimirPlantillaOrdenServicio($printer,$ordenservicio);                                                
+                        $printer->pulse();                            
+                        $printer -> cut();                            
+                        $printer->close();                                                            
+                    }                
+                }                
+                catch(Exception $ex)
+                {
+                    $err[]=$ex->getMessage();
+                }
+            }
+        }    
+    }
+    function Comanda($impresoras,$ordenservicio,$detalles,&$err,&$cont)
+    {
+        $accion="comanda";                             
+        foreach( $impresoras as $item )            
+        {   
+            try
+            {                         
+                $detalles_impresora=$this ->_ordendetalleRepository->Detalles_impresora($detalles,$item,$accion);               
+                if(count( $detalles_impresora)!=0)                    
+                {
+                    $ordenservicio->detalles=(object)$detalles_impresora;                    
+                    $ordenservicio->impresora=$item;
+                    $printer= $this->GetPrinter($item->recurso_compartido);                   
+                    $this->ImprimirPlantillaComanda($printer,$ordenservicio);                    
+                    $printer -> cut();                    
+                    $printer->close();   
+                    $cont++;
+                }            
+            }
+            catch(Exception $ex)
+            {                    
+                $err[]=$ex->getMessage();
+                break;
+            }
+        }  
+    }      
 }

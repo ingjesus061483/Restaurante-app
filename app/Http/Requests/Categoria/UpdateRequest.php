@@ -1,17 +1,27 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Categoria;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class StoreCategoriaRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        $user=Auth::user();
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        if($user->role_id==1||$user->role_id==2)
+        {
+            return true;
+        }
+        return false;        
     }
 
     /**
@@ -22,6 +32,7 @@ class StoreCategoriaRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'nombre'=>'required|max:50'  
             //
         ];
     }

@@ -15,7 +15,8 @@
     <a class="nav-link" href="{{url('/ordenservicio')}}">
         <div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-list"></i></div>
         Orden de servicio
-    </a>                            
+    </a>  
+    <a class="nav-link" href="{{url('reporte')}}">impresoras </a>                          
     @if(auth()->user()->role_id==1||auth()->user()->role_id==2)
     <a class="nav-link" href="{{url('/cuentascobrar')}}">
         <div class="sb-nav-link-icon"><i class="fa-regular fa-credit-card"></i></div>

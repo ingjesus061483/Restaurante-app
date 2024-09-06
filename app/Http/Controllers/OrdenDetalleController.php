@@ -40,19 +40,18 @@ class OrdenDetalleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($id=null)
+    public function index()
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }   
-    /*    $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();
-        if(count($cabañas)==0)
-        {
-            return back()->withErrors('No hay cabañas disponibles en en elmomento!');
-        }     */
-        $detalles=$this-> _sessionRepository->GetAll();     
+        $id=request()->id;
+        $detalles=session('detalles');    
+    //    print_r($detalles) ;
+      //  exit();
         $data=[
+            "id"=>$id,
             "orden_detalle"=>$detalles,
             "total"=>$this-> _ordenServicioRepository-> totalizarOrden($detalles)
         ];        
@@ -69,20 +68,20 @@ class OrdenDetalleController extends Controller
         {
             return redirect()->to('login');
         }            
-        $productos=[];       
+        $productos=[]; 
+        $categoria=request()->categoria;              
         if(!session()->has('detalles'))        
         {
-            $productos=$this->_productoRepository->GetAll();            
+            $productos=$categoria==null? $this->_productoRepository->GetAll()->get():$this->_productoRepository->GetAll()->
+               where('categoria_id',$categoria)-> get();
+
         }        
         else
-        {
-            $productosSession=[];            
-            $detalles=session('detalles');                   
-            foreach($detalles as $item)
-            {
-                $productosSession[]=$item->producto_id;
-            }
-            $productos= $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession);                      
+        {           
+            $productosSession=$this->_sessionRepository->GetProductosSession();         
+            $productos=$categoria==null? $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession)->get():
+                       $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession)
+                                                 ->where('categoria_id',$categoria)-> get();                      
         }
         if(count($productos)==0)
         {
@@ -90,6 +89,8 @@ class OrdenDetalleController extends Controller
         }
         $data=[
             'categorias'=>$this->_categoriaRepository->GetAll(),
+            'categoria_id'=>$categoria,
+            'page'=>'ordendetalles/create',
             'productos'=>$productos,
         ];  
         return view('OrdenDetalle.create',$data);       
@@ -100,7 +101,7 @@ class OrdenDetalleController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {       
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -127,8 +128,16 @@ class OrdenDetalleController extends Controller
         }
         else
         {
-            $deta=$detalle; 
-            session(['detalle' => $deta]);        
+            $deta=$detalle;             
+            if(!  $this->_sessionRepository->Store($detalle))                        
+            {
+                $data=[                    
+                    'orden_id'=>$request->orden_id,                                        
+                    'message'=>'Ellproducto ya se encuentra registrado',                    
+                    'encontrado'=>false                
+                ];                                
+                return json_encode ($data);            
+            }
             $orden=$this->_ordenServicioRepository->Find($detalle->orden_id);
             $detalles=$orden->orden_detalles;
             $encontrado=false;
@@ -152,7 +161,7 @@ class OrdenDetalleController extends Controller
             {
                 
                 $detalle->cantidad=$detalle->cantidad+ $ordendetalle->cantidad;
-                $update=   $this->_OrdenDetalleRepository-> GetdetalleByproducto($deta);                
+                $update=$this->_OrdenDetalleRepository-> GetdetalleByproducto($deta);                
                 $this->_OrdenDetalleRepository->update($ordendetalle-> id,$update);                    
                 $mensaje='Se ha actualizado un detalle';
             }
@@ -189,18 +198,16 @@ class OrdenDetalleController extends Controller
     public function edit($id)
     {       
         $orden_servicio=$this->_ordenServicioRepository->Find($id);  
-  $productos =$this->_productoRepository->GetAll();      
-/*        $ordendetalles=$orden_servicio->orden_detalles;        
-        $productosSession=[];                                
-        foreach($ordendetalles as $item)        
-        {            
-            $productosSession[]=$item->producto_id;        
-        }
-        $productos= $this->_productoRepository-> BuscarProductoEnOrdenServicio($productosSession);*/
+        $categoria=request()->categoria;              
+        $productos=$categoria==null? $this->_productoRepository->GetAll()->get():$this->_productoRepository->GetAll()->
+        where('categoria_id',$categoria)-> get();
+
         $data=[
             "orden_id"=>$orden_servicio->id,
-            'categorias'=>$this->_categoriaRepository->GetAll(),
-            'productos'=>$productos,
+            "categoria_id"=>$categoria,
+            "categorias"=>$this->_categoriaRepository->GetAll(),
+            "productos"=>$productos,
+            "page"=>"ordendetalles/".$id."/edit"
         ];  
         return view('OrdenDetalle.create',$data);              
         //

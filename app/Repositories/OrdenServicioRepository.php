@@ -28,6 +28,21 @@ class OrdenServicioRepository implements IRepository
         $this->_OrdenDetalleRepository=$ordenDetalleRepository ;
         $this->_sesionRepository=$sessionRepository;
     }
+    function GetOrdenServicio ($id,$empresa)
+    {
+         
+        $ordenEncabezado=$this-> Find($id) ;        
+        $ordenservicio=(object)[
+                        "empresa"=>$empresa,
+                        "orden_encabezado"=>$ordenEncabezado ,
+                        "detalles"=>[],
+                        "impresora"=>null,
+                        "domicilio"=>'',
+                        "propina"=>'',
+                        ];
+        return $ordenservicio;    
+    }
+
     public function GetOrdenByMesa($mesa_id)
     {
         return OrdenEncabezado::where('cabaña_id',$mesa_id)

@@ -33,6 +33,7 @@ class ProductoRepository implements IRepository{
                                 "foraneo",
                                 "imagen",
                                 "categorias.nombre AS categoria",
+                                "productos.categoria_id",
                                 "unidad_medidas.nombre AS unidad_medida")
                         ->selectRaw("'producto'AS tipo")
                         ->selectRaw($totalentrada)
@@ -54,22 +55,31 @@ class ProductoRepository implements IRepository{
     {
         $fechaIni=$request->fechaIni;
         $fechaFin=$request->fechaFin;
-        return Producto::select('orden_detalles.valor_unitario')
-                       ->selectRaw("CONCAT( productos.codigo,' - ',productos.nombre)as producto")
-                       ->selectRaw("SUM(orden_detalles.cantidad) as total_cantidad_vendidas")
-                       ->selectRaw("IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='B' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_bebidas'),0)END,0) *SUM(orden_detalles.cantidad)comision_bebidas")
-                       ->selectRaw("IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='C' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_comidas'),0)END,0)*SUM(orden_detalles.cantidad)comision_comidas")
-                       ->selectRaw("SUM( orden_detalles.total )-
-                                    IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='B' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_bebidas'),0)END,0) *SUM(orden_detalles.cantidad)-
-                                    IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='C' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_comidas'),0)END,0)*SUM(orden_detalles.cantidad) ventas")                                             
-                       ->join('orden_detalles','productos.id','=','orden_detalles.producto_id')
-                       ->join('orden_encabezados','orden_Encabezados.id','=','orden_detalles.orden_encabezado_id')
-                       ->where('orden_encabezados.estado_id',3)
-                       ->whereBetween('orden_encabezados.fecha',[$fechaIni,$fechaFin])
-                       ->groupby('productos.codigo')
-                       ->groupby('productos.nombre')     
-                       ->groupby('orden_detalles.valor_unitario')                  
-                       ->get();            
+        $productos=Producto::select('orden_detalles.valor_unitario')
+        ->selectRaw("CONCAT( productos.codigo,' - ',productos.nombre)as producto")
+        ->selectRaw("SUM(orden_detalles.cantidad) as total_cantidad_vendidas")
+        ->selectRaw("IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='B' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_bebidas'),0)END,0) *SUM(orden_detalles.cantidad)comision_bebidas")
+        ->selectRaw("IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='C' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_comidas'),0)END,0)*SUM(orden_detalles.cantidad)comision_comidas")
+        ->selectRaw("SUM( orden_detalles.total )-
+                     IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='B' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_bebidas'),0)END,0) *SUM(orden_detalles.cantidad)-
+                     IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='C' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_comidas'),0)END,0)*SUM(orden_detalles.cantidad) ventas")                                             
+        ->join('orden_detalles','productos.id','=','orden_detalles.producto_id')
+        ->join('orden_encabezados','orden_Encabezados.id','=','orden_detalles.orden_encabezado_id')
+        ->where('orden_encabezados.estado_id',3);
+        
+        $categoria_id =$request->categoria_id;
+        return $categoria_id==null? $productos->whereBetween('orden_encabezados.fecha',[$fechaIni,$fechaFin])
+                                              ->groupby('productos.codigo')
+                                              ->groupby('productos.nombre')     
+                                              ->groupby('orden_detalles.valor_unitario')                                                                
+                                              ->get()
+                                              
+                                  :$productos->where('categoria_id',$categoria_id)
+                                             ->whereBetween('orden_encabezados.fecha',[$fechaIni,$fechaFin])                                             
+                                             ->groupby('productos.codigo')                                             
+                                             ->groupby('productos.nombre')                                             
+                                             ->groupby('orden_detalles.valor_unitario')                                                               
+                                             ->get();            
     } 
     public function buscarproductosBynombre($nombre)
     {
@@ -77,7 +87,7 @@ class ProductoRepository implements IRepository{
     }
     public function BuscarProductoEnOrdenServicio($productos)
     {
-        return Producto::whereNotIn('id',$productos)->get();
+        return Producto::whereNotIn('id',$productos);
     } 
     public function ingredientes($id)
     {
@@ -101,7 +111,7 @@ class ProductoRepository implements IRepository{
   
     public function GetAll()
     {
-        return $this->GetProductos()->get();
+        return $this->GetProductos();
     }
     public function Find($id)
     {
@@ -130,8 +140,7 @@ class ProductoRepository implements IRepository{
         if($producto ->foraneo==1)
         {
             $now=date_create();     
-            $fecha=date_format($now, 'Y-m-d');
-            
+            $fecha=date_format($now, 'Y-m-d');            
             $existencia=(object)[                
                 "fecha"=>$fecha,                
                 "cantidad"=>$request->existencias,                

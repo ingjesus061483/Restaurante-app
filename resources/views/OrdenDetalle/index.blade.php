@@ -14,15 +14,15 @@
     <div class="card-header">
         <div class="row">
             <div class="col-4">
-                <a href=" {{url('/ordendetalles/create')}}"  class="btn btn-primary">
-                    Crear detalle de Orden
+                <a href=" {{url('/ordendetalles')}}/{{$id}}/edit"  class="btn btn-primary">
+                    Añadir item                
                 </a>
             </div>
             <div class="col-4">               
             </div>
             <div  class="col-4">
-                <a href="{{url('/ordenservicio/create')}}" class="btn btn-primary">
-                    Ordenar
+                <a class="btn btn-primary"  href="{{url('/reportes/printComandaSesion/'.$id)}}">
+                    <i class="fa-solid fa-print"></i> &nbsp;  Comanda
                 </a>
             </div>
 
@@ -35,45 +35,30 @@
                 <table id="datatablesSimple">
                     <thead>
                         <tr>       
-                            <th>Id</th>             
+                            <th>Id</th>                               
                             <th>Cantidad  </th>                   
                             <th>Detalle</th>
                             <th>Valor Unitario </th>                    
-                            <th>Total</th>                                                            
-                            <th></th>
-                            <th></th>
+                            <th>Total</th>                                                                                      
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>     
-                            <th>Id</th>               
+                            <th>Id</th>                            
                             <th>Cantidad  </th>                            
                             <th>Detalle</th>
                             <th>Valor Unitario </th>                    
-                            <th>Total</th>                                                            
-                            <th></th>
-                            <th></th>
+                            <th>Total</th>                                                                                        
                         </tr>                
                     </tfoot>
                     <tbody>    
                         @foreach( $orden_detalle as $item)                                    
                             <tr>
-                                <td>{{$item->id}}</td>
+                                <td>{{$item->id}}</td>                              
                                 <td>{{$item->cantidad}}</td>                                
                                 <td>{{$item->detalleOrden}}</td>
                                 <th>${{number_format($item->valor_unitario)}}</th>
-                                <th>${{number_format($item->total)}} </th>           
-                                <td>
-                                    <a onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning"> Editar</a>
-                                </td>                                                                                       
-                                <td>                
-                                    <form action="{{url('/ordendetalles')}}/{{$item->id}}" 
-                                        onsubmit="return validar('Desea eliminar este registro?');" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="btn btn-danger" type="submit"> Cancelar</button>
-                                    </form>
-                                </td>
+                                <th>${{number_format($item->total)}} </th>                                           
                             </tr>                    
                         @endforeach
                     </tbody>

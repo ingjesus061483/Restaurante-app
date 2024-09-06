@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repositories\CategoriaRepository;
-use App\Repositories\ImpresoraRepository;
+use App\Repositories\PrinterRepository;
 use App\Repositories\ProductoRepository;
 use App\Repositories\UnidadMedidaRepository;
 use Illuminate\Http\Request;
@@ -15,11 +15,11 @@ class ProductosController extends Controller
     protected ProductoRepository $_productoRepository;
     protected UnidadMedidaRepository $_unidadMedidaRepository;
     protected CategoriaRepository $_categoriaRepository;
-    protected ImpresoraRepository  $_impresoraRepository;
+    protected PrinterRepository  $_impresoraRepository;
     public function __construct(ProductoRepository $productoRepository,
                                 UnidadMedidaRepository $unidadMedidaRepository,
                                 CategoriaRepository $categoriaRepository,
-                                ImpresoraRepository $impresoraRepository)
+                                PrinterRepository $impresoraRepository)
                                 
     {
         $this->_productoRepository =$productoRepository;
@@ -52,8 +52,15 @@ class ProductosController extends Controller
         {
             return redirect()->to('login');
         }        
+        $categorias= $this->_categoriaRepository->GetAll();
+        $categoria=request()->categoria;        
+        $productos=$categoria==null? $this->_productoRepository->GetAll()->get():$this->_productoRepository->GetAll()->
+               where('categoria_id',$categoria)-> get();
         $data =[
-            'productos'=>$this->_productoRepository->GetAll(),
+            'productos'=>$productos,
+            'categorias'=>$categorias,
+            'categoria_id'=>$categoria,
+            'page'=>"productos"
         ];
         return view('Producto.index', $data);
         //
@@ -254,11 +261,7 @@ class ProductosController extends Controller
         if(! Auth::check())
         {
             return redirect()->to('login');
-        }
-        if(!Auth::check())
-        {
-            return redirect()->to('login');
-        }         
+        }               
         if(!$this-> autorizar(Auth::user()))
         {
             return back();

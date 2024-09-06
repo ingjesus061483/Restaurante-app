@@ -1,7 +1,11 @@
 @extends('shared/layout')
 @section('title','Listado de productos')
 @section('content')  
-<div class="card mb-4">    
+<div class="card mb-4"> 
+    <div  class="card-header">
+        @include('shared/Categorias')
+        
+    </div>   
     <div class="card-body"> 
         <table id="datatablesSimple">
             <thead>
@@ -48,7 +52,7 @@
         <div class="row">
                     
             <div class="col-4">
-                <a class="btn btn-primary" href="{{isset($orden_id)?url('/ordenservicio'):url('/ordendetalles')}}">                    
+                <a class="btn btn-primary" href="{{url('/ordenservicio')}}">                    
                     Regresar                
                 </a>              
             </div>

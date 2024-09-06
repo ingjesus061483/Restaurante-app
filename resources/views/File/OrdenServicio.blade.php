@@ -1,6 +1,6 @@
-@extends('shared/layout')
-@section('title','orden de servicio')
-@section('content')  
+@extends('shared/reportes')
+@section('title','vista previa Inventario')
+@section('content') 
 <div class="card mb-4">
     <div class="card-body">
         <div class="row">
@@ -122,19 +122,13 @@
                             Estado
                         </label>                    
                         {{$ordenEncabezado->estado->nombre}}
-                    </div>                          
-                    <a class="btn btn-primary" href="{{url('/ordenservicio')}}">                    
-                        Regresar                
-                    </a>                                     
-                    <a href="{{url('file/OrdenServicio')}}/{{$ordenEncabezado->id}}" class="btn btn-danger" >                   
-                        PDF                
-                    </a>        
+                    </div>                                            
             </div>                    
             <div class="col-7">            
                 <div class ="mb-3">                
                     <div class="row">
                         <div class="col-12">                            
-                            <table id="datatablesSimple" class="table">                            
+                            <table class="table">                            
                                 <thead>                                          
                                     <tr>                             
                                         <th>Id</th>                                                 
@@ -143,8 +137,6 @@
                                         <th>Observaciones</th>
                                         <th>Valor Unitario </th>                                                                                                
                                         <th>Total</th> 
-                                        <th></th>  
-                                        <th></th>                                                           
                                     </tr>                            
                                 </thead>                    
                                 <tbody>                                    
@@ -155,28 +147,7 @@
                                         <td>{{$item->producto->nombre}}</td>
                                         <td>{{$item->observaciones}}</td>
                                         <td>${{number_format($item->valor_unitario)}}</td>
-                                        <td>${{number_format($item->total)}} </td>    
-                                        <td>
-                                            @if($ordenEncabezado->estado_id==1)                                           
-                                            <a title="Editar" onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning">
-                                                <i class="fa-solid fa-pen"></i>    
-                                            </a>
-                                            @endif
-                                        </td>                                                                                       
-                                        <td>
-                                            @if($ordenEncabezado->estado_id==1)                                           
-                                            <form action="{{url('/ordendetalles')}}/{{$item->id}}"                                                 
-                                                onsubmit="return validar('Desea eliminar este registro?');" method="post">                                                
-                                                @csrf                                                
-                                                @method('delete')
-                                                <input type="hidden" name="orden_id"value="{{$ordenEncabezado->id}}" >                                                
-                                                <button title="Eliminar item" class="btn btn-danger" type="submit">
-                                                    <i class="fa-solid fa-trash"></i>    
-                                                </button>
-                                            </form>
-                                            @endif
-                                        
-                                        </td>
+                                        <td>${{number_format($item->total)}} </td>                                       
                                     </tr>                    
                                     @endforeach                       
                                 </tbody>                                            

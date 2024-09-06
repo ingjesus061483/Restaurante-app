@@ -17,8 +17,12 @@
                 <br>                           
                 <a href="{{url('/productos/create')}}" class="btn btn-primary">Crear productos </a>
             </div>
-            <div class="col-9">
-                <form target="blank" action="{{url('reportes/ProductosVendidosByFecha')}}">
+            <div class="col-4">
+                @include('shared/Categorias')                
+            </div>
+            <div class="col-5">
+                <form target="blank" action="{{url('file/ProductosVendidosByFecha')}}">
+                    <input type="hidden" name="categoria_id" value="{{$categoria_id}}">
                     <div class="row">
                         <div class="col-4" >
                             <label class="form-label" for="codigo">                        

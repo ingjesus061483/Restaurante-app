@@ -44,11 +44,17 @@ class OrdenEncabezadoController extends Controller
         if (request()->accion=="PDF")
         {
             $request=request();
-            return redirect()->to("reportes/OrdenesByFechaPdf?fechaIni=$request->fechaIni&fechaFin=$request->fechaFin");
+            return redirect()->to("file/OrdenesByFecha?fechaIni=$request->fechaIni&fechaFin=$request->fechaFin");
         }   
         if (session()->has('detalles'))
         {
-          return  redirect()->to('ordenservicio/create');
+            $detalles =session('detalles');
+            $orden_id=$detalles[0]->orden_id;
+            if($orden_id!=0)
+            {
+                return  redirect()->to("/ordendetalles?id=$orden_id");
+            }            
+            return  redirect()->to('ordenservicio/create');
         }    
         $user=Auth::user();                
         if(request()->fechaIni==null)

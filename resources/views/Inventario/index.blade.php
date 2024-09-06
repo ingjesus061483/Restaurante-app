@@ -5,7 +5,7 @@
     <div class="card-header">
         <div class="row">
             <div class="col-4">
-                <a href="{{url('/reportes/inventario')}}" target="blank" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i>&nbsp; PDF </a>        
+                <a href="{{url('/file/inventario')}}" target="blank" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i>&nbsp; PDF </a>        
             </div>
             <div class="col-4">
             </div>            

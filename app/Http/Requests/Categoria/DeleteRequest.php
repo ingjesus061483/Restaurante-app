@@ -1,16 +1,26 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Categoria;
 
 use Illuminate\Foundation\Http\FormRequest;
-
-class UpdateClienteRequest extends FormRequest
+use Illuminate\Support\Facades\Auth;
+class DeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
+        $user=Auth::user();
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        if($user->role_id==1||$user->role_id==2)
+        {
+            return true;
+        }
+
         return false;
     }
 

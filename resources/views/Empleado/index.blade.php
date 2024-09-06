@@ -13,7 +13,7 @@
 <div class="card mb-4">
     <div class="card-header">
         <a href="{{url('/empleados/create')}}" class="btn btn-primary">Crear empleado </a>
-        <a title="Ver reporte" href="{{url('reportes/propinasByEmpleado')}}" target="blank" class="btn btn-danger">
+        <a title="Ver reporte" href="{{url('file/propinasByEmpleado')}}" target="blank" class="btn btn-danger">
             <i class="fa-solid fa-file-pdf"></i>
         </a>
     </div>

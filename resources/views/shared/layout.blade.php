@@ -8,10 +8,10 @@
         <meta name="author" content="" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
         <title>@yield('title')</title>   
-        <link rel="shortcut icon" type="image/x-icon" href="{{url('/')}}/restaurante-app.ico" />             
-        <link rel="stylesheet" href="{{url('/')}}/jquery-ui-1.12.1.custom/jquery-ui.css">
+        <link rel="shortcut icon" type="image/x-icon" href="{{url('/restaurante-app.ico')}}" />             
+        <link rel="stylesheet" href="{{url('/jquery-ui-1.12.1.custom/jquery-ui.css')}}">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <link href="{{url('/')}}/css/styles.css" rel="stylesheet" />
+        <link href="{{url('/css/styles.css')}}" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>        
     </head>
     <body class="sb-nav-fixed">
@@ -336,7 +336,10 @@
                     $("#pnlcabaña").fadeIn();
 
                 }            
-            });              
+            });   
+            function categorias(categoria,page){        
+                window.location.href="{{url('/')}}/"+page +"?categoria="+categoria.value; 
+            }           
             function mostrarEliminar(id){
                 alert(id);
                 CancelarOrden.dialog('open');            
@@ -417,18 +420,18 @@
                var forma_pago=document.getElementById('forma_pago').value;
                if(detallepago=="")
                {
-                   alertify.error('');
+                   alertify.error('Detalle de pago no valido');
                    return; 
                }
                if(valorRecibido=="")
                {
-                  alertify.error('');
+                  alertify.error('Valor recibido no valido');
                   return;
 
                }
                if(forma_pago=="")
                {
-                    alertify.error('');
+                    alertify.error('Formade pago no valida');
                      return ;
                }
                $.ajax({
@@ -490,9 +493,14 @@
                                 else                                                            
                                 {                                    
                                     alertify.success(result.message);                                
-                                    window.location.href=result.orden_id==0?"{{url('/ordendetalles/create/')}}":"{{url('/reportes/printComandaSesion/')}}/"+result.orden_id                                                    
+                                    window.location.href=result.orden_id==0?"{{url('/ordendetalles/create/')}}":"{{url('/ordendetalles')}}?id="+result.orden_id //"{{url('/reportes/printComandaSesion/')}}/"+result.orden_id                                                    
                                 }                       
-                            }                    
+                            },
+                            error : function(xhr, status) 
+                            {        
+                                console.log(xhr.responseJSON);
+                                alertify.error(xhr.responseJSON.message);                            
+                            }          
                         });  
                         break;
                     }

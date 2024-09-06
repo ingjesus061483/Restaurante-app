@@ -16,9 +16,9 @@ class OrdenDetalleRepository implements IRepository
     {
         $venta_costo=$request->venta_costo=="true"?1:0;        
         $cantidad=(double)$request->cantidad;
-        $producto_id=$request->producto_id;
-        $producto=$this->_productoRepository->Find($producto_id);
         $observaciones=$request->observaciones;
+        $producto_id=$request->producto_id;
+        $producto=$this->_productoRepository->Find($producto_id);        
         $valor_unitario=(double)$venta_costo==1 ?$producto->costo_unitario:$producto->precio;
         $total=$cantidad*$valor_unitario;        
         $data =(object) [
@@ -80,6 +80,36 @@ class OrdenDetalleRepository implements IRepository
         $detalle->total=$request->total;
         $detalle->update();
     }
+    function Detalles_impresora($orden_detalles,$impresora,$accion )
+    {
+        $detalles=$orden_detalles;
+        $detalles_impresora=[];
+        foreach($detalles as $detalle)
+        {
+            $impresora_id=$detalle->producto->impresora_id;
+            switch($accion)
+            {
+                case "comanda":
+                    {
+                        if($impresora_id==$impresora->id &&$detalle->impreso==0)                        
+                        {
+                            $detalles_impresora[]=$detalle;
+                        }     
+                        break;               
+                    }
+                case "orden":
+                    {
+                        if($impresora_id==$impresora->id )                        
+                        {
+                            $detalles_impresora[]=$detalle;
+                        }     
+                        break;                                                       
+                    }
+            }            
+        }
+        return $detalles_impresora;
+    }
+
     public function ActualizarImpresos($id)
     {
         $detalles_impresos=OrdenDetalle::where('impreso',0) ->where('orden_encabezado_id',$id)->get();
