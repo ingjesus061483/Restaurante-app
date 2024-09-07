@@ -29,7 +29,7 @@ class ProductosController extends Controller
     }
     public function loadProduct($search){
         $query="SELECT * FROM( SELECT productos.id,CONCAT( codigo,' - ',productos.nombre) AS nombre,
-                costo_unitario,precio,foraneo,imagen,categorias.nombre AS categoria,unidad_medidas.nombre AS unidad_medida,
+                costo_unitario,precio,procesado,imagen,categorias.nombre AS categoria,unidad_medidas.nombre AS unidad_medida,
                 IFNULL((SELECT SUM(cantidad)FROM existencias WHERE producto_id=productos.id AND entrada=1 
                 GROUP BY producto_id),0)AS total_entrada,IFNULL((SELECT SUM(cantidad) FROM existencias 
                 WHERE producto_id=productos.id AND entrada=0 GROUP BY producto_id),0) AS total_salida,
@@ -54,8 +54,8 @@ class ProductosController extends Controller
         }        
         $categorias= $this->_categoriaRepository->GetAll();
         $categoria=request()->categoria;        
-        $productos=$categoria==null? $this->_productoRepository->GetAll()->get():$this->_productoRepository->GetAll()->
-               where('categoria_id',$categoria)-> get();
+        $productos=$categoria==null? $this->_productoRepository->GetAll()->get():
+                   $this->_productoRepository->GetAll()->where('categoria_id',$categoria)->get();
         $data =[
             'productos'=>$productos,
             'categorias'=>$categorias,
@@ -109,8 +109,8 @@ class ProductosController extends Controller
         {
             return back();
         }            
-        $foraneo=$request->input('foraneo')==null?0:(bool)$request->input('foraneo');       
-        if($foraneo==1)
+        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado');       
+        if($procesado==0)
         {
             $validacion=$request->validate([
                 'codigo'=>'required|unique:productos|max:50',            
@@ -152,7 +152,7 @@ class ProductosController extends Controller
             return back();
         }         
         $producto= $this->_productoRepository->Find($id);
-        if($producto-> foraneo==1)
+        if($producto-> procesado==0)
         {
             $entradas=$this->_productoRepository->existencias($id,1); //Existencia:: where('entrada',1)->where('producto_id',$id)->get();
             $salidas=$this->_productoRepository->existencias($id);//Existencia:: where('entrada',0)->where('producto_id',$id)->get();
@@ -174,8 +174,7 @@ class ProductosController extends Controller
             {
                 session(['producto' => $producto]);
                 return redirect()->to(url('ingredientes/create'));   
-            }
-            
+            }            
             $data=[                
                 'producto'=>$producto,                 
             ];  
@@ -223,8 +222,8 @@ class ProductosController extends Controller
         {
             return back();
         }            
-        $foraneo=$request->input('foraneo')==null?0:(bool)$request->input('foraneo');       
-        if($foraneo==1)
+        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado');       
+        if($procesado==0)
         {
             $validacion=$request->validate([
                 'codigo'=>'required|max:50|unique:productos,codigo,'.$id,            

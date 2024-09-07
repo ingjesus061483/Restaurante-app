@@ -126,8 +126,8 @@
                     <a class="btn btn-primary" href="{{url('/ordenservicio')}}">                    
                         Regresar                
                     </a>                                     
-                    <a href="{{url('file/OrdenServicio')}}/{{$ordenEncabezado->id}}" class="btn btn-danger" >                   
-                        PDF                
+                    <a target="blank" href="{{url('file/OrdenServicio')}}/{{$ordenEncabezado->id}}" class="btn btn-danger" >                   
+                        <i class="fa-solid fa-file-pdf"></i>                
                     </a>        
             </div>                    
             <div class="col-7">            

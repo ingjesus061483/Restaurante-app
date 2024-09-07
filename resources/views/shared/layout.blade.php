@@ -242,41 +242,32 @@
             $("#observaciones").autocomplete({                
                 source:observacions             
             });  
-            if($("#foraneo")!=null)
+            if($("#procesado")!=null)
             {
-                if($("#foraneo").prop('checked'))
-                {
-                    if( $("#inventario")!=null)
-                    {
-                        $("#inventario").fadeIn();                    
-                    }
-                    $("#coccion").fadeOut();                      
-                    $("#preparacion").fadeOut();
-                }
-                else
+                if($("#procesado").prop('checked'))
                 {
                     if( $("#inventario")!=null)
                     {
                         $("#inventario").fadeOut();                    
-                    }                    
+                    }
                     $("#coccion").fadeIn();                      
                     $("#preparacion").fadeIn();
                 }
-
-            }
-            $("#foraneo").change( function(){
-                //alert(this.checked);
-
-                if(this.checked)
+                else
                 {
                     if( $("#inventario")!=null)
                     {
-                        $("#inventario").fadeIn();
-                    }
-                    $("#coccion").fadeOut();
+                        $("#inventario").fadeIn();                    
+                    }                    
+                    $("#coccion").fadeOut();                      
                     $("#preparacion").fadeOut();
                 }
-                else
+
+            }
+            $("#procesado").change( function(){
+                //alert(this.checked);
+
+                if(this.checked)
                 {
                     if( $("#inventario")!=null)
                     {
@@ -284,6 +275,15 @@
                     }
                     $("#coccion").fadeIn();
                     $("#preparacion").fadeIn();
+                }
+                else
+                {
+                    if( $("#inventario")!=null)
+                    {
+                        $("#inventario").fadeIn();
+                    }
+                    $("#coccion").fadeOut();
+                    $("#preparacion").fadeOut();
                 }            
             });
             $("#forma-pago").change(function(){
@@ -387,10 +387,10 @@
                     }
                 });             
             }
-            function mostrar(id){
-                console.log(id);
+            function mostrar_Cliente(identificacion){
+                console.log(identificacion);
                 $.ajax({
-                    url:"{{url('/clientes/showClient')}}/"+id,
+                    url:"{{url('/clientes/showClient')}}/"+identificacion,
                     type: "get",
                     dataType: "json",                    
                     success: function (result){
@@ -407,7 +407,7 @@
                                 return;                            
                             }                    
                         }
-                        alertify.success(cliente.nombre+' '+cliente.apellido+"</br>"+cliente.direccion+"</br>"+cliente.telefono );                                                
+                        alertify.success("<strong>Nombre completo: </strong>"+cliente.nombre+' '+cliente.apellido+"</br>"+"<strong>Direccion: </strong>"+cliente.direccion+"</br>"+"<strong>Telefono: </strong>"+cliente.telefono );                                                
                     }
                 });             
             }

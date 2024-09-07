@@ -80,8 +80,7 @@ class CabanaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }   
-       // $arr=explode("-",$mesa) ;
+        }         
 
         $cabana=$this->_repository->Find($mesa);
         if($cabana->ocupado==1)

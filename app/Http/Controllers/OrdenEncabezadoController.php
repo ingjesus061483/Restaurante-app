@@ -17,14 +17,14 @@ class OrdenEncabezadoController extends Controller
     protected TipoDocumentoRepository $_tipoDocumentoRepository;
     protected OrdenServicioRepository $_ordenServicioRepository;
     protected EmpleadoRepository $_empleadoRepository;
-    protected CabanaRepository $_cabanaRepository;
+    protected CabanaRepository $_cabanaRepository;  
     protected ClienteRepository $_clienteRepository;
     public function __construct(CabanaRepository $cabanaRepository,
                                 TipoDocumentoRepository $tipoDocumentoRepository,
                                 OrdenServicioRepository $ordenServicioRepository,
                                 ClienteRepository $clienteRepository,
                                 EmpleadoRepository $empleadoRepository)                                 
-    {
+    {     
         $this->_tipoDocumentoRepository=$tipoDocumentoRepository;
         $this->_cabanaRepository = $cabanaRepository;
         $this->_ordenServicioRepository=$ordenServicioRepository;
@@ -56,18 +56,7 @@ class OrdenEncabezadoController extends Controller
             }            
             return  redirect()->to('ordenservicio/create');
         }    
-        $user=Auth::user();                
-        if(request()->fechaIni==null)
-        {
-            $fechaini=date_create();
-            date_add($fechaini, date_interval_create_from_date_string('-1 days'));
-        }
-        else
-        {
-            $fechaini=date_create(request()->fechaIni);
-        }
-        $fechafin=request()->fechaFin!=null ?date_create( request()->fechaFin):date_create();
-        if($fechaini>$fechafin)
+        if( $this->_ordenServicioRepository->GetDate(request(),$fechaini,$fechafin))
         {
             $ordenes=[];
             $data=[
@@ -77,6 +66,7 @@ class OrdenEncabezadoController extends Controller
             ];            
             return view('Orden.index',$data)->withErrors("fecha inicial no puede ser mayor a la final.");
         }
+        $user=Auth::user();                
         if($user->role_id==5)
         {
             $empleado=$user->empleados->first();
@@ -107,19 +97,12 @@ class OrdenEncabezadoController extends Controller
             return redirect()->to('login');
         }                
         $cabañas=$this->_cabanaRepository->GetCabanasDesocupadas();    
-        $cabana=null;
-        if(session()->has('cabana'))
-        {    
-            $cabana=session('cabana');
-        }
-        $detalles=session()->has('detalles')?$detalles=session('detalles'):[];
+        $cabana=session()->has('cabana')?session('cabana'): null;        
+        $detalles=session()->has('detalles')?session('detalles'):[];
         $datacomprobacion=$this->_ordenServicioRepository->ComprobarExistenciaProductoDetalle($detalles);    
         $detalles=$datacomprobacion["detalles"];
-        $errors=$datacomprobacion["errors"];
-        $tiempoCoccion=$this->_ordenServicioRepository-> GetTiempoCoccion($detalles);        
-        $now=date_create();        
-        date_add($now,date_interval_create_from_date_string($tiempoCoccion.' minutes'));     
-        $time=date_format($now, 'H:i:s');
+        $errors=$datacomprobacion["errors"];        
+        $time=$this->_ordenServicioRepository->GetHoraEntrega($detalles);
         $user=Auth::user();
         $empleado=$this->_empleadoRepository->GetEmpleadoByUser($user);
         $cliente=null;
@@ -229,12 +212,8 @@ class OrdenEncabezadoController extends Controller
             return redirect()->to('login');
         }       
         $ordenEncabezado=$this->_ordenServicioRepository ->Find($id);
-        $fechahora_entrega =$ordenEncabezado->fecha.' '.$ordenEncabezado->hora_entrega;
-        $tiempo_entrega= date_timestamp_get(date_create($fechahora_entrega));        
-        $now=date_create();
-        $string_date= date_format($now,'Y-m-d H:i:s');
-        $tiempo_ahora=date_timestamp_get(date_create($string_date));        
-        if($tiempo_entrega>$tiempo_ahora)        
+        $fechahora_entrega =$ordenEncabezado->fecha.' '.$ordenEncabezado->hora_entrega;       
+        if($this->_ordenServicioRepository->ComprobarTiempoEntrega($fechahora_entrega))        
         {            
             return back()->withErrors('El pedido'.$ordenEncabezado->codigo.' no esta listo aun');        
         }
@@ -255,8 +234,7 @@ class OrdenEncabezadoController extends Controller
         if(!$this-> autorizar(Auth::user()))
         {
             return back()->withErrors("Usted no tiene permisos para borrar esta operacion");
-        }      
-           
+        }                 
         $this->_ordenServicioRepository->Delete($id);        
         return redirect()->to(url('/ordenservicio'));        
         //

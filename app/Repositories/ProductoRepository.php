@@ -15,6 +15,29 @@ class ProductoRepository implements IRepository{
         $this->_existenciaRepository=$existenciaRepository;
         $this->_filerepository = $fileRepository;
     }
+    public  function GetTiempoCoccion($detalles)
+    {
+        $productos=[];
+        foreach($detalles as $item)                    
+        {
+            $producto_id=$item->producto_id;
+            $producto=$this->Find($producto_id);            
+            $procesado=$producto!=null?$producto->procesado:0;
+            if($procesado==1){
+                $productos=[$producto];
+            }
+        }
+        $tiempoCoccion=0;
+        for($i=0;$i<=count($productos)-1;$i++)
+        {
+            if($productos[$i]->tiempo_coccion>$tiempoCoccion)
+            {
+                $tiempoCoccion=$productos[$i]->tiempo_coccion;
+            }
+
+        }
+        return $tiempoCoccion;
+    } 
     public function GetProductos()
     {
         $totalentrada="IFNULL((SELECT SUM(cantidad)FROM existencias WHERE producto_id=productos.id AND entrada=1
@@ -30,7 +53,7 @@ class ProductoRepository implements IRepository{
                                 "productos.nombre",
                                 "costo_unitario",
                                 "precio",
-                                "foraneo",
+                                "procesado",
                                 "imagen",
                                 "categorias.nombre AS categoria",
                                 "productos.categoria_id",
@@ -119,7 +142,7 @@ class ProductoRepository implements IRepository{
     }
     public function Store($request)
     {  
-        $foraneo=$request->input('foraneo')==null?0:(bool)$request->input('foraneo'); 
+        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado'); 
         $codigo=$request->input('codigo');
         $nombre =$request->input('nombre');  
         $nombreimagen=$this->_filerepository-> getImage($request, $codigo.' '.$nombre);       
@@ -131,13 +154,13 @@ class ProductoRepository implements IRepository{
             'costo_unitario'=>$request->input('costo_unitario'),                                   
             'precio'=>$request->input('precio'),
             'impresora_id'=>$request->input('impresora'),
-            'foraneo'=>$foraneo,
+            'procesado'=>$procesado,
             'imagen'=>$nombreimagen,
             'tiempo_coccion'=>$request->input('tiempo_coccion'),
             'unidad_medida_id' =>$request->input('unidad_medida') ,
             'categoria_id'=>$request->input('categoria'),
         ]);       
-        if($producto ->foraneo==1)
+        if($producto ->procesado==1)
         {
             $now=date_create();     
             $fecha=date_format($now, 'Y-m-d');            
@@ -159,14 +182,14 @@ class ProductoRepository implements IRepository{
         $codigo=$request->input('codigo');
         $nombre =$request->input('nombre');  
         $nombreimagen=$this->_filerepository-> getImage($request, $codigo.' '.$nombre);       
-        $foraneo=$request->input('foraneo')==null?0:(bool)$request->input('foraneo'); 
+        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado'); 
         $producto=$this->Find($id); 
         $producto-> codigo=$request->input('codigo');
         $producto->  nombre =$request->input('nombre');
         $producto->  preparacion=$request->input('preparacion');
         $producto-> costo_unitario=$request->input('costo_unitario');
         $producto->precio=$request->input('precio');
-        $producto->foraneo=$foraneo;
+        $producto->procesado=$procesado;
         $producto->descripcion=$request->input('descripcion');
         $producto->impresora_id=$request->input('impresora');
         $producto->tiempo_coccion= $request->input('tiempo_coccion');

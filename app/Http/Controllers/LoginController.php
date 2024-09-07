@@ -38,18 +38,10 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        if(!Auth::validate(['email'=>$request->input('email'),
-                   'password'=>$request->input('password')]))
+        if(!$this->_userRepository->Login($request))
         {
-            return redirect()->to('/login')->withErrors('auth.failed');
-        }
-        $user =Auth::getProvider()
-                   ->retrieveByCredentials([
-                            'email'=>$request->input('email'),
-                            'password'=>$request->input('password')                        
-                    ]);
-        Auth::login($user);
-
+            return redirect()->to('/login')->withErrors('Auth.failed');
+        }        
         return redirect()->to('/');      
         //
     }
@@ -87,8 +79,7 @@ class LoginController extends Controller
      */
     public function destroy(string $id)
     {
-        Session::flush();
-        Auth::logout();
+        $this->_userRepository->Logout();    
         return redirect()->to('/login');    
         //
     }

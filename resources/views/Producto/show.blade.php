@@ -67,9 +67,9 @@
                             <div class="col-4">                        
                                 <div class="mb-3">                            
                                     <label class="form-label" for="costo_unitario">                                
-                                        Foraneo                            
+                                        Procesado                            
                                     </label>                            
-                                    {{$producto->foraneo==1?'si':'no'}}                                                    
+                                    {{$producto->procesado==1?'si':'no'}}                                                    
                                 </div>                    
                             </div>                        
                             <div class="col-4">                        
@@ -105,7 +105,7 @@
                 </div>
             </div>
         </div>
-        @if($producto->foraneo==0)
+        @if($producto->procesado==1)
         <div class="card mb-4">
             <div class="card-header">
                 <div class="row">

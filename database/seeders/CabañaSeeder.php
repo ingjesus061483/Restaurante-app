@@ -17,7 +17,7 @@ class CabañaSeeder extends Seeder
         {
             $arr[$i]=
             [
-                'nombre'=>'mesa'.$i+1,
+                'nombre'=>'Mesa '.$i+1,
                 'codigo'=>'0'.$i+1,
                 'imagen'=>'mesa.png',
                 'capacidad_maxima'=>4,

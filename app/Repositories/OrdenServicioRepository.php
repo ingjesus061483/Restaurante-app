@@ -28,6 +28,20 @@ class OrdenServicioRepository implements IRepository
         $this->_OrdenDetalleRepository=$ordenDetalleRepository ;
         $this->_sesionRepository=$sessionRepository;
     }
+    function GetDate($request,&$fechaini,&$fechafin)
+    {
+        if($request->fechaIni==null)
+        {
+            $fechaini=date_create();
+            date_add($fechaini, date_interval_create_from_date_string('-1 days'));
+        }
+        else
+        {
+            $fechaini=date_create($request->fechaIni);
+        }
+        $fechafin=$request->fechaFin!=null ?date_create( $request->fechaFin):date_create();
+        return $fechaini>$fechafin;
+    }
     function GetOrdenServicio ($id,$empresa)
     {
          
@@ -90,29 +104,7 @@ class OrdenServicioRepository implements IRepository
                               ->orderby('id','Desc') 
                               ->get();
     }
-    public  function GetTiempoCoccion($detalles)
-    {
-        $productos=[];
-        foreach($detalles as $item)                    
-        {
-            $producto_id=$item->producto_id;
-            $producto=$this->_productoRepository->Find($producto_id);            
-            $foraneo=$producto!=null?$producto->foraneo:0;
-            if($foraneo==0){
-                $productos=[$producto];
-            }
-        }
-        $tiempoCoccion=0;
-        for($i=0;$i<=count($productos)-1;$i++)
-        {
-            if($productos[$i]->tiempo_coccion>$tiempoCoccion)
-            {
-                $tiempoCoccion=$productos[$i]->tiempo_coccion;
-            }
 
-        }
-        return $tiempoCoccion;
-    } 
     public function BuscarOrdenCliente($request)
     {
         $arr=$request->input('cliente')!=null?explode('-',$request->input('cliente')):[];
@@ -160,7 +152,7 @@ class OrdenServicioRepository implements IRepository
         $OrdenDetalles=$ordenEncabezado->orden_detalles;
         $ordenEncabezado->estado_id=2;
         $ordenEncabezado->save();
-        $this->DescontarProductoDeExistencia($OrdenDetalles);        
+        $this-> DescontarProductoDeExistencia($OrdenDetalles);        
     }  
     public function Delete($id)
     {
@@ -209,41 +201,12 @@ class OrdenServicioRepository implements IRepository
         }
         return $ordenEncabezado->id;
     }
-    public function DescontarProductoDeExistencia($OrdenDetalles)
-    {
-        foreach($OrdenDetalles as $detalle)
-        {
-            $producto=$this->_productoRepository->Find( $detalle->producto_id);
-            $cantidad_producto=$detalle->cantidad;
-            if($producto->foraneo)
-            {    
-                $existencia=(object)[
-                    'tipo'=>'producto',                    
-                    'fecha'=>date('Y-m-d'),
-                    'cantidad'=>$cantidad_producto,
-                    'esEntrada'=>0,
-                    'materiaprima_id'=>$producto->id                   
-                ];
-                $this-> _existenciaRepository->Store($existencia);         
-            }
-            else
-            {
-                $ingredientes=$producto->preparacions;
-                foreach($ingredientes as $ingrediente){
-                    $materia_prima_id=$ingrediente->materia_prima_id;
-                    $cantidad_ingrediente= $cantidad_producto* $ingrediente->cantidad;
-                    $existencia=(object)[
-                        'tipo'=>'materia_prima',
-                        'fecha'=>date('Y-m-d'),
-                        'cantidad'=>$cantidad_ingrediente,
-                        'esEntrada'=>0,
-                        'materiaprima_id'=>$materia_prima_id              
-                    ];  
-                    $this-> _existenciaRepository->Store($existencia);
-                }
-            }            
-        }
-    } 
+    public function GetHoraEntrega($detalles){
+        $tiempoCoccion=$this->_productoRepository-> GetTiempoCoccion($detalles);        
+        $now=date_create();        
+        date_add($now,date_interval_create_from_date_string($tiempoCoccion.' minutes'));     
+        return date_format($now, 'H:i:s');
+    }
     public function ComprobarExistenciaProductoDetalle($detalles)
     {
         $errors=[];
@@ -251,8 +214,8 @@ class OrdenServicioRepository implements IRepository
         {
             $producto_id=$item->producto_id;
             $producto=$this->_productoRepository->Find($producto_id);
-                        $foraneo=$producto!=null?$producto->foraneo:0;
-            if($foraneo==1)
+                        $procesado=$producto!=null?$producto->procesado:0;
+            if($procesado==0)
             {
                 $viewInventario =$this->_existenciaRepository-> getInventario(['producto',$item->cantidad,$producto_id],
                                         ['tipo','total_inventario','id']);                                        
@@ -298,4 +261,48 @@ class OrdenServicioRepository implements IRepository
         ];
         return $data;    
     }  
+    FUNCTION ComprobarTiempoEntrega($fechahora_entrega)
+    {
+        $tiempo_entrega= date_timestamp_get(date_create($fechahora_entrega));        
+        $now=date_create();
+        $string_date= date_format($now,'Y-m-d H:i:s');
+        $tiempo_ahora=date_timestamp_get(date_create($string_date));        
+       return $tiempo_entrega>$tiempo_ahora;
+        
+    }
+    public function DescontarProductoDeExistencia($OrdenDetalles)
+    {
+        foreach($OrdenDetalles as $detalle)
+        {
+            $producto=$this->_productoRepository->Find( $detalle->producto_id);
+            $cantidad_producto=$detalle->cantidad;
+            if(!$producto->procesado)
+            {    
+                $existencia=(object)[
+                    'tipo'=>'producto',                    
+                    'fecha'=>date('Y-m-d'),
+                    'cantidad'=>$cantidad_producto,
+                    'esEntrada'=>0,
+                    'materiaprima_id'=>$producto->id                   
+                ];
+                $this->_existenciaRepository-> Store($existencia);         
+            }
+            else
+            {
+                $ingredientes=$producto->preparacions;
+                foreach($ingredientes as $ingrediente){
+                    $materia_prima_id=$ingrediente->materia_prima_id;
+                    $cantidad_ingrediente= $cantidad_producto* $ingrediente->cantidad;
+                    $existencia=(object)[
+                        'tipo'=>'materia_prima',
+                        'fecha'=>date('Y-m-d'),
+                        'cantidad'=>$cantidad_ingrediente,
+                        'esEntrada'=>0,
+                        'materiaprima_id'=>$materia_prima_id              
+                    ];  
+                    $this->_existenciaRepository -> Store($existencia);
+                }
+            }            
+        }
+    }
 }

@@ -3,6 +3,8 @@ namespace App\Repositories;
 use App\Contracts\IRepository;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 class UserRepository implements IRepository
 {
     public function GetAll()
@@ -51,5 +53,27 @@ class UserRepository implements IRepository
            return back()->withErrors('Esta sesion se encuemtra activa');
         }       
         $user->delete();        
+    }
+    function Login($request)
+    {
+        if(Auth::validate(['email'=>$request->input('email'),
+        'password'=>$request->input('password')]))
+        {
+            $user =Auth::getProvider()->retrieveByCredentials([
+                'email'=>$request->input('email'),
+                'password'=>$request->input('password')]);                
+            Auth::login($user);
+            return true;
+        }        
+        return false;
+
+
+    }
+    function Logout()
+    {
+        Session::flush();
+        Auth::logout();
+        return redirect()->to('/login');    
+
     }
 }

@@ -40,7 +40,7 @@ class IngredienteRepository implements IRepository
         $arr= explode('-',$materiaprima);
         $materiaprima_codigo=trim( $arr[0]);
         $preparacion=$this->Find($id);
-        $Materia_Prima=$preparacion->materiaprima-> where('codigo',$materiaprima_codigo)->first();
+        $Materia_Prima=$preparacion->materia_prima -> where('codigo',$materiaprima_codigo)->first();
         $preparacion-> materia_prima_id=$Materia_Prima->id;
         $preparacion->producto_id=$producto_id;
         $preparacion->cantidad=$cantidad;        

@@ -19,7 +19,6 @@ class CabanaRepository implements IRepository
             $sum=$sum+ $item->venta;        
        }
        return $sum;
-
     }
     public function GetVentasByCabanas()
     {
@@ -40,10 +39,9 @@ class CabanaRepository implements IRepository
     {
         return Cabaña::select ("id","codigo","nombre","ocupado","descripcion","capacidad_maxima","imagen")
                      ->selectRaw("IFNULL((SELECT  SUM(orden_encabezados.total) FROM orden_encabezados WHERE cabaña_id=cabañas.id AND fecha=CURDATE() AND  estado_id=3),0) as venta_diaria")
-                     ->orderby('venta_diaria','desc') ->get();
-
+                     ->orderby('cabañas.id','asc') ->get();
     }
-    public function desocuparCabana(Cabaña $cabaña)
+    public function desocuparCabana($cabaña)
     {        
         if ($cabaña!=null)
         {
@@ -97,8 +95,7 @@ class CabanaRepository implements IRepository
         {
             $ruta=public_path("img/");
             unlink($ruta.$cabana->imagen);
-        }       
- 
+        }        
         $cabana->delete();
     }
 }

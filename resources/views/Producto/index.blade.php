@@ -64,7 +64,7 @@
                     <th>Tiempo de coccion</th>
                     <th>Unidad medida</th>
                     <th>Categoria</th>
-                    <th>Foraneo</th>
+                    <th>Procesado</th>
                     <th>Total existencias</th>
                     <th></th>
                     <th></th>                    
@@ -83,7 +83,7 @@
                     <th>Tiempo de coccion</th>
                     <th>Unidad medida</th>
                     <th>Categoria</th>
-                    <th>Foraneo</th>
+                    <th>Procesado</th>
                     <th>Total existencias</th>
                     <th></th>
                     <th></th>                    
@@ -103,10 +103,10 @@
                     <td>{{$item->tiempo_coccion}}</td>
                     <td>{{$item->unidad_medida}}</td>
                     <td>{{$item->categoria}}</td>
-                    <td>{{$item->foraneo==1?'Si':'No'}}</td>
+                    <td>{{$item->procesado==1?'Si':'No'}}</td>
                     <td>{{number_format($item->total_inventario)}}</td>
                     <td>
-                        @if($item->foraneo)
+                        @if(!$item->procesado)
                         <button title="Existencias" onclick="existencias(this,'producto');" class="btn btn-info" >
                             <i class="fa-solid fa-warehouse"></i>
                             

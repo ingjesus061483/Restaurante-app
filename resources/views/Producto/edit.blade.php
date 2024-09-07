@@ -1,5 +1,5 @@
 @extends('shared/layout')
-@section('title','Crear productos')
+@section('title','Editar productos')
 @section('content')  
 <div class="card mb-4">
     <div class="card-body">
@@ -104,10 +104,10 @@
                 </textarea>
             </div>
             <div class="mb-3">
-                <label class="form-label" for="foraneo">
-                    Foraneo
+                <label class="form-label" for="procesado">
+                    Procesado
                 </label>                
-                <input type="checkbox" name="foraneo" {{$producto->foraneo==1?'checked':''}} class="form-check-inline" id="foraneo">
+                <input type="checkbox" name="procesado" {{$producto->procesado==1?'checked':''}} class="form-check-inline" id="procesado">
             </div> 
             <div class="mb-3" id="coccion">
                 <label class="form-label" for="tiempo_coccion">

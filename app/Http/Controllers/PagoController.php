@@ -140,18 +140,13 @@ class PagoController extends Controller
                 return redirect()->to(url('/cuentascobrar/create'));                                                                              
             }
         }
-        $pagoDetalles=[];
-        if(session()->has('pagodetalles'))
-        {
-            $pagoDetalles=session('pagodetalles');
-        }
-        
-        foreach($pagoDetalles as $item)
+        $pagoDetalles=session()->has('pagodetalles')?session('pagodetalles'):[];        
+        $this->_pagoRepository-> acumular($pagoDetalles,$acum);
+        /*foreach($pagoDetalles as $item)
         {
             $acum=$acum+ $item->valor_recibido;                   
-        }
-        $empresa= $this->_empresaRepository->Find( $user->empresa_id);        
-        
+        }*/
+        $empresa= $this->_empresaRepository->Find( $user->empresa_id);                
         $subtotal=$this->_ordenServicioRepository-> totalizarOrden( $ordenServicio->orden_detalles) ;
         $impuesto=0;
         if ($empresa-> tipo_regimen_id==2)
@@ -184,8 +179,6 @@ class PagoController extends Controller
         {
             return redirect()->to('login');   
         }
-    //    print_r($request->all());
-      //  exit();
         $user=Auth::user();                   
         $caja=$user->caja;
         $validacion=$request->validate([
@@ -196,22 +189,18 @@ class PagoController extends Controller
             'descuento'=>'required|numeric',                      
             'total_pagar'=>'required|numeric',                     
         ]);
-        $pagoDetalles=[];  
-        if(!session()->has('pagodetalles'))
+        $pagoDetalles=session()->has('pagodetalles')?session('pagodetalles'):[];  
+        if(count($pagoDetalles)==0)
         {
            return back()->withErrors("Debe crear por lo menos un detalle de pago") ;
-        }
-        $pagoDetalles=session('pagodetalles');
+        }        
         $recibido =$request->input('acumulado');
         $total_pagar= $request->input('total_pagar');
         settype($recibido,"double");
         settype($total_pagar,"double");
         $ordenServicio=$this->_ordenServicioRepository->Find($request->input('orden_id'));       
-        $cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;   
-	if($cabana!=null)
-	{               
-	     $this->_cabanaRepository->desocuparCabana($cabana);
-	}
+        $cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;        
+        $this->_cabanaRepository->desocuparCabana($cabana);                
         if($ordenServicio->credito==0)
         {
             if($total_pagar>$recibido)
@@ -227,7 +216,7 @@ class PagoController extends Controller
         {
             $cuentasCobrar=$this->_cuentasCobrarRepository->GetCuentasCobrarByOrdenServicio($ordenServicio->id);
             if($cuentasCobrar==null)
-            {
+            { 
                 $this->pagoStore($request,$pagoDetalles,$caja);            
                 $credito=(object)["orden_id"=>$ordenServicio->id,"valor_recibido"=>$recibido];
                 session(['cuentascobrar' => $credito]);  

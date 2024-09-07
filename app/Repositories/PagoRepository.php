@@ -12,6 +12,14 @@ class PagoRepository implements IRepository{
         $this->_pagoDetalleRepository=$pagoDetalleRepository;
         $this->_impuestoRepository = $impuestoRepository;
     }
+    function acumular($pagoDetalles,&$acum)
+    {
+        
+        foreach($pagoDetalles as $item)
+        {
+            $acum=$acum+ $item->valor_recibido;                   
+        }
+    }
     public function valorRecibido($pagos)
     {
         $sum=0;

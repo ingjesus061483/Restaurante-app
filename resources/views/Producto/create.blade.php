@@ -83,10 +83,10 @@
                 <input type="file" name="imagen" accept="image/*"   class="form-control" id="imagen">
             </div>         
             <div class="mb-3">
-                <label class="form-label" for="foraneo">
-                    Foraneo
+                <label class="form-label" for="procesado">
+                    Procesado
                 </label>
-                <input type="checkbox" name="foraneo" class="form-check-inline" id="foraneo">
+                <input type="checkbox" name="procesado" class="form-check-inline" id="procesado">
             </div>                     
             <div class="mb-3" id="coccion" >
                 <label class="form-label" for="tiempo_coccion">
