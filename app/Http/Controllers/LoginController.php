@@ -7,6 +7,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rules\Password;
 class LoginController extends Controller
 {
     protected UserRepository $_userRepository;
@@ -36,7 +37,7 @@ class LoginController extends Controller
     {   
         $credentials = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'password' => ['required',Password::default()],
         ]);
         if(!$this->_userRepository->Login($request))
         {
