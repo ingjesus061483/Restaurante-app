@@ -4,16 +4,7 @@
 @section('title','Editar impresora')
 @section('content')  
 <div class="card mb-4">
-    <div class="card-body">
-        @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{$error}}</li>                    
-                @endforeach
-            </ul>
-        </div>
-        @endif
+    <div class="card-body">        
         <form action="{{url('/impresoras')}}/{{$impresora->id}}" autocomplete="off" method="post">
             @method('PATcH')
             @csrf

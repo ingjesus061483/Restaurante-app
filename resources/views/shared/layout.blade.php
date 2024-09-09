@@ -22,14 +22,14 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-        <!--    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <!--<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
                     <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                     <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                 </div>
             </form>-->
             <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <ul class="navbar-nav  ms-auto me-0 me-md-3 my-2 my-md-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -47,30 +47,26 @@
                     <div class="sb-sidenav-menu">
                         @include('shared/menu')
                     </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logueado como:</div>
-                        <div class="row">
-                            <div class="col-6">                        
-                                {{auth()->user()->name}}                        
-                            </div>
-                            <div class="col-6">                                                        
-                                <form action="{{url('/login')}}/{{auth()->user()->id }}"
+                    <div class="sb-sidenav-footer">                        
+                        <div class="mb-3">                                                        
+                            {{auth()->user()->name}}&nbsp;
+                            <form class="d-none d-md-inline-block form-inline" action="{{url('/login')}}/{{auth()->user()->id }}"                                    
                                     onsubmit="return validar('Desea cerrar la sesion?')" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button title="Cerrar sesion" type="submit" class="btn btn-danger">
+                                @csrf
+                                @method('delete')
+                                <button title="Cerrar sesion" type="submit" class="btn btn-danger">
                                     <i class="fa-solid fa-right-from-bracket"></i>                                
-                                    </button>
-                                </form>                    
-                            </div>
+                                </button>
+                            </form>                    
                         </div>
-                    </div>
+                    </div>                
                 </nav>
             </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">@yield('title')</h1>
+                        @include('shared/errors')    
                         @yield('content')
                     </div>
                 </main>
@@ -102,7 +98,9 @@
         <link href="{{ url('/')}}/alertifyjs/css/alertify.min.css" rel="stylesheet">     
         <script src="{{url('/')}}/js/restaurante-app.js">                       
         </script>  
-        <script  type="text/javascript">    
+        <script  type="text/javascript">         
+            console.log($("#errors"))  
+            const myTimeout = setTimeout(myGreeting, 5000);
            $(function(){
                 $( document ).tooltip();
            });
@@ -718,6 +716,10 @@
                     //window.location.href="{{url('/')}}//"+result.materiaprima.id;
                 }
             });
+        }
+        function myGreeting() 
+        {
+            $("#errors").fadeOut();
         }
         </script>   
     </body>

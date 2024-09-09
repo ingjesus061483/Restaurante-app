@@ -4,16 +4,7 @@
 <div class="card mb-4">
     <div class="card-body">
         <div class="row">
-            <div class="col-5">
-                @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{$error}}</li>                    
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
+            <div class="col-5">                
                 <form action="{{url('/ordenservicio')}}" enctype="multipart/form-data" autocomplete="off" method="post">
                     @csrf
                     <input type="hidden" name="fecha" value="{{date('Y-m-d')}}" class="form-control"

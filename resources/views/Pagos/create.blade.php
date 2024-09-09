@@ -4,16 +4,7 @@
 <div class="card mb-4">
     <div class="card-body">
         <div class="row">
-            <div class="col-5">
-                @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{$error}}</li>                    
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
+            <div class="col-5">                
                 <form action="{{url('/pagos')}}" enctype="multipart/form-data" autocomplete="off" method="post">
                     <input type="hidden" name="acumulado"value="{{$acumulado}}" >        
                     <input type="hidden" name="faltante" value="{{$faltante}}">

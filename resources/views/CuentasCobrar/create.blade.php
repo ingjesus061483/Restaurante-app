@@ -2,16 +2,7 @@
 @section('title','Crear cuentas cobrar')
 @section('content')  
 <div class="card mb-4">
-    <div class="card-body">
-        @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{$error}}</li>                    
-                @endforeach
-            </ul>
-        </div>
-        @endif
+    <div class="card-body">        
         <form action="{{url('/cuentascobrar')}}" autocomplete="off" method="post">
             @csrf
             <input type="hidden" name="orden_id" value="{{$orden_id}}">

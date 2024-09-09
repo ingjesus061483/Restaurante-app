@@ -1,15 +1,6 @@
 @extends('shared/layout')
 @section('title','Listado de productos')
 @section('content')  
-@if($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{$error}}</li>                    
-        @endforeach
-    </ul>
-</div>
-@endif
 <div class="card mb-4">
     <div class="card-header">
         <div class="row">
