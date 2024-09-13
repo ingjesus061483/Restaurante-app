@@ -1,4 +1,4 @@
-@extends('shared/layout')
+@extends('shared/reportes')
 @section('title','Detalle de productos')
 @section('content')  
 <div class="card mb-4">
@@ -110,20 +110,17 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-4" >
+                        
+                    </div>                    
+                    <div class="col-4" >                        
                         Ingredientes
                     </div>                    
                     <div class="col-4" >                        
-                    </div>                    
-                    <div class="col-4" >
-                        <form action="{{url('ingredientes/create')}}" method="get">
-                            <input type="hidden" name="producto" value="{{$producto->id}}">
-                            <button class="btn btn-primary" type="submit">Nuevo ingrediente </button>                            
-                        </form>                                       
                     </div>
                 </div>                
             </div>
             <div class="card-body">                
-                <table id="datatablesSimple">
+                <table class="table" >
                     <thead>
                         <tr>
                             <th>Id</th>                            
@@ -133,36 +130,14 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>                   
-                            <th>Id</th>                            
-                            <th>Materia prima</th>
-                            <th>Cantidad</th>                            
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
+                    
                     <tbody>    
                         @foreach($producto->preparacions as $item)
                         <tr>
                             <td>{{$item->id}}</td>
                             <td>{{$item->materia_prima->codigo.' - '.$item->materia_prima->nombre}}</td>
                             <td>{{$item->cantidad}}</td>           
-                            <td>
-                                <a title="Editar" class="btn btn-warning" onclick="editar_ingredientes(this);">
-                                    <i class="fa-solid fa-pen"></i>  
-                                </a>
-                            </td>
-                            <td>                
-                                <form action="{{url('/ingredientes')}}/{{$item->id}}" 
-                                    onsubmit="return validar('Desea eliminar este registro?');" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button title="Eliminar" class="btn btn-danger" type="submit"> 
-                                        <i class="fa-solid fa-trash"></i>                                        
-                                    </button>
-                                </form>
-                            </td>
+                          
                         </tr>
                         @endforeach   
                     </tbody>
@@ -256,14 +231,7 @@
                 </div>
             </div>
         </div>
-
-        @endif
-        <a class="btn btn-primary" href="{{url('/productos')}}">           
-            Regresar
-        </a>
-        <a class="btn btn-danger" target="blank" title="Mostrar existencia por producto" href="{{url('file/MostrarExistenciaPorProducto')}}/{{$producto->id}}">            
-            <i class="fa-solid fa-file-pdf"></i>
-        </a>
+        @endif       
     </div>
 </div>
 @endsection

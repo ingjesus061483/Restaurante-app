@@ -93,6 +93,7 @@ Route::get('file/inventario',[FileController::class,'inventario']);
 Route::get('file/OrdenesByFecha',[FileController::class,'OrdenesByFecha']);
 Route::get('file/ProductosVendidosByFecha',[FileController::class,'ProductosVendidosByFecha']);
 Route::get('file/OrdenServicio/{id}',[FileController::class,'OrdenServicio']);
+Route::get('file/MostrarExistenciaPorProducto/{id}',[FileController::class,'MostrarExistenciaPorProducto']);
 Route::get('impresoras', [PrinterController::class,'index']);
 Route::post('impresoras', [PrinterController::class,'store']);
 Route::patch('impresoras/{id}', [PrinterController::class,'update']);

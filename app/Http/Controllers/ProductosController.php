@@ -159,8 +159,7 @@ class ProductosController extends Controller
             $total_entrada= $this->_productoRepository->totalizarExistencia($id,1);//$entradas!=null? $this->totalizar($entradas):0;            
             $total_salida=$this->_productoRepository->totalizarExistencia($id);//$salidas!=null?$this->totalizar($salidas):0;
             $data=[                
-                'producto'=>$producto,                 
-                'unidad_medida'=>$this-> _unidadMedidaRepository->GetAll(),                
+                'producto'=>$producto,                     
                 "entradas"=>$entradas,
                 "salidas"=>$salidas,
                 "total_entrada"=>$total_entrada,

@@ -153,5 +153,43 @@ class FileController extends Controller
        // return view ('file.OrdenServicio',$data);   
        return $this->_fileRepository->GetPdf('file.OrdenServicio',$data);        
     }
+    function MostrarExistenciaPorProducto($id)
+    {
+        if(!Auth::check())        
+        {
+            return redirect()->to('login');        
+        }                 
+              
+        $producto= $this->_productoRepository->Find($id);
+        if($producto-> procesado==0)
+        {
+            $entradas=$this->_productoRepository->existencias($id,1); //Existencia:: where('entrada',1)->where('producto_id',$id)->get();
+            $salidas=$this->_productoRepository->existencias($id);//Existencia:: where('entrada',0)->where('producto_id',$id)->get();
+            $total_entrada= $this->_productoRepository->totalizarExistencia($id,1);//$entradas!=null? $this->totalizar($entradas):0;            
+            $total_salida=$this->_productoRepository->totalizarExistencia($id);//$salidas!=null?$this->totalizar($salidas):0;
+            $data=[                
+                'producto'=>$producto,                     
+                "entradas"=>$entradas,
+                "salidas"=>$salidas,
+                "total_entrada"=>$total_entrada,
+                "total_salida"=>$total_salida
+            ];     
+        }
+        else
+        {
+            $preparacions =$producto->preparacions;
+          /*  if(count($preparacions)==0)
+            {
+                session(['producto' => $producto]);
+                return redirect()->to(url('ingredientes/create'));   
+            }            */
+            $data=[                
+                'producto'=>$producto,                 
+            ];  
+        
+        }
+        return $this->_fileRepository->GetPdf('file.MostrarExistenciaPorProducto',$data);        
+        //return view('File.MostrarExistenciaPorProducto',$data);
+}     
     //
 }
