@@ -8,6 +8,7 @@ use App\Models\Categoria;
 use App\Models\UnidadMedida;
 use App\Models\Existencia;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\StoreMateriaPrimaRequest;
 use App\Http\Requests\UpdateMateriaPrimaRequest;
 use App\Repositories\CategoriaRepository;
@@ -56,7 +57,7 @@ class MateriaPrimaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
@@ -105,16 +106,12 @@ class MateriaPrimaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }        
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }
         $materiaprima=$this->_materiaPrimaRepository->Find($id); //materiaprima::find($id);
         $entradas=$this->_materiaPrimaRepository->existencias($id,1); //Existencia:: where('entrada',1)->where('materia_prima_id',$id)->get();
         $salidas=$this->_materiaPrimaRepository->existencias($id);// Existencia:: where('entrada',0)->where('materia_prima_id',$id)->get();
@@ -134,16 +131,12 @@ class MateriaPrimaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( string $id)
+    public function edit(AutorizeRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }        
         $materiaprima=$this-> _materiaPrimaRepository->Find($id);
         $categoria=$this->_categoriaRepository->GetAll();
         $unidadmedida=$this->_unidadMedidaRepository->GetAll();
@@ -184,15 +177,11 @@ class MateriaPrimaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(AutorizeRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
         }        
         $this->_materiaPrimaRepository->Delete($id);
         return redirect()->to(url('/materiaprimas'));                

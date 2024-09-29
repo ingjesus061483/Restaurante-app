@@ -12,10 +12,6 @@ class UpdateRequest extends FormRequest
     public function authorize(): bool
     {
         $user=Auth::user();
-        if(!Auth::check())
-        {
-            return redirect()->to('login');
-        }
         if($user->role_id==1||$user->role_id==2)
         {
             return true;

@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Caja;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCajaRequest;
-use App\Http\Requests\UpdateCajaRequest;
+use App\Http\Requests\AutorizeRequest;
+use App\Http\Requests\Caja\StoreRequest;
+use App\Http\Requests\Caja\UpdateRequest;
 use App\Repositories\CajaMovimientoRepository;
 use App\Repositories\CajaRepository;
 use Illuminate\Http\Request;
@@ -23,15 +22,11 @@ class CajaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
         }
         $data=[
             'cajas'=>$this->_cajaRepository->GetAll()
@@ -44,15 +39,11 @@ class CajaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
         }
         return view ('Caja.create');
         //
@@ -61,21 +52,12 @@ class CajaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {    
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }
-        $validacion=$request->validate([
-            'codigo'=>'required|unique:cajas|max:50',            
-            'nombre'=>'required|max:50',           
-            'valor_inicial'=>'required|numeric',            
-        ]);      
         $this->_cajaRepository->Store($request);        
         return redirect()->to(url('/cajas'));    
         //
@@ -84,16 +66,12 @@ class CajaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show (AutorizeRequest $request, int $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }     
         $fechaIni=request()->fechaIni;
         $fechaFin=request()->fechaFin;
         $caja=$this->_cajaRepository->Find($id);
@@ -129,16 +107,13 @@ class CajaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id)
+    public function edit (AutorizeRequest $request, int $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }
+       
         $data=[
             'caja'=>$this->_cajaRepository->find($id)
         ];
@@ -149,21 +124,12 @@ class CajaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateRequest $request, int $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }
-        $validacion=$request->validate([
-            'codigo'=>'required|max:50|unique:cajas,codigo,'.$id,            
-            'nombre'=>'required|max:50',           
-            'valor_inicial'=>'required|numeric',           
-        ]);
         $this->_cajaRepository->Update($id,$request);
         return redirect()->to(url('/cajas'));  
         //
@@ -172,15 +138,11 @@ class CajaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(AutorizeRequest $request, int $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
         }
         $this->_cajaRepository->Delete($id);
         return redirect()->to(url('/cajas'));         

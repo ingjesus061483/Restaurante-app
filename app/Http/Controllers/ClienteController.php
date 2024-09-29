@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Cliente\DeleteRequest;
-use App\Http\Requests\Cliente\EditRequest;
-use App\Http\Requests\Cliente\IndexRequest;
-use App\Http\Requests\Cliente\ShowRequest;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\Cliente\StoreRequest;
 use App\Http\Requests\Cliente\UpdateRequest;
 use App\Repositories\ClienteRepository;
@@ -34,8 +31,13 @@ class ClienteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexRequest $request)
-    {        
+    public function index()
+    {     
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+           
         $data=[         
             'clientes'=> $this->_repository->GetAll()
         ];
@@ -46,8 +48,13 @@ class ClienteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(EditRequest $request)
-    {        
+    public function create(AutorizeRequest $request)
+    {   
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+             
         $empresa=Auth::user()->empresa;
         $data=[
             "empresa"=>$empresa
@@ -60,7 +67,12 @@ class ClienteController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreRequest $request)
-    {        
+    {   
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+             
         $this->_repository->Store(((object)$request->all() ));
         return redirect()->to(url('/clientes'));
         //
@@ -76,8 +88,13 @@ class ClienteController extends Controller
         ];
         return json_encode($data);
     }
-    public function show(ShowRequest $request, $id)
+    public function show( $id)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        
         $data=[
             "cliente"=>$this-> _repository->Find($id)
         ];
@@ -88,8 +105,13 @@ class ClienteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EditRequest $request, $id)
-    {        
+    public function edit(AutorizeRequest $request, $id)
+    {   
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+             
         $data=[          
             'cliente'=>$this->_repository->Find($id),
         ];
@@ -101,7 +123,12 @@ class ClienteController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateRequest $request, $id)
-    {        
+    {   
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+             
         $this->_repository->Update($id,(object)$request->all());        
         return redirect()->to(url('/clientes'));
 
@@ -111,8 +138,13 @@ class ClienteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DeleteRequest $request, $id)
+    public function destroy(AutorizeRequest $request, $id)
     {        
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        
         $this->_repository->Delete($id);       
         return redirect()->to(url('/clientes'));
         //

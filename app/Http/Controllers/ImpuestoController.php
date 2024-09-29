@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Impuesto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\StoreImpuestoRequest;
 use App\Http\Requests\UpdateImpuestoRequest;
 use App\Repositories\EmpresaRepository;
@@ -32,16 +33,12 @@ class ImpuestoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(AutorizeRequest $request)
     {        
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }        
         $data=[            
             'impuestos'=> $this->_impuestoRepository->GetAll()
         ];
@@ -52,15 +49,11 @@ class ImpuestoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
         }
         return view ('Impuesto.create');        
         //
@@ -99,15 +92,11 @@ class ImpuestoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
         }        
         $data=[            
             'impuesto'=>$this-> _impuestoRepository-> Find($id),
@@ -140,16 +129,12 @@ class ImpuestoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }        
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }
         $this->_impuestoRepository->Delete($id);
         return redirect()->to(url('/impuestos'));       
         //

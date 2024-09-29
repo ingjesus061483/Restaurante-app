@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Repositories\FormaPagoRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,16 +34,12 @@ class FormaPagoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }       
         return view('FormaPago.create'); 
         //
     }
@@ -76,16 +73,12 @@ class FormaPagoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(AutorizeRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }     
         $formapago=$this->_formapagoRepository->Find($id);
         $data=[    
             'formapago'=>$formapago
@@ -116,16 +109,12 @@ class FormaPagoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(AutorizeRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }     
         $this->_formapagoRepository->Delete($id);
         return redirect()->to(url('/formapagos'));    
         //

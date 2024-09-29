@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Http\Requests\Cliente;
+namespace App\Http\Requests\Cabana;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-class IndexRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
-    {    if(!Auth::check())
+    {
+        $user=Auth::user();
+        if($user->role_id==1||$user->role_id==2)
         {
-            return redirect()->to('login');
+            return true;
         }
-        return true;
+        return false;
+        
     }
 
     /**
@@ -25,6 +28,9 @@ class IndexRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'codigo'=>'required|unique:cabañas|max:50',            
+            'nombre'=>'required|max:50',           
+            'capacidad'=>'required|numeric',
             //
         ];
     }

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
+use App\Http\Requests\Cabana\StoreRequest;
+use App\Http\Requests\Cabana\UpdateRequest;
 use App\Repositories\CabanaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +27,7 @@ class CabanaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        } 
         $data=[       
             'cabanas'=>$this->_repository->GetAll(),
         ];
@@ -35,15 +38,11 @@ class CabanaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
         }
        
         return view('Cabana.create');
@@ -53,13 +52,13 @@ class CabanaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {         
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
+        /*if(!$this-> autorizar(Auth::user()))
         {
             return back();            
         }
@@ -67,7 +66,7 @@ class CabanaController extends Controller
             'codigo'=>'required|unique:cabañas|max:50',            
             'nombre'=>'required|max:50',           
             'capacidad'=>'required|numeric',
-        ]);
+        ]);*/
         $this->_repository->Store($request);          
         return redirect()->to(url('/cabañas'));         
     }
@@ -75,17 +74,17 @@ class CabanaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $mesa)
+    public function show(int  $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }         
 
-        $cabana=$this->_repository->Find($mesa);
+        $cabana=$this->_repository->Find($id);
         if($cabana->ocupado==1)
         {
-            $ordenservicio=$this->_ordenServicioRepository-> GetOrdenByMesa($mesa);
+            $ordenservicio=$this->_ordenServicioRepository-> GetOrdenByMesa($id);
             if($ordenservicio!=null)
             {
                 return redirect()->to(url('/ordendetalles/'.$ordenservicio->id.'/edit'));           
@@ -104,17 +103,12 @@ class CabanaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(AutorizeRequest $request, int $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }
-       
+        }        
         $data=[       
             'cabana'=>$this->_repository->Find($id),
         ];
@@ -126,22 +120,17 @@ class CabanaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }
-       
-        $validacion=$request->validate([
+        }        
+      /*  $validacion=$request->validate([
             'codigo'=>'required|max:50|unique:cabañas,codigo,'.$id,            
             'nombre'=>'required|max:50',           
             'capacidad'=>'required|numeric',            
-        ]);
+        ]);*/
         $this->_repository->Update($id,$request);   
         return redirect()->to(url('/cabañas'));       
         //
@@ -150,16 +139,16 @@ class CabanaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(AutorizeRequest $request, int $id)
     { 
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
+      /*  if(!$this-> autorizar(Auth::user()))
         {
             return back();            
-        }
+        }*/
         $this->_repository->Delete($id);
         return redirect()->to(url('/cabañas'));      
 

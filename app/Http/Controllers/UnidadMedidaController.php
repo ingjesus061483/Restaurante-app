@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UnidadMedida;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\StoreUnidadMedidaRequest;
 use App\Http\Requests\UpdateUnidadMedidaRequest;
 use App\Repositories\UnidadMedidaRepository;
@@ -19,7 +20,7 @@ class UnidadMedidaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
@@ -36,16 +37,12 @@ class UnidadMedidaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }                   
         return view('UnidadMedida.create');
         //
     }
@@ -80,16 +77,12 @@ class UnidadMedidaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(AutorizeRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
         $unidadMedida=$this->_repository->Find($id);
         $data=[            
             'unidadMedida'=>$unidadMedida
@@ -120,16 +113,12 @@ class UnidadMedidaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(AutorizeRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
         $this->_repository->Delete($id);        
         return redirect()->to(url('/unidad_medida'));       
         //

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Cliente;
+namespace App\Http\Requests\Cabana;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-class EditRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -12,15 +12,11 @@ class EditRequest extends FormRequest
     public function authorize(): bool
     {
         $user=Auth::user();
-        if(!Auth::check())
-        {
-            return redirect()->to('login');
-        }
         if($user->role_id==1||$user->role_id==2)
         {
             return true;
-        }   
-        return false;        
+        }
+        return false;
     }
 
     /**
@@ -31,7 +27,9 @@ class EditRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'codigo'=>'required|max:50|unique:cabañas,codigo,'.$this->id,            
+            'nombre'=>'required|max:50',           
+            'capacidad'=>'required|numeric',                
         ];
     }
 }

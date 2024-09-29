@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CuentasCobrar;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\StoreCuentasCobrarRequest;
 use App\Http\Requests\UpdateCuentasCobrarRequest;
 use App\Repositories\ConfiguracionRepository;
@@ -36,16 +37,12 @@ class CuentasCobrarController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }           
         if(session()->has('cuentascobrar'))
         {
             redirect()->to(url('/cuentascobrar/create'));
@@ -65,16 +62,12 @@ class CuentasCobrarController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }     
         if(!session()->has('cuentascobrar'))
         {
             return redirect()->to(url('/ordenservicio'))->withErrors("No hay pagos disponibles");
@@ -130,16 +123,12 @@ class CuentasCobrarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }   
         $cuentasCobrar=$this->_CuentasCobrarRepository->Find($id);
         $detalleCuentasCobrar=$cuentasCobrar->DetalleCuentaCobrar;      
         $totalizar=$this->_DetalleCuentasCobrarRepository->TotalizarDetallesCreditos($cuentasCobrar->DetalleCuentaCobrar);
@@ -150,13 +139,7 @@ class CuentasCobrarController extends Controller
             "totalizar"=>$totalizar,        
             "totaladeudado"=>$totaladeudado,
         ];
-        return view("CuentasCobrar.show",$data);             
-
-
-
-
-
-
+        return view("CuentasCobrar.show",$data);                     
         //
     }
 

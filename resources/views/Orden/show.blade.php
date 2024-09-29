@@ -164,7 +164,7 @@
                                             @endif
                                         </td>                                                                                       
                                         <td>
-                                            @if($ordenEncabezado->estado_id==1)                                           
+                                            @if($ordenEncabezado->estado_id==1&&(auth()->user()->role_id==1||auth()->user()->role_id==2) ) 
                                             <form action="{{url('/ordendetalles')}}/{{$item->id}}"                                                 
                                                 onsubmit="return validar('Desea eliminar este registro?');" method="post">                                                
                                                 @csrf                                                

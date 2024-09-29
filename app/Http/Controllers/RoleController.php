@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Repositories\RoleRepository;
@@ -19,7 +20,7 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
@@ -35,16 +36,12 @@ class RoleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }                  
         return view ('Role.create');
         //
     }
@@ -79,16 +76,12 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( $id)
+    public function edit(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
         $data=[            
             'role'=>$this->_repository->Find($id)
         ];
@@ -117,16 +110,12 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
         $this->_repository->delete($id);
         return redirect()->to(url('/roles'));       
         //

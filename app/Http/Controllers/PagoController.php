@@ -123,7 +123,6 @@ class PagoController extends Controller
         {
             $this->_cajaRepository->Abrir($caja->id);
         }
-
         $orden_id=request()->input('id');           
         $ordenServicio=$this->_ordenServicioRepository->Find($orden_id);    
         $configuracion=$this->_configuracionRepository -> getConfigByNombre("propina");    

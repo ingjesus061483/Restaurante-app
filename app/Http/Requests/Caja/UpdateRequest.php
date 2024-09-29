@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Categoria;
+namespace App\Http\Requests\Caja;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-class DeleteRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -12,15 +12,10 @@ class DeleteRequest extends FormRequest
     public function authorize(): bool
     {
         $user=Auth::user();
-        if(!Auth::check())
-        {
-            return redirect()->to('login');
-        }
         if($user->role_id==1||$user->role_id==2)
         {
             return true;
         }
-
         return false;
     }
 
@@ -32,6 +27,9 @@ class DeleteRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'codigo'=>'required|max:50|unique:cajas,codigo,'. $this->id,            
+            'nombre'=>'required|max:50',           
+            'valor_inicial'=>'required|numeric',          
             //
         ];
     }

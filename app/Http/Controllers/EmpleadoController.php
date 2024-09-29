@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\StoreEmpleadoRequest;
 use App\Http\Requests\UpdateEmpleadoRequest;
 use App\Models\Empresa;
@@ -36,16 +37,12 @@ class EmpleadoController extends Controller
       /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }
         $data=[         
             'empleados'=>$this->_empleadoRepository->GetAll()
         ];
@@ -55,16 +52,12 @@ class EmpleadoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }
         $data=[
             
             'roles'=>$this->_roleRepository->GetAll(),
@@ -104,16 +97,12 @@ class EmpleadoController extends Controller
         return redirect()->to(url('/empleados'));    
         //
     }
-    public function ListaCumpleaños($id)
+    public function ListaCumpleaños( AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }
         $data=['empleados'=> $this->_empleadoRepository->GetAll()];
         return view('Empleado.Cumpleaños',$data);
     }
@@ -129,7 +118,7 @@ class EmpleadoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( $id)
+    public function edit(AutorizeRequest $request, $id)
     {
         
         if(!Auth::check())
@@ -178,17 +167,14 @@ class EmpleadoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(AutorizeRequest $request, $id)
     {
         
         if(!Auth::check())
         {
             return redirect()->to('login');
         }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }  
+       
         
         $this-> _empleadoRepository->Delete($id);
         return redirect()->to(url('/empleados'));

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\configuracion;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\StoreconfiguracionRequest;
 use App\Http\Requests\UpdateconfiguracionRequest;
 use App\Repositories\ConfiguracionRepository;
@@ -18,16 +19,12 @@ class ConfiguracionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }
         $configuraciones=$this->_configuracionRepository->GetAll();
         $data=['configuraciones'=>$configuraciones];
         return view('Configuracion.index',$data);
@@ -61,7 +58,7 @@ class ConfiguracionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( $id)
+    public function edit(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {

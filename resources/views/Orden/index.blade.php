@@ -47,11 +47,11 @@
                     <th></th>
                     <th></th>
                     <th>Id</th>
-                    <th>Codigo </th>                    
+                    <th>Codigo </th>        
+                    <th>Cabaña</th>            
                     <th>Fecha </th>                    
                     <th>hora</th>
-                    <th>Hora de entrega</th>
-                    <th>Cabaña</th>
+                    <th>Hora de entrega</th>                   
                     <th>Cliente</th>
                     <th>Mesero</th>                    
                     <th>Total</th>
@@ -63,24 +63,24 @@
             </thead>
             <tfoot>
                 <tr>         
-                    <th></th>      
-                    <th></th>                                 
+                    <th></th>
+                    <th></th>                    
                     <th></th>                    
                     <th></th>                    
                     <th></th>
-                    <th></th>    
+                    <th></th>
                     <th>Id</th>
-                    <th>Codigo </th>                    
+                    <th>Codigo </th>        
+                    <th>Cabaña</th>            
                     <th>Fecha </th>                    
                     <th>hora</th>
-                    <th>Hora de entrega</th>
-                    <th>Cabaña</th>
+                    <th>Hora de entrega</th>                   
                     <th>Cliente</th>
                     <th>Mesero</th>                    
                     <th>Total</th>
                     <th>Cantidad de productos ordenados</th>                    
-                    <th>credito</th>       
-                    <th>Domicilio</th>                 
+                    <th>credito</th>              
+                    <th>Domicilio</th>     
                     <th>Estado</th>                    
                 </tr>
             </tfoot>
@@ -154,10 +154,10 @@
                     </td>
                     <td>{{$item->id}}</td>
                     <td>{{$item->codigo}}</td>                    
+                    <td>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</td>
                     <td>{{$item->fecha}} </td>                    
                     <td>{{$item->hora}}</td>                    
-                    <td>{{$item->hora_entrega}}</td>
-                    <td>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</td>
+                    <td>{{$item->hora_entrega}}</td>                    
                     <td>
                         <a 
                             onmouseover="mostrar_Cliente('{{$item->cliente!=null?$item->cliente->identificacion:''}}')"

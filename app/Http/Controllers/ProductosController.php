@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Repositories\CategoriaRepository;
 use App\Repositories\PrinterRepository;
 use App\Repositories\ProductoRepository;
@@ -46,7 +47,7 @@ class ProductosController extends Controller
     /**
      * Display a listing of the resource.
      */    
-    public function index()
+    public function index(AutorizeRequest $request)
     {
         if(! Auth::check())
         {
@@ -73,16 +74,12 @@ class ProductosController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
        $categoria= $this->_categoriaRepository->GetAll();
        $unidadmedida=$this->_unidadMedidaRepository->GetAll();
        $impresora=$this->_impresoraRepository->GetAll();
@@ -141,15 +138,11 @@ class ProductosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(AutorizeRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
         }         
         $producto= $this->_productoRepository->Find($id);
         if($producto-> procesado==0)
@@ -184,16 +177,12 @@ class ProductosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(AutorizeRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
        $categoria= $this-> _categoriaRepository->GetAll();
        $unidadmedida=$this-> _unidadMedidaRepository->GetAll();
        $impresoras=$this->_impresoraRepository->GetAll();
@@ -254,16 +243,12 @@ class ProductosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(AutorizeRequest $request, string $id)
     {
         if(! Auth::check())
         {
             return redirect()->to('login');
         }               
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
         $this->_productoRepository->Delete($id);
         return redirect()->to(url('/productos'));//       
     }

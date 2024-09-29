@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Categoria\CreateRequest;
-use App\Http\Requests\Categoria\DeleteRequest;
-use App\Http\Requests\Categoria\EditRequest;
-use App\Http\Requests\Categoria\IndexRequest;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\Categoria\StoreRequest;
 use App\Http\Requests\Categoria\UpdateRequest;
 use App\Repositories\CategoriaRepository;
@@ -24,8 +21,13 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexRequest $request)
+    public function index()
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        
         $categorias=$this->_repository->GetAll();
         $data=[    
             'categorias'=>$categorias
@@ -37,8 +39,13 @@ class CategoriaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(CreateRequest $request)
+    public function create(AutorizeRequest $request)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        
         return view('Categoria.create');
         //
     }
@@ -48,6 +55,11 @@ class CategoriaController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        
         $this->_repository->Store((object)$request->all());
         return redirect()->to(url('/categorias'));       
         //
@@ -62,8 +74,14 @@ class CategoriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EditRequest $request, string $id )
+    public function edit(AutorizeRequest $request, string $id )
     {
+
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        
         $categoria=$this->_repository->Find($id);
         $data=[    
             'categoria'=>$categoria
@@ -76,11 +94,11 @@ class CategoriaController extends Controller
      */
     public function update(UpdateRequest $request, string $id)
     {
-       /* if(!Auth::check())
+        if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
+       /* if(!$this-> autorizar(Auth::user()))
         {
             return back();            
         }    
@@ -93,8 +111,13 @@ class CategoriaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DeleteRequest $request,  string $id)
+    public function destroy(AutorizeRequest $request,  string $id)
     {    
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }
+        
         $this->_repository->Delete($id);
         return redirect()->to(url('/categorias'));    
         //
