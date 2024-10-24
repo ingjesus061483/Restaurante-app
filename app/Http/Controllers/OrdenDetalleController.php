@@ -31,11 +31,11 @@ class OrdenDetalleController extends Controller
                                 OrdenDetalleRepository $ordenDetalleRepository,
                                 SessionRepository $sessionRepository) {
          $this->_productoRepository=$productoRepository;                       
-         $this->_categoriaRepository=$categoriaRepository;
-        $this->_cabanaRepository = $cabanaRepository;
-        $this->_ordenServicioRepository=$ordenServicioRepository;
-        $this->_OrdenDetalleRepository=$ordenDetalleRepository;
-        $this->_sessionRepository=$sessionRepository;
+         $this->_categoriaRepository=$categoriaRepository;         
+         $this->_cabanaRepository = $cabanaRepository;         
+         $this->_ordenServicioRepository=$ordenServicioRepository;         
+         $this->_OrdenDetalleRepository=$ordenDetalleRepository;         
+         $this->_sessionRepository=$sessionRepository;
     }
     /**
      * Display a listing of the resource.
@@ -47,14 +47,12 @@ class OrdenDetalleController extends Controller
             return redirect()->to('login');
         }   
         $id=request()->id;
-        $detalles=session('detalles');    
-    //    print_r($detalles) ;
-      //  exit();
+        $detalles=session()->has('detalles')?session('detalles'):[];  
         $data=[
             "id"=>$id,
             "orden_detalle"=>$detalles,
             "total"=>$this-> _ordenServicioRepository-> totalizarOrden($detalles)
-        ];        
+        ];      
         return view('OrdenDetalle.index',$data);
         //
     }
@@ -74,7 +72,6 @@ class OrdenDetalleController extends Controller
         {
             $productos=$categoria==null? $this->_productoRepository->GetAll()->get():$this->_productoRepository->GetAll()->
                where('categoria_id',$categoria)-> get();
-
         }        
         else
         {           
@@ -133,7 +130,7 @@ class OrdenDetalleController extends Controller
             {
                 $data=[                    
                     'orden_id'=>$request->orden_id,                                        
-                    'message'=>'Ellproducto ya se encuentra registrado',                    
+                    'message'=>'El producto ya se encuentra registrado',                    
                     'encontrado'=>false                
                 ];                                
                 return json_encode ($data);            
@@ -158,8 +155,7 @@ class OrdenDetalleController extends Controller
                 $mensaje='Has insertado un detalle';
             }
             else
-            {
-                
+            {                
                 $detalle->cantidad=$detalle->cantidad+ $ordendetalle->cantidad;
                 $update=$this->_OrdenDetalleRepository-> GetdetalleByproducto($deta);                
                 $this->_OrdenDetalleRepository->update($ordendetalle-> id,$update);                    
@@ -196,12 +192,15 @@ class OrdenDetalleController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {       
+    {      
+        if(!Auth::check())
+        {
+            return redirect()->to('login');
+        }  
         $orden_servicio=$this->_ordenServicioRepository->Find($id);  
         $categoria=request()->categoria;              
         $productos=$categoria==null? $this->_productoRepository->GetAll()->get():$this->_productoRepository->GetAll()->
-        where('categoria_id',$categoria)-> get();
-
+        where('categoria_id',$categoria)-> get();        
         $data=[
             "orden_id"=>$orden_servicio->id,
             "categoria_id"=>$categoria,
@@ -237,7 +236,6 @@ class OrdenDetalleController extends Controller
             'message'=>'se ha actualizado un item del detalle',           
         ];                
         return json_encode($data);
-
         //
     }
 
@@ -251,16 +249,22 @@ class OrdenDetalleController extends Controller
             return redirect()->to('login');
         }
         $request=request();       
-        if ($request->orden_id==null)
+        if(session()->has('detalles'))    
         {
             $this->_sessionRepository->delete($id);
-        }
+            $detalles=session()->has('detalles')?session('detalles'):[];  
+            if( count($detalles)==0)            
+            {
+               return redirect()->to( url('/'));
+                       
+            } 
+            return back();
+        }              
         else
-        {
+        {                
             $this->_OrdenDetalleRepository->delete($id);            
             $this->_ordenServicioRepository->ActualizarTotalPagarOrdenservicio($request->orden_id); 
-        }
-        
+        }        
         return back();
         //
     }

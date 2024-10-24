@@ -87,7 +87,11 @@ class CabanaController extends Controller
             $ordenservicio=$this->_ordenServicioRepository-> GetOrdenByMesa($id);
             if($ordenservicio!=null)
             {
-                return redirect()->to(url('/ordendetalles/'.$ordenservicio->id.'/edit'));           
+               if( session()->has ('detalles'))               
+               {
+                  return redirect()->to("ordendetalles?id=$id");
+               }
+               return redirect()->to(url('/ordendetalles/'.$ordenservicio->id.'/edit'));           
             }
             return back()->withErrors("La mesa no se encuentra disponible");
         }

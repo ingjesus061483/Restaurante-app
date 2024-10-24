@@ -16,9 +16,7 @@
                     <i class="fa-solid fa-print"></i> &nbsp;  Comanda
                 </a>
             </div>
-
-        </div>
-        
+        </div>        
     </div>
     <div class="card-body">        
         <div class="row">
@@ -30,7 +28,8 @@
                             <th>Cantidad  </th>                   
                             <th>Detalle</th>
                             <th>Valor Unitario </th>                    
-                            <th>Total</th>                                                                                      
+                            <th>Total</th> 
+                            <th></th>            
                         </tr>
                     </thead>
                     <tfoot>
@@ -40,6 +39,7 @@
                             <th>Detalle</th>
                             <th>Valor Unitario </th>                    
                             <th>Total</th>                                                                                        
+                            <th></th>
                         </tr>                
                     </tfoot>
                     <tbody>    
@@ -48,14 +48,22 @@
                                 <td>{{$item->id}}</td>                              
                                 <td>{{$item->cantidad}}</td>                                
                                 <td>{{$item->detalleOrden}}</td>
-                                <th>${{number_format($item->valor_unitario)}}</th>
-                                <th>${{number_format($item->total)}} </th>                                           
+                                <td>${{number_format($item->valor_unitario)}}</td>
+                                <td>${{number_format($item->total)}} </td>                                           
+                                <td>
+                                    <form action="{{url('/ordendetalles')}}/{{$item->id}}" 
+                                        onsubmit="return validar('Desea eliminar este registro?');" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button title="Eliminar detalle" class="btn btn-danger" style="" type="submit"> 
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>                                           
                             </tr>                    
                         @endforeach
                     </tbody>
-                </table>
-              
-
+                </table>            
             </div>
         </div>
         <div class="row">
@@ -68,9 +76,7 @@
             <div class="col-4">
                 Total orden:&nbsp;${{$total}}
             </div>
-
         </div>       
     </div>
 </div>
 @endsection
-
