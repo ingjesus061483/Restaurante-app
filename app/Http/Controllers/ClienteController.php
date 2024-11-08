@@ -55,11 +55,11 @@ class ClienteController extends Controller
             return redirect()->to('login');
         }
              
-        $empresa=Auth::user()->empresa;
+    /*    $empresa=Auth::user()->empresa;
         $data=[
             "empresa"=>$empresa
-        ];
-        return view ('Cliente.create',$data);
+        ];*/
+        return view ('Cliente.create');
         //
     }
 

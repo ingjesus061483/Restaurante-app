@@ -1,10 +1,10 @@
 @extends('shared/layout')
-@section('title','Crear cliente')
+@section('title','Crear proveedor')
 @section('content')  
 <div class="card mb-4">
     <div class="card-body">           
-        <form action="{{url('/clientes')}}" autocomplete="off" method="post">
-            @csrf 
+        <form action="{{url('/proveedores')}}" autocomplete="off" method="post">
+            @csrf         
             <div class="mb-3">
                 <label class="form-label" for="identificacion">
                     Identificacion
@@ -16,12 +16,6 @@
                     Nombre
                 </label>
                 <input type="text" name="nombre" value="{{old('nombre')}}" class="form-control" id="nombre">
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="nombre">
-                    Apellido
-                </label>
-                <input type="text" name="apellido" value="{{old('apellido')}}" class="form-control" id="apellido">
             </div>
             <div class ="mb-3">
                 <label class="form-label" for="direccion">
@@ -60,7 +54,7 @@
                 </label>
                 <input type="password" name="password_confirmation" id="password" class="form-control">        
             </div>-->
-            <a class="btn btn-primary" href="{{url('/')}}/clientes">
+            <a class="btn btn-primary" href="{{url('/')}}/proveedores">
                 Regresar
             </a> 
             <button class="btn btn-success" type="submit">

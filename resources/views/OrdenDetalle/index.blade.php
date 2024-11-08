@@ -55,6 +55,7 @@
                                         onsubmit="return validar('Desea eliminar este registro?');" method="post">
                                         @csrf
                                         @method('delete')
+                                        <input type="hidden" name="orden_id" value="{{$id}}">
                                         <button title="Eliminar detalle" class="btn btn-danger" style="" type="submit"> 
                                             <i class="fa-solid fa-trash"></i>
                                         </button>

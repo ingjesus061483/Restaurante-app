@@ -51,7 +51,11 @@ class OrdenDetalleRepository implements IRepository
     {
         return OrdenDetalle::where('orden_encabezado_id',$orden_id)->get();
     }
- 
+    public function getDetallesByOrdenProducto($orden_id,$producto_id )
+    {
+        return OrdenDetalle::where('orden_encabezado_id',$orden_id)
+                            ->where('producto_id',$producto_id) ->first();
+    } 
     public function find($id)
     {
         $detalle=OrdenDetalle::select('orden_detalles.orden_encabezado_id as orden_id',

@@ -251,6 +251,22 @@ class OrdenDetalleController extends Controller
         $request=request();       
         if(session()->has('detalles'))    
         {
+            $sesionDetalle=$this->_sessionRepository->find($id);
+            $producto_id=$sesionDetalle->producto_id;
+            $orden_id=$sesionDetalle->orden_id;
+            $ordendetalle=$this->_OrdenDetalleRepository->getDetallesByOrdenProducto($orden_id,$producto_id );
+            $cantidad=$ordendetalle->cantidad-$sesionDetalle->cantidad;
+            $ordendetalle->cantidad= $cantidad;
+            if($cantidad>0)
+            {
+                $detalle=$this->_OrdenDetalleRepository-> GetdetalleByproducto($ordendetalle);
+                $this->_OrdenDetalleRepository->update($ordendetalle->id,$detalle);                
+            }
+            else
+            {
+                $this->_OrdenDetalleRepository->delete($ordendetalle->id);                
+            }
+            $this->_ordenServicioRepository->ActualizarTotalPagarOrdenservicio($request->orden_id); 
             $this->_sessionRepository->delete($id);
             $detalles=session()->has('detalles')?session('detalles'):[];  
             if( count($detalles)==0)            

@@ -39,7 +39,7 @@
             <a class="nav-link" href="{{url('/categorias')}}">Categorias</a>
             <a class="nav-link" href="{{url('/unidad_medida')}}">Unidades de medida</a>
             <a class="nav-link" href="{{url('/materiaprimas')}}">Materia primas</a>
-        <!--    <a class="nav-link" href="{{url('/insumos')}}">Insumos</a>-->
+            <a class="nav-link" href="{{url('/proveedores')}}">Proveedores</a>
             <a class="nav-link" href="{{url('/cajas')}}">Cajas</a>
             <a class="nav-link" href="{{url('/cabañas')}}">Cabañas</a>
             <a class="nav-link" href="{{url('/productos')}}">Productos</a>
