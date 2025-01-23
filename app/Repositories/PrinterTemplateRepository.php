@@ -33,7 +33,7 @@ class PrinterTemplateRepository
         $printer->text("Mesero:".$ordenservicio->orden_encabezado->empleado->nombre.' '.$ordenservicio->orden_encabezado->empleado->apellido  .  "\n");
         if($ordenservicio->orden_encabezado->cabaña!=null)
         {
-            $printer->text("Mesa:".$ordenservicio->orden_encabezado->cabaña->nombre);
+            $printer->text("Mesa:".$ordenservicio->orden_encabezado->cabaña->nombre." ");
         }        
         $printer->text("Estado:".$ordenservicio->orden_encabezado->estado->nombre. "\n");        
         if($ordenservicio->orden_encabezado->cliente!=null)
@@ -99,17 +99,17 @@ class PrinterTemplateRepository
                 {
                     $printer->text("Valor domicilio: $".number_format($valorDomicilio)."\n");
                 }
-                if($propina!=0)
+                if($item->servicio_voluntario!=0)
                 {
                     $printer->text("Serv.vol.:  $".number_format( $item->servicio_voluntario==0? $item->total_pagar*$propina:$item->servicio_voluntario )."\n");                
                 }
              //   $printer->text("Recibido: $".number_format( $item->recibido)."\n");  
                 $printer->text("Cambio: $".number_format( $item->cambio)."\n");             
-                foreach($detallepagos as $detallepago)
+          /*      foreach($detallepagos as $detallepago)
                 {
                     $printer->text($detallepago->detalle_pago . ": $".number_format( $detallepago-> valor_recibido)."\n");
 
-                }                              
+                }      */                        
                 $printer ->setTextSize($encabezado,$encabezado);        
                 $printer->text("Total a pagar: $".number_format( $item->total_pagar+$valorDomicilio+$item->servicio_voluntario)."\n");                
                 //$printer->text("Observaciones: ".$item->observaciones."\n");                

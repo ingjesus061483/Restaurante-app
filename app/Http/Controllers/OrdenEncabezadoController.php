@@ -32,6 +32,31 @@ class OrdenEncabezadoController extends Controller
         $this->_empleadoRepository=$empleadoRepository;
        
     }
+    public function MoveTableByOrder(Request $request,$id){
+        $cabanaSource=$this->_cabanaRepository->GetCabanabyCode($request->source);
+        
+        if($cabanaSource!=null)
+        {
+            $this->_ordenServicioRepository->updateTableByOrder($request,$id);               
+            $this->_cabanaRepository->ocuparCabaña($request->  moveTo);
+            $this->_cabanaRepository->desocuparCabana($cabanaSource);
+            $data=[   
+            'cabana'=>$cabanaSource,
+            'orden_id'=>$id,                                            
+            'message'=>'la mesa se ha movido',                    
+            'error'=>false                
+            ];                                
+            return json_encode ($data);        
+        }
+        $data=[   
+            'orden_id'=>$id,                                            
+            'error'=>true,
+            'message'=>'la mesa no existe',                    
+                           
+        ];                                
+        return json_encode ($data);        
+
+    }
         /**
      * Display a listing of the resource.
      */
@@ -82,6 +107,7 @@ class OrdenEncabezadoController extends Controller
         $data=[
             'fechaIni'=>date_format($fechaini,'Y-m-d'),
             'fechaFin'=>date_format($fechafin,'Y-m-d'),
+            'cabanas'=>$this->_cabanaRepository-> GetCabanasDesocupadas(),
             'ordenes'=>$ordenes           
         ];
         return view('Orden.index',$data);

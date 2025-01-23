@@ -4,19 +4,37 @@
 <div class="card mb-4">     
     <div class ="card-header" >
         <div class="row">
-            <div class="col-4" > 
-            <a class="btn btn-primary" href="{{url('/pagodetalle')}} ">Totalizar </a>                               
-            </div>     
-            <div class="col-4" >                
+            <div class="col-9">                
+                <form action="{{url('/pagos')}}">                     
+                    <div class="row">
+                        <div class="col-4">
+                            <label class="form-label" for="codigo">                        
+                                Fecha inicio                                           
+                            </label>                    
+                            <input name="fechaIni" value="{{$fechaIni}}"  class="form-control" type="date"/>                                        
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label" for="codigo">                                  
+                                Fecha fin            
+                            </label>                                                                                   
+                            <input name="fechaFin" class="form-control" value="{{$fechaFin}}" type="date"/>
+                        </div>
+                        <div class="col-4">
+                            <br>
+                            <input type="submit"  name="accion" class="btn btn-primary" value= "Buscar">    
+                            <a class="btn btn-success" href="{{url('/pagodetalle')}} ">Totalizar </a>                                             
+                        </div>
+                    </div>                              
+                </form>
             </div>
-            <div class="col-4">
-                <label class="form-label" for="categoria">
-                    Total de venta    
-                </label>
-                ${{number_format($totales)}}              
-            </div>
-        </div>
-
+            <div class="col-3">
+                <br>                
+                <label class="form-label" for="categoria">                    
+                    Total de venta                   
+                </label>                
+                ${{number_format($totales)}}                 
+            </div>    
+        </div>    
     </div>
     <div class="card-body">        
         <table id="datatablesSimple">

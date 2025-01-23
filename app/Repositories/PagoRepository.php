@@ -43,10 +43,35 @@ class PagoRepository implements IRepository{
         $pagos=Pago::where('forma_pago_id',$forma_pago)->get();
         return $pagos;
     }
-
-    public function GetAll()
+    function GetDate($request,&$fechaini,&$fechafin)
     {
-        return Pago::All();
+        if($request->fechaIni==null)
+        {
+            $fechaini=date_create();
+            date_add($fechaini, date_interval_create_from_date_string('-1 days'));
+        }
+        else
+        {
+            $fechaini=date_create($request->fechaIni);
+        }
+        $fechafin=$request->fechaFin!=null ?date_create( $request->fechaFin):date_create();
+        return $fechaini>$fechafin;
+    }
+    public function GetAll()
+    {  
+        $fecha1 = date_create();        
+        date_add($fecha1, date_interval_create_from_date_string('-1 days'));
+        $fecha2=date_create();        
+        return Pago::wherebetween('fecha_hora',[date_format($fecha1,'Y-m-d'),
+                                   date_format($fecha2,'Y-m-d')])
+                                 ->orderby('id','Desc') 
+                                 ->get();
+    }
+    public function getPagosbyDate($fechaini,$fechaFin){
+        return Pago::wherebetween('fecha_hora',[$fechaini,
+        $fechaFin])
+      ->orderby('id','Desc') 
+      ->get();
     }
     public function Find($id){
         return Pago::find($id);
