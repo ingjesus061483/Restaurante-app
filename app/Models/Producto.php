@@ -34,7 +34,7 @@ class Producto extends Model
     }
     protected $fillable=[  'codigo','nombre','preparacion',
                            'costo_unitario','precio','descripcion',
-                           'foraneo','imagen','unidad_medida_id',
+                           'procesado','imagen','unidad_medida_id',
                            'impresora_id','categoria_id',
                            'materia_prima','tiempo_coccion'];
 }

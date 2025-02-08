@@ -93,10 +93,23 @@ class PagoController extends Controller
         {
             return  back();        
         }
-        $forma_pago=request()->input('forma_pago');
-        $pagos=$this->_pagoRepository-> GetAll();
+       // $forma_pago=request()->input('forma_pago');
+      
+        if( $this->_pagoRepository->GetDate(request(),$fechaini,$fechafin))
+        {
+              $pagos=$this->_pagoRepository->GetAll();;
+            $data=[
+                'fechaIni'=>date_format($fechaini,'Y-m-d'),
+                'fechaFin'=>date_format($fechafin,'Y-m-d'),
+                'ordenes'=>$pagos           
+            ];            
+            return view('Orden.index',$data)->withErrors("fecha inicial no puede ser mayor a la final.");
+        }
+        $pagos=$this->_pagoRepository-> getPagosbyDate($fechaini,$fechafin);
        
         $data=[  
+            'fechaIni'=>date_format($fechaini,'Y-m-d'),
+            'fechaFin'=>date_format($fechafin,'Y-m-d'),
             'forma_pago'=>$this->_formapagoRepository->GetAll(),                         
             'totales'=>$this->_pagoRepository-> TotalesPagos(),
             'pagos'=>$pagos

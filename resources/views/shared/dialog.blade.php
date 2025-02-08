@@ -205,3 +205,29 @@
         id="valorRecibido">
     </div>            
 </div>
+<div id="CambioDeMesa" class="container">
+    <input type="hidden" name="" id="ordenId">
+    <div class="mb-3">
+        <label class="form-label" for="unidad_medida">
+           Origen         
+        </label>
+        <span id="source"></span>
+    </div>
+    @if(isset( $cabanas))
+    <div class="mb-3">
+        <label class="form-label" for="categoria">
+            Destino
+        </label>     
+        <select type="text" name="forma_pago" class="form-select"
+         id="moveTo">
+         <option value="">seleccione una mesa</option>        
+         @foreach($cabanas as $item)
+         <option value="{{$item->id}}">{{$item->nombre}}</option>
+         @endforeach
+
+        </select>            
+       
+    </div>
+    @endif
+   
+</div>

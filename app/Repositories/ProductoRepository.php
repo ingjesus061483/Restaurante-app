@@ -143,6 +143,7 @@ class ProductoRepository implements IRepository{
     public function Store($request)
     {  
         $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado'); 
+    
         $codigo=$request->input('codigo');
         $nombre =$request->input('nombre');  
         $nombreimagen=$this->_filerepository-> getImage($request, $codigo.' '.$nombre);       
@@ -160,7 +161,7 @@ class ProductoRepository implements IRepository{
             'unidad_medida_id' =>$request->input('unidad_medida') ,
             'categoria_id'=>$request->input('categoria'),
         ]);       
-        if($producto ->procesado==1)
+        if($producto ->procesado==0)
         {
             $now=date_create();     
             $fecha=date_format($now, 'Y-m-d');            

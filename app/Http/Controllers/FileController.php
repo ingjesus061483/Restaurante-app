@@ -56,7 +56,7 @@ class FileController extends Controller
         }
         $productos =$this->_productoRepository->GetProductos();
         $materiaprimas=$this->_materiaPrimarepository->GetMateriaPrima();
-        $union= $materiaprimas->union($productos)->get();
+     //   $union= $materiaprimas->union($productos)->get();
 
         $inventario_view=$this->_existenciaRepository->GetAll();
         $data=[

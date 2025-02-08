@@ -54,6 +54,8 @@ Route::resource('movimientocaja',CajaMovimientoController::class);
 Route::resource('cajas',CajaController::class);
 Route::resource('formapagos', FormaPagoController::class);
 Route::resource('observaciones',ObservacionController::class);
+Route::patch('ordenservicio/MoveTableByOrder/{id}',[OrdenEncabezadoController::class,'MoveTableByOrder']);
+
 //Route::resource('impresoras',ImpresoraController::class);
 Route::resource('pagos', PagoController::class);
 Route::resource('pagodetalle',PagoDetalleController::class);
@@ -66,7 +68,7 @@ Route::resource("cabañas",CabanaController::class);
 Route::resource("empleados",EmpleadoController::class);
 Route::resource("roles",RoleController::class);
 Route::resource("clientes",ClienteController::class);
-Route::resource("proveedores",ProveedorController::class);
+//Route::resource("proveedores",ProveedorController::class);
 Route::resource("empresas",EmpresaController::class);
 Route::resource('ordenservicio',OrdenEncabezadoController::class);
 Route::resource ('ingredientes', PreparacionController::class);

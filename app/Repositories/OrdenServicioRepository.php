@@ -42,6 +42,12 @@ class OrdenServicioRepository implements IRepository
         $fechafin=$request->fechaFin!=null ?date_create( $request->fechaFin):date_create();
         return $fechaini>$fechafin;
     }
+    function updateTableByOrder($request ,$id)
+    {
+        $ordenEncabezado=$this->find($id);
+        $ordenEncabezado->cabaña_id =$request->moveTo;
+        $ordenEncabezado->save();
+    }
     function GetOrdenServicio ($id,$empresa)
     {
          

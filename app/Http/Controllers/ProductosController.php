@@ -7,6 +7,7 @@ use App\Repositories\CategoriaRepository;
 use App\Repositories\PrinterRepository;
 use App\Repositories\ProductoRepository;
 use App\Repositories\UnidadMedidaRepository;
+use App\Repositories\ExistenciaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,16 +18,19 @@ class ProductosController extends Controller
     protected UnidadMedidaRepository $_unidadMedidaRepository;
     protected CategoriaRepository $_categoriaRepository;
     protected PrinterRepository  $_impresoraRepository;
+    protected ExistenciaRepository $_existenciaRepository;
     public function __construct(ProductoRepository $productoRepository,
                                 UnidadMedidaRepository $unidadMedidaRepository,
                                 CategoriaRepository $categoriaRepository,
-                                PrinterRepository $impresoraRepository)
+                                PrinterRepository $impresoraRepository,
+                                ExistenciaRepository $existenciaRepository )
                                 
     {
         $this->_productoRepository =$productoRepository;
         $this->_categoriaRepository=$categoriaRepository;
         $this->_unidadMedidaRepository=$unidadMedidaRepository;
         $this->_impresoraRepository=$impresoraRepository;
+        $this->_existenciaRepository=$existenciaRepository;
     }
     public function loadProduct($search){
         $query="SELECT * FROM( SELECT productos.id,CONCAT( codigo,' - ',productos.nombre) AS nombre,
@@ -118,6 +122,7 @@ class ProductosController extends Controller
                 'impresora'=>'required' ,              
                 'existencias'=>'required|numeric'
             ]); 
+         
         }
         else{
             $validacion=$request->validate([
@@ -130,8 +135,9 @@ class ProductosController extends Controller
                 'tiempo_coccion'=>'required|numeric',
                 'impresora'=>'required' ,  
             ]); 
+     
         }
-        $producto=$this->_productoRepository->Store($request);      
+              $producto=$this->_productoRepository->Store($request);
         return redirect()->to(url("/productos/$producto->id"));//
     }
 

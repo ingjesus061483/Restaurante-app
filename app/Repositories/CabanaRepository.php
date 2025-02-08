@@ -73,6 +73,9 @@ class CabanaRepository implements IRepository
         $cabana->descripcion=$request->descripcion;
         $cabana->save();
     }
+    public function GetCabanabyCode($code){
+        return Cabaña::where('codigo',$code)->first();
+    }
     public function Find($id)
     {
         return Cabaña::find($id);

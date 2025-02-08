@@ -12,8 +12,7 @@
         <link rel="stylesheet" href="{{url('/jquery-ui-1.12.1.custom/jquery-ui.css')}}">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="{{url('/css/styles.css')}}" rel="stylesheet" />
-        <script src="{{url('/js/fontawesome.js')}}"></script>
-        <!--<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>  -->      
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>        
     </head>
     <body class="sb-nav-fixed">
         <input type="hidden" name="base_url" id="base_url" value="{{url('/')}}">
@@ -88,12 +87,9 @@
         <!-- dialog-->
         @include('shared/dialog')
         <!-- fin dialog -->
-        <script src="{{url('js/Boostrap.js')}}" crossorigin="anonymous"></script>
-        <script src="{{url('js/datatable.js')}}" crossorigin="anonymous"></script>
-        <script src="{{url('js/jquery.js')}}" crossorigin="anonymous"></script>
-      <!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>    -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>    
         <script src="{{url('/')}}/js/scripts.js"></script>        
         <script src="{{url('/')}}/js/datatables-simple-demo.js"></script>
         <script src="{{url('/')}}/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
@@ -168,6 +164,21 @@
                     }
                 }
             });   
+            var dialogCambioDeMesa=$("#CambioDeMesa").dialog({
+                autoOpen: false,
+                height:450,
+                width: 600,
+                modal: true,
+                buttons: 
+                {
+                    "Guardar": function(){Trasladar()},
+                    "Cerrar": function() 
+                    {
+                        dialogCambioDeMesa.dialog( "close" );                    
+                    }
+                }
+            });   
+        
             var dialogEgreso=$("#egreso").dialog({
                 autoOpen: false,
                 height:450,
@@ -339,6 +350,44 @@
 
                 }            
             });   
+            function CambiarMesa(mesa ,ordenId)
+            {               
+                document.getElementById("source").innerHTML=mesa;
+                document.getElementById("ordenId").value=ordenId;             
+                dialogCambioDeMesa.dialog('open');
+            }
+            function Trasladar()
+            {
+              var ordenId=  document.getElementById("ordenId").value;   
+              arr=document.getElementById("source").innerHTML.split('-');     
+              source=arr[0].trim();
+             moveTo= document.getElementById("moveTo").value;             
+             if(moveTo==0)
+             {
+                alertify.error('Escoje una cabaña');
+             }
+             $.ajax({
+                    url:"{{url('/ordenservicio/MoveTableByOrder')}}/"+ordenId,
+                    type: "POST",
+                    dataType: "json",
+                    data:{   
+                        _token:"{{csrf_token()}}",    
+                        _method: 'PATCH',   
+                        ordenId:ordenId,
+                        source:source,
+                        moveTo:moveTo,                        
+                    },
+                    success: function (result){                        
+                            alertify.success(result.message);   
+                        console.log(result.cabana)
+                        var url="{{url('/ordenservicio')}}"
+                        window.location.href=url
+                    }
+                });             
+
+
+
+            }
             function categorias(categoria,page){        
                 window.location.href="{{url('/')}}/"+page +"?categoria="+categoria.value; 
             }           
@@ -389,6 +438,7 @@
                     }
                 });             
             }
+
             function mostrar_Cliente(identificacion){
                 console.log(identificacion);
                 $.ajax({

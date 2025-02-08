@@ -41,17 +41,18 @@
             <thead>
                 <tr>
                     <th></th>
+                    <th></th>
                     <th></th>                    
                     <th></th>                    
                     <th></th>                    
                     <th></th>
                     <th></th>
-                    <th>Id</th>                      
-                    <th>Cabaña</th>  
-                    <th>Codigo </th>                                 
+                    <th>Id</th> 
+                    <th>Cabaña</th>                                     
                     <th>Fecha </th>                    
                     <th>hora</th>
-                    <th>Hora de entrega</th>                   
+                    <th>Hora de entrega</th>                    
+                    <th>Codigo </th> 
                     <th>Cliente</th>
                     <th>Mesero</th>                    
                     <th>Total</th>
@@ -62,19 +63,20 @@
                 </tr>
             </thead>
             <tfoot>
-                <tr>         
+                <tr>      
+                    <th></th>   
                     <th></th>
                     <th></th>                    
                     <th></th>                    
                     <th></th>                    
                     <th></th>
                     <th></th>
-                    <th>Id</th>                       
-                    <th>Cabaña</th>   
-                    <th>Codigo </th>                 
+                    <th>Id</th> 
+                    <th>Cabaña</th>                                     
                     <th>Fecha </th>                    
                     <th>hora</th>
-                    <th>Hora de entrega</th>                   
+                    <th>Hora de entrega</th>                    
+                    <th>Codigo </th> 
                     <th>Cliente</th>
                     <th>Mesero</th>                    
                     <th>Total</th>
@@ -152,13 +154,19 @@
                             @default                            
                         @endswitch              
                     </td>
+                    <td>
+                        @if($item->estado_id==1)
+                        <a title="Cambio de mesa" class="btn btn-primary" style="" onclick="CambiarMesa('{{$item->cabaña->codigo.' - '.$item->cabaña->nombre}}',{{$item->id}})">                    
+                            <i class="fa-solid fa-person-walking"></i>
+                        </a>
+                        @endif
+                    </td>
                     <td>{{$item->id}}</td>
                     <td>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</td>
                     <td>{{$item->codigo}}</td>                    
-                   
                     <td>{{$item->fecha}} </td>                    
                     <td>{{$item->hora}}</td>                    
-                    <td>{{$item->hora_entrega}}</td>                    
+                    <td>{{$item->hora_entrega}}</td>                   
                     <td>
                         <a 
                             onmouseover="mostrar_Cliente('{{$item->cliente!=null?$item->cliente->identificacion:''}}')"
