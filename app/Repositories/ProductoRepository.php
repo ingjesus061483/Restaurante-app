@@ -142,12 +142,11 @@ class ProductoRepository implements IRepository{
     }
     public function Store($request)
     {  
-        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado'); 
-    
+        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado');     
         $codigo=$request->input('codigo');
         $nombre =$request->input('nombre');  
-        $nombreimagen=$this->_filerepository-> getImage($request, $codigo.' '.$nombre);       
-       $producto=  Producto::create([
+        $nombreimagen=$this->_filerepository-> getImage($request, $codigo.' '.$nombre);               
+        $producto=  Producto::create([
             'codigo'=>$request->input('codigo'),
             'nombre' =>$request->input('nombre'),
             'preparacion'=>$request->input('preparacion'),
@@ -173,10 +172,8 @@ class ProductoRepository implements IRepository{
                 "tipo"=>"producto"
             ];            
             $this->_existenciaRepository->Store($existencia);
-
         }
         return $producto;
-
     }
     public function  Update($id, $request)
     {

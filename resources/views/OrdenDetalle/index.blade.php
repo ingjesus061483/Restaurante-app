@@ -28,8 +28,8 @@
                             <th>Cantidad  </th>                   
                             <th>Detalle</th>
                             <th>Valor Unitario </th>                    
-                            <th>Total</th> 
-                            <th></th>            
+                            <th>Total</th>    
+                            <th></th>                                                                                      
                         </tr>
                     </thead>
                     <tfoot>
@@ -39,7 +39,7 @@
                             <th>Detalle</th>
                             <th>Valor Unitario </th>                    
                             <th>Total</th>                                                                                        
-                            <th></th>
+                            <th></th>    
                         </tr>                
                     </tfoot>
                     <tbody>    
@@ -50,17 +50,7 @@
                                 <td>{{$item->detalleOrden}}</td>
                                 <td>${{number_format($item->valor_unitario)}}</td>
                                 <td>${{number_format($item->total)}} </td>                                           
-                                <td>
-                                    <form action="{{url('/ordendetalles')}}/{{$item->id}}" 
-                                        onsubmit="return validar('Desea eliminar este registro?');" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <input type="hidden" name="orden_id" value="{{$id}}">
-                                        <button title="Eliminar detalle" class="btn btn-danger" style="" type="submit"> 
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>                                           
+                                <td></td>    
                             </tr>                    
                         @endforeach
                     </tbody>

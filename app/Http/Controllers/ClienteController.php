@@ -49,16 +49,11 @@ class ClienteController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(AutorizeRequest $request)
-    {   
-        if(!Auth::check())
-        {
-            return redirect()->to('login');
-        }
-             
-    /*    $empresa=Auth::user()->empresa;
+    {        
+        $empresa=Auth::user()->empresa;
         $data=[
             "empresa"=>$empresa
-        ];*/
+        ];
         return view ('Cliente.create');
         //
     }

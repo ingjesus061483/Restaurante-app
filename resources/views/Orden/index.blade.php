@@ -47,6 +47,7 @@
                     <th></th>                    
                     <th></th>
                     <th></th>
+<<<<<<< Updated upstream
                     <th>Id</th> 
                     <th>Cabaña</th>                                     
                     <th>Fecha </th>                    
@@ -63,20 +64,33 @@
                 </tr>
             </thead>
             <tfoot>
+<<<<<<< Updated upstream
                 <tr>      
                     <th></th>   
+=======
+                <tr>         
+>>>>>>> Stashed changes
                     <th></th>
                     <th></th>                    
                     <th></th>                    
                     <th></th>                    
                     <th></th>
                     <th></th>
+<<<<<<< Updated upstream
                     <th>Id</th> 
                     <th>Cabaña</th>                                     
                     <th>Fecha </th>                    
                     <th>hora</th>
                     <th>Hora de entrega</th>                    
                     <th>Codigo </th> 
+=======
+                    <th>Id</th>
+                    <th>Codigo </th>        
+                    <th>Cabaña</th>            
+                    <th>Fecha </th>                    
+                    <th>hora</th>
+                    <th>Hora de entrega</th>                   
+>>>>>>> Stashed changes
                     <th>Cliente</th>
                     <th>Mesero</th>                    
                     <th>Total</th>
@@ -164,9 +178,14 @@
                     <td>{{$item->id}}</td>
                     <td>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</td>
                     <td>{{$item->codigo}}</td>                    
+                    <td>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</td>
                     <td>{{$item->fecha}} </td>                    
                     <td>{{$item->hora}}</td>                    
+<<<<<<< Updated upstream
                     <td>{{$item->hora_entrega}}</td>                   
+=======
+                    <td>{{$item->hora_entrega}}</td>                    
+>>>>>>> Stashed changes
                     <td>
                         <a 
                             onmouseover="mostrar_Cliente('{{$item->cliente!=null?$item->cliente->identificacion:''}}')"
