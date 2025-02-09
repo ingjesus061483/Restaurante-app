@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Proveedor;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+
 class UpdateRequest extends FormRequest
 {
     /**
@@ -11,11 +11,6 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $user=Auth::user();
-        if($user->role_id==1||$user->role_id==2)
-        {
-            return true;
-        }   
         return false;
     }
 
@@ -31,8 +26,7 @@ class UpdateRequest extends FormRequest
             'nombre'=>'required|max:50',       
             'direccion'=>'required|max:50',
             'telefono'=>'required|max:50',
-            'email'=>'required|email|max:255',  
-            //
+            'email'=>'required|email|max:255',              //
         ];
     }
 }
