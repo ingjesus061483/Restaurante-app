@@ -28,9 +28,10 @@ class MateriaPrimaRepository implements IRepository
                                      "costo_unitario",
                                      "imagen",
                                      "categorias.nombre AS categoria",
+                                     "categorias.id as categoria_id",
                                      "unidad_medidas.nombre AS unidad_medida")
                             ->selectRaw("0 AS precio")
-                            ->selectRaw("1 AS foraneo")
+                            ->selectRaw("0 AS procesado")
                             ->selectRaw("'materia_prima'AS tipo")
                             ->selectRaw($totalentrada)
                             ->selectRaw($totalsalida)
