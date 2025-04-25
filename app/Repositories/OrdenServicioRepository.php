@@ -107,6 +107,7 @@ class OrdenServicioRepository implements IRepository
         $fecha2=date_create();        
         return OrdenEncabezado::wherebetween('fecha',[date_format($fecha1,'Y-m-d'),
                                                       date_format($fecha2,'Y-m-d')])
+                            
                               ->orderby('id','Desc') 
                               ->get();
     }

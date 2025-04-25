@@ -48,16 +48,19 @@ class FileController extends Controller
         $this->_ordenservicioRepository=$ordenServicioRepository;        
 
     }  
+   /**
+     * You can use the following code to generate a PDF file from a view:
+     *
+     */   
     public function Inventario()
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        $productos =$this->_productoRepository->GetProductos();
-        $materiaprimas=$this->_materiaPrimarepository->GetMateriaPrima();
-     //   $union= $materiaprimas->union($productos)->get();
-
+      //  $productos =$this->_productoRepository->GetProductos();
+       // $materiaprimas=$this->_materiaPrimarepository->GetMateriaPrima();
+    //   $union= $materiaprimas->union($productos)->get();
         $inventario_view=$this->_existenciaRepository->GetAll();
         $data=[
             'inventario'=> $inventario_view,          
@@ -158,8 +161,7 @@ class FileController extends Controller
         if(!Auth::check())        
         {
             return redirect()->to('login');        
-        }                 
-              
+        }                
         $producto= $this->_productoRepository->Find($id);
         if($producto-> procesado==0)
         {

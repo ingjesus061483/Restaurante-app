@@ -3,6 +3,11 @@ namespace App\Repositories;
 
 use App\Contracts\IRepository;
 use App\Models\Cabaña;
+
+/**
+ * Representa e interactua con la tabla cabañas de la base de datos.
+ *
+ */
 class CabanaRepository implements IRepository
 {
     protected FileRepository $_fileRepository;
@@ -10,6 +15,12 @@ class CabanaRepository implements IRepository
     {
         $this->_fileRepository = $fileRepository;
     }
+
+     /**
+     * Suma las ventas de todas las cabañas .
+     *
+     * @return decimal
+     */
     public function TotalVentaByCabana()
     {
        $ventas= $this->GetVentasByCabanas();

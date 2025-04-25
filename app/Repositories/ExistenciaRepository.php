@@ -3,11 +3,20 @@ namespace App\Repositories;
 use App\Contracts\IRepository;
 use App\Models\Existencia;
 use Illuminate\Support\Facades\DB;
+ /**
+     * Representa e interactua con la tabla existencias de la base de datos.
+     *
+     */
 class ExistenciaRepository implements IRepository
 {
     protected ProductoRepository $_productoRepository;
     protected MateriaPrimaRepository $_materiaprimaRepository;
-
+    
+  /**
+     * Suma el total de inventario .
+     *
+     * @return decimal
+     */
     public function TotalizarInventario(){        
         $sum=0;        
         foreach($this-> getInventario() as $item)                    
@@ -15,7 +24,8 @@ class ExistenciaRepository implements IRepository
             $sum=$sum +$item->total_inventario;                        
         }            
         return $sum;    
-    }     
+    } 
+   
     public function GetAll()
     {
         return $this-> getInventario();        
@@ -43,6 +53,14 @@ class ExistenciaRepository implements IRepository
     {
         
     }
+
+    /**
+     * Devuelve el inventario de productos y materias primas.
+     *
+     * @param  array  $bindindgs
+     * @param  array  $column
+     * @return array
+     */
     public function getInventario($bindindgs=[],$column=[]){
         $where=count($bindindgs)>0&&count( $column)>0?"where ".$column[0]."=? and ".$column[1].">? and ".
         $column[2]."=?":"";
