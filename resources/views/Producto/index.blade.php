@@ -3,11 +3,7 @@
 @section('content')  
 <div class="card mb-4">
     <div class="card-header">
-        <div class="row">
-            <div class="col-3">             
-                <br>                           
-                <a href="{{url('/productos/create')}}" class="btn btn-primary">Crear productos </a>
-            </div>
+        <div class="row">            
             <div class="col-4">
                 @include('shared/Categorias')                
             </div>
@@ -38,7 +34,10 @@
                 </form>
 
             </div>
-
+            <div class="col-3">             
+                <br>                           
+                <a href="{{url('/productos/create')}}"title="Crear producto" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i></a>
+            </div>
         </div>
 
     </div>

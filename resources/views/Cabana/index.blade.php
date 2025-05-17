@@ -20,6 +20,7 @@
                     <th>Capacidad</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tfoot>
@@ -30,6 +31,7 @@
                     <th>Descripcion</th>                    
                     <th>Capacidad</th>
                     <th></th>
+                    <th></th>                    
                     <th></th>
                 </tr>
             </tfoot>
@@ -55,6 +57,15 @@
                             </button>
                         </form>
                     </td>
+                    <td>
+                        @if($item ->ocupado==1)
+                        <a title="Editar" class="btn btn-primary" href="{{url('/')}}/cabañas/{{$item->id}}/edit">
+                            Desocupar Cabaña
+                        </a>
+                        @endif
+
+                    </td>
+                    
                 </tr>
                 @endforeach   
             </tbody>

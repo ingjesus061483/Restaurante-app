@@ -29,15 +29,31 @@
                     <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                 </div>
             </form>-->
-            <!-- Navbar-->
-            <ul class="navbar-nav  ms-auto me-0 me-md-3 my-2 my-md-0">
+            <!-- Navbar-->    
+            <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
+          
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{auth()->user()->name}}&nbsp;<i class="fas fa-user fa-fw"></i>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                        <li><hr class="dropdown-divider" /></li>
+                        @if(auth()->user()->role_id==1||auth()->user()->role_id==2)
+                        <li><a class="dropdown-item" href="{{url('/configuracion')}}">Configuracion</a> </li>
+                        <li><a class="dropdown-item" href="#!">Registro de actividad</a></li> 
+                        <li><hr class="dropdown-divider" /></li> 
+                        @endif                                 
                         <li> <a class="dropdown-item"  href="{{url('/usuarios')}}/{{auth()->user()->id}}/edit">Cambiar Contraseña </a></li>
+                        <li>
+                          <form class="d-none d-md-inline-block form-inline" action="{{url('/login')}}/{{auth()->user()->id }}"                                    
+                                    onsubmit="return validar('Desea cerrar la sesion?')" method="post">
+                                @csrf
+                                @method('delete')
+                                <button title="Cerrar sesion" type="submit" class="btn">
+                                  Cerrar sesion  <i class="fa-solid fa-right-from-bracket"></i>                                
+                                </button>
+                            </form>    
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -49,17 +65,7 @@
                         @include('shared/menu')
                     </div>
                     <div class="sb-sidenav-footer">                        
-                        <div class="mb-3">                                                        
-                            {{auth()->user()->name}}&nbsp;
-                            <form class="d-none d-md-inline-block form-inline" action="{{url('/login')}}/{{auth()->user()->id }}"                                    
-                                    onsubmit="return validar('Desea cerrar la sesion?')" method="post">
-                                @csrf
-                                @method('delete')
-                                <button title="Cerrar sesion" type="submit" class="btn btn-danger">
-                                    <i class="fa-solid fa-right-from-bracket"></i>                                
-                                </button>
-                            </form>                    
-                        </div>
+                      
                     </div>                
                 </nav>
             </div>

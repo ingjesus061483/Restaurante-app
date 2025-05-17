@@ -116,11 +116,11 @@
                  {{$producto->preparacion}}
                 </textarea>
             </div>
-            <a class="btn btn-primary" href="{{url('/productos')}}">
-                Regresar
+            <a class="btn btn-primary" title="Regresar" href="{{url('/productos')}}">
+                <i class="fa-solid fa-house"></i>  
             </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+            <button class="btn btn-success" title="Guardar" type="submit">
+                <i class="fa-regular fa-floppy-disk"></i> 
             </button>
         </form>
     </div>

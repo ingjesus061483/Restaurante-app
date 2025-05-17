@@ -87,7 +87,7 @@
                                     <label class="form-label" for="descripcion">                                                                            
                                         Preparacion         
                                     </label>                                
-                                        {{$producto->preparacion}}                                                        
+                                    {{$producto->preparacion}}                                                        
                                 </div>      
                             </div>
                         </div>                        
@@ -256,11 +256,10 @@
                 </div>
             </div>
         </div>
-
         @endif
-        <a class="btn btn-primary" href="{{url('/productos')}}">           
-            Regresar
-        </a>
+        <a class="btn btn-primary" title="Regresar" href="{{url('/productos')}}">
+            <i class="fa-solid fa-house"></i>  
+        </a> 
         <a class="btn btn-danger" target="blank" title="Mostrar existencia por producto" href="{{url('file/MostrarExistenciaPorProducto')}}/{{$producto->id}}">            
             <i class="fa-solid fa-file-pdf"></i>
         </a>

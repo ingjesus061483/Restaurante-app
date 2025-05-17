@@ -31,9 +31,7 @@ use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProveedorController;
-use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
 
 /*
 |--------------------------------------------------------------------------

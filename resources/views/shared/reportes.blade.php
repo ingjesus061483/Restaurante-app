@@ -16,7 +16,7 @@
 <body class="sb-nav-fixed">  
     <header>
         <div class="row">
-            <div class=" col-3">
+            <div class=" col-3"> 
                 @if(auth()->user()->empresa->logo!=null)
                 <img class="img-thumbnail" src="{{url('/img/'.auth()->user()->empresa->logo)}}"/>
                 @endif
