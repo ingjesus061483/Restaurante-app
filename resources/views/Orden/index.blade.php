@@ -161,7 +161,7 @@
                         @endswitch              
                     </td>
                     <td>
-                        @if($item->estado_id==1)
+                        @if($item->estado_id==1&&$item->cabaña!=null)
                         <a title="Cambio de mesa" class="btn btn-primary" style="" onclick="CambiarMesa('{{$item->cabaña->codigo.' - '.$item->cabaña->nombre}}',{{$item->id}})">                    
                             <i class="fa-solid fa-person-walking"></i>
                         </a>

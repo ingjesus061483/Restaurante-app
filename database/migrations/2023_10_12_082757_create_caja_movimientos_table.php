@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('fecha_hora');
             $table->string('concepto',50);
-            $table->decimal('valor');
+            $table->decimal('valor',10);
             $table->tinyInteger('ingreso')
                   ->default(1);
             $table->foreignId('caja_id')
