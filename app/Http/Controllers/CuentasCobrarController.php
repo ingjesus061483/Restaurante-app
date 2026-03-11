@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CuentasCobrar;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
-use App\Http\Requests\StoreCuentasCobrarRequest;
+use App\Http\Requests\CuentaCobrar\StoreRequest;
 use App\Http\Requests\UpdateCuentasCobrarRequest;
 use App\Repositories\ConfiguracionRepository;
 use App\Repositories\CuentasCobrarRepository;
@@ -30,7 +30,7 @@ class CuentasCobrarController extends Controller
         $this->_DetalleCuentasCobrarRepository=$detalleCuentasCobrarRepository;
         $this->_ConfiguracionRepository=$configuracionRepository;
         $this->_CuentasCobrarRepository=$cuentasCobrarRepository;
-        $this->_tipoCobroRepository=$tipoCobroRepository;        
+        $this->_tipoCobroRepository=$tipoCobroRepository;
         $this->_ordenservicioRepository = $ordenServicioRepository;
 
     }
@@ -47,15 +47,15 @@ class CuentasCobrarController extends Controller
         {
             redirect()->to(url('/cuentascobrar/create'));
         }
-        $identificacion=request()->cliente;   
+        $identificacion=request()->cliente;
         $cuentasCobrar=$identificacion==null? $this->_CuentasCobrarRepository->
                                                      GetCuentasCobrarByCliente()->
                                                      get():
                                                      $this->_CuentasCobrarRepository->
                                                      GetCuentasCobrarByCliente()->
                                                      where('clientes.identificacion',$identificacion)->
-                                                     get();        
-        $data=["cuentasCobrar"=>$cuentasCobrar ];        
+                                                     get();
+        $data=["cuentasCobrar"=>$cuentasCobrar ];
         return view("CuentasCobrar.index",$data);
     }
 
@@ -76,7 +76,7 @@ class CuentasCobrarController extends Controller
         $ordenServicio=$this->_ordenservicioRepository->Find($credito->orden_id);
         $valorRecibido=$credito->valor_recibido;
         $cliente =$ordenServicio->cliente;
-        $configuracion=$this->_ConfiguracionRepository->getConfigByNombre('interes');        
+        $configuracion=$this->_ConfiguracionRepository->getConfigByNombre('interes');
         $monto=$ordenServicio->total;
         $interes=$configuracion!=null?  $configuracion->valor *$monto:0;
         $data=[
@@ -87,36 +87,23 @@ class CuentasCobrarController extends Controller
             "monto"=>  $monto,
             "tipoCobro"=>$this->_tipoCobroRepository->GetAll()
         ];
-        return view("CuentasCobrar.create",$data);             
+        return view("CuentasCobrar.create",$data);
         //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }   
-        $validacion=$request->validate(
-            ['fecha'=>'required',
-            'cliente'=>'required',
-            'tiempo'=>'required|numeric',
-            'monto'=>'required|numeric',
-            'interes'=>'required|numeric' ,
-            'tipo_cobro'=>  'required',
-            'valorRecibido'=>'required|numeric',
-        ]);        
         $this->_ordenservicioRepository->actualizarClienteOrdenServicio($request);
         $this->_CuentasCobrarRepository->store($request);
         session()->forget('cuentascobrar');
-        return redirect()->to(url('/cuentascobrar'));        
+        return redirect()->to(url('/cuentascobrar'));
         //
     }
 
@@ -130,16 +117,16 @@ class CuentasCobrarController extends Controller
             return redirect()->to('login');
         }
         $cuentasCobrar=$this->_CuentasCobrarRepository->Find($id);
-        $detalleCuentasCobrar=$cuentasCobrar->DetalleCuentaCobrar;      
+        $detalleCuentasCobrar=$cuentasCobrar->DetalleCuentaCobrar;
         $totalizar=$this->_DetalleCuentasCobrarRepository->TotalizarDetallesCreditos($cuentasCobrar->DetalleCuentaCobrar);
         $totaladeudado=$cuentasCobrar->monto+$cuentasCobrar->interes-$totalizar;
         $data=[
             "cuentasCobrar"=>$cuentasCobrar,
             "detalleCuentasCobrar"=>$detalleCuentasCobrar,
-            "totalizar"=>$totalizar,        
+            "totalizar"=>$totalizar,
             "totaladeudado"=>$totaladeudado,
         ];
-        return view("CuentasCobrar.show",$data);                     
+        return view("CuentasCobrar.show",$data);
         //
     }
 

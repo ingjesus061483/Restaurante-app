@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CabanaController;
 use App\Http\Controllers\CajaController;
 use App\Http\Controllers\CajaMovimientoController;
 use App\Http\Controllers\LoginController;
@@ -13,10 +12,8 @@ use App\Http\Controllers\CuentasCobrarDetallesController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\ExistenciaController;
-use App\Http\Controllers\FacturaEncabezadoController;
 use App\Http\Controllers\FormaPagoController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ImpresoraController;
 use App\Http\Controllers\materiaprimaController;
 use App\Http\Controllers\ObservacionController;
 use App\Http\Controllers\OrdenDetalleController;
@@ -30,6 +27,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MesaController;
 use App\Http\Controllers\ProveedorController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,7 +60,7 @@ Route::resource('categorias',CategoriaController::class);
 Route::resource('unidad_medida',UnidadMedidaController::class);
 Route::resource('materiaprimas',materiaprimaController::class);
 Route::resource('existencias',ExistenciaController::class);
-Route::resource("cabañas",CabanaController::class);
+Route::resource("mesas",MesaController::class);
 Route::resource("empleados",EmpleadoController::class);
 Route::resource("roles",RoleController::class);
 Route::resource("clientes",ClienteController::class);
@@ -70,7 +68,6 @@ Route::resource("clientes",ClienteController::class);
 Route::resource("empresas",EmpresaController::class);
 Route::resource('ordenservicio',OrdenEncabezadoController::class);
 Route::resource ('ingredientes', PreparacionController::class);
-route::resource('facturacion',FacturaEncabezadoController::class);
 //Route::get('ordendetalles/{id}',[OrdenDetalleController::class,'index']);
 Route:: resource('ordendetalles',OrdenDetalleController::class);
 Route::resource('impuestos', ImpuestoController::class);

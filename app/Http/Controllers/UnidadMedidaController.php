@@ -6,8 +6,8 @@ use App\Models\UnidadMedida;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
-use App\Http\Requests\StoreUnidadMedidaRequest;
-use App\Http\Requests\UpdateUnidadMedidaRequest;
+use App\Http\Requests\UnidadMedida\StoreRequest;
+use App\Http\Requests\UnidadMedida\UpdateRequest;
 use App\Repositories\UnidadMedidaRepository;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,9 +25,9 @@ class UnidadMedidaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }
         $unidadMedidas=$this->_repository->GetAll();
-        $data=[            
+        $data=[
             'unidadMedidas'=>$unidadMedidas
         ];
         return view('UnidadMedida.index',$data);
@@ -42,7 +42,7 @@ class UnidadMedidaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
+        }
         return view('UnidadMedida.create');
         //
     }
@@ -50,19 +50,14 @@ class UnidadMedidaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
-        $validacion=$request->validate(['nombre'=>'required|max:50']);
+        }
         $this->_repository->Store($request);
-        return redirect()->to(url('/unidad_medida'));   
+        return redirect()->to(url('/unidad_medida'));
         //
     }
 
@@ -82,9 +77,9 @@ class UnidadMedidaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
+        }
         $unidadMedida=$this->_repository->Find($id);
-        $data=[            
+        $data=[
             'unidadMedida'=>$unidadMedida
         ];
         return view('UnidadMedida.edit',$data);
@@ -94,19 +89,14 @@ class UnidadMedidaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,  string $id)
+    public function update(UpdateRequest $request,  string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
-        $validacion=$request->validate(['nombre'=>'required|max:50']);
+        }
         $this->_repository->Update($id,$request);
-        return redirect()->to(url('/unidad_medida'));       
+        return redirect()->to(url('/unidad_medida'));
         //
     }
 
@@ -118,9 +108,9 @@ class UnidadMedidaController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
-        $this->_repository->Delete($id);        
-        return redirect()->to(url('/unidad_medida'));       
+        }
+        $this->_repository->Delete($id);
+        return redirect()->to(url('/unidad_medida'));
         //
     }
 }

@@ -5,8 +5,9 @@ use Illuminate\Http\Request;
 use App\Models\Preparacion;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePreparacionRequest;
-use App\Http\Requests\UpdatePreparacionRequest;
+use App\Http\Requests\AutorizeRequest;
+use App\Http\Requests\Preparacion\StoreRequest;
+use App\Http\Requests\Preparacion\UpdateRequest;
 use App\Models\MateriaPrima;
 use App\Repositories\IngredienteRepository;
 use App\Repositories\MateriaPrimaRepository;
@@ -36,27 +37,23 @@ class PreparacionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
         }
         $producto=session()->has('producto')?session('producto'):null;
-        $producto_id=$producto!=null ?$producto->id: request()->input('producto');    
-        $preparacions=$this->_productoRepository->ingredientes($producto_id);// Preparacion::select('materia_prima_id')->where('producto_id',$producto_id)->get();        
+        $producto_id=$producto!=null ?$producto->id: request()->input('producto');
+        $preparacions=$this->_productoRepository->ingredientes($producto_id);// Preparacion::select('materia_prima_id')->where('producto_id',$producto_id)->get();
         $materiaprimas=$this->_materiaprimaRepository->BuscarMateriaPrimaEnIgrediente($preparacions);
         $data=[
             'materiaprimas'=>$materiaprimas,// MateriaPrima::whereNotIn('id',$preparacions)->get(),
             'producto_id'=>$producto_id,
-        ];        
-        return view ('Ingrediente.create',$data);
+        ];
+        return view('Ingrediente.create',$data);
 
-        
+
 
         //
     }
@@ -64,26 +61,22 @@ class PreparacionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back()->withErrors("Ud. No tiene privilegio para realizar esta operacion ");
-        }            
-        $materia_prima_id=$request->input('materia_prima_id');        
-        $producto_id =$request->input('producto_id');                      
-        $preparacion=$this->_ingredienteRepository->BuscarIngredientesMateriaprimaproducto($materia_prima_id,$producto_id) ; 
+        }
+        $materia_prima_id=$request->input('materia_prima_id');
+        $producto_id =$request->input('producto_id');
+        $preparacion=$this->_ingredienteRepository->BuscarIngredientesMateriaprimaproducto($materia_prima_id,$producto_id) ;
         if($preparacion!=null){
             $arr=[
                 'error'=>true,
                 'message'=>'Este insumo ya se encuentra registrado como un ingredientes'];
-            return json_encode($arr);            
+            return json_encode($arr);
         }
-        $this->_ingredienteRepository->Store($request);           
+        $this->_ingredienteRepository->Store($request);
         session()->forget(['producto']);
         return json_encode([
                             'error'=>false,
@@ -111,16 +104,13 @@ class PreparacionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {    
+    public function update(UpdateRequest $request, $id)
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }            
+        }
+
         $this ->_ingredienteRepository->Update($id,$request);
         return json_encode(['message'=>'Se ha actualizado um ingrediente']);        //
     }
@@ -133,13 +123,13 @@ class PreparacionController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }         
+        }
         if(!$this-> autorizar(Auth::user()))
         {
             return back();
-        }            
+        }
         $this->_ingredienteRepository->Delete($id);
-        return back();       
+        return back();
         //
     }
 }

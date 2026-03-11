@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
+use App\Http\Requests\FormaPago\StoreRequest;
+use App\Http\Requests\FormaPago\UpdateRequest;
 use App\Repositories\FormaPagoRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FormaPagoController extends Controller
@@ -18,12 +19,12 @@ class FormaPagoController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {        
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }    
-     
+        }
+
         $data=[
             'formapagos'=>$this->_formapagoRepository->GetAll()
         ];
@@ -39,26 +40,22 @@ class FormaPagoController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
-        return view('FormaPago.create'); 
+        }
+        return view('FormaPago.create');
         //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {  if(!Auth::check())
+    public function store(StoreRequest $request)
+    {
+        if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }     
-        $validacion=$request->validate(['nombre'=>'required|max:50']);
         $this->_formapagoRepository->Store((object)$request->all());
-        return redirect()->to(url('/formapagos'));  
+        return redirect()->to(url('/formapagos'));
         //
     }
 
@@ -80,7 +77,7 @@ class FormaPagoController extends Controller
             return redirect()->to('login');
         }
         $formapago=$this->_formapagoRepository->Find($id);
-        $data=[    
+        $data=[
             'formapago'=>$formapago
         ];
         return view('FormaPago.edit',$data);
@@ -90,19 +87,15 @@ class FormaPagoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }     
-        $validacion=$request->validate(['nombre'=>'required|max:50']);
+
         $this->_formapagoRepository->Update($id,(object)$request->all());
-        return redirect()->to(url('/formapagos'));       
+        return redirect()->to(url('/formapagos'));
         //
     }
 
@@ -116,7 +109,7 @@ class FormaPagoController extends Controller
             return redirect()->to('login');
         }
         $this->_formapagoRepository->Delete($id);
-        return redirect()->to(url('/formapagos'));    
+        return redirect()->to(url('/formapagos'));
         //
     }
 }

@@ -1,19 +1,19 @@
 @extends('shared/layout')
 @section('title','Editar insumo')
-@section('content')  
+@section('content')
 <div class="card mb-4">
     <div class="card-body">
-        
         <form action="{{url('/materiaprimas')}}/{{$materiaprima->id}}" autocomplete="off" method="post">
             @csrf
             @method('PATCH')
+            <input type="hidden" name="id" value="{{$materiaprima->id}}">
             <div class="mb-3">
                 <label class="form-label" for="codigo">
                     Codigo
                 </label>
                 <input type="text" name="codigo" value="{{$materiaprima->codigo}}" class="form-control" id="codigo">
             </div>
-            
+
             <div class="mb-3">
                 <label class="form-label" for="nombre">
                     Nombre
@@ -26,27 +26,27 @@
                 </label>
                 <input type="text" name="costo_unitario" value="{{$materiaprima->costo_unitario}}" class="form-control"
                  id="costo_unitario">
-            </div>            
+            </div>
             <div class="mb-3">
                 <label class="form-label" for="categoria">
                     Categoria
-                
+
                 </label>
                 <select type="text" name="categoria" class="form-select"
                  id="categoria">
                  <option value="">seleccione una categoria</option>
                  @foreach($categorias as $item)
-                 <option value="{{$item->id}}" 
+                 <option value="{{$item->id}}"
                     @if($materiaprima->categoria->id==$item->id)
                     {{'selected'}}
                     @endif
                     >{{$item->nombre}}</option>
                  @endforeach
                 </select>
-            </div>            
+            </div>
             <div class="mb-3">
                 <label class="form-label" for="unidad_medida">
-                    Unidad medida                
+                    Unidad medida
                 </label>
                 <select type="text" name="unidad_medida" class="form-select"
                  id="unidad_medida">
@@ -65,7 +65,7 @@
                     Imagen
                 </label>
                 <input type="file" name="imagen" accept="image/*"   class="form-control" id="imagen">
-            </div>                       
+            </div>
             <div class ="mb-3">
                 <label class="form-label" for="descripcion">
                     Descripcion
@@ -77,7 +77,7 @@
             </div>
             <a class="btn btn-primary" href="{{url('/')}}/categorias">
                 Regresar
-            </a> 
+            </a>
             <button class="btn btn-success" type="submit">
                 Guardar
             </button>

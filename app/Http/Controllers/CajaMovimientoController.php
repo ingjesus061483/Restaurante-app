@@ -15,7 +15,7 @@ class CajaMovimientoController extends Controller
     protected CajaMovimientoRepository $_cajaMovimientoRepository;
     protected CajaRepository $_cajaRepository;
     public function __construct(CajaMovimientoRepository $cajaMovimientoRepository,
-                                CajaRepository $cajaRepository)                                
+                                CajaRepository $cajaRepository)
     {
         $this->_cajaMovimientoRepository = $cajaMovimientoRepository;
         $this->_cajaRepository=$cajaRepository;
@@ -43,19 +43,12 @@ class CajaMovimientoController extends Controller
     {
         $caja=$this->_cajaRepository->Find($request->caja_id);
         $total_caja=$request->total_caja-$request->valor;
-        if($total_caja<=$caja->valor_inicial)
-        {
-            $data=[
-                'message'=>'',
-                'error'=>true
-            ];
-        }
-        else
+        if($total_caja>=$caja->valor_inicial)
         {
             $CajaMovimiento=(object)[
                 'fecha_hora'=>date("Y-m-d H:i:s"),
                 'concepto'=>$request->concepto,
-                'valor'=>$request->valor,            
+                'valor'=>$request->valor,
                 'ingreso'=>$request->ingreso,
                 'caja_id'=>$request->caja_id
             ];
@@ -64,9 +57,14 @@ class CajaMovimientoController extends Controller
                 'message'=>'se ha hecho un movimiento en la caja',
                 'error'=>false
             ];
+            return json_encode($data);
 
         }
-        
+        $data=[
+                'message'=>'',
+                'error'=>true
+            ];
+
         return json_encode($data);
         //
     }

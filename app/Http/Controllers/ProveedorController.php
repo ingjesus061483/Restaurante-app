@@ -12,14 +12,14 @@ class ProveedorController extends Controller
 {
     protected ProveedorRepository $proveedorRepository;
     function __construct(ProveedorRepository $_proveedorRepository)
-    {     
+    {
         $this->proveedorRepository=$_proveedorRepository;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
-    { 
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
@@ -28,8 +28,8 @@ class ProveedorController extends Controller
         $data=[
             "proveedores"=>$this->proveedorRepository->getAll(),
         ];
-        
-        return view("Proveedores.index",$data);        
+
+        return view("Proveedores.index",$data);
         //
     }
 
@@ -41,7 +41,7 @@ class ProveedorController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        } 
+        }
         return view("Proveedores.Create");
         //
     }
@@ -55,9 +55,10 @@ class ProveedorController extends Controller
         {
             return redirect()->to('login');
         }
-             
-        $this->proveedorRepository->Store($request);        
-        return redirect()->to(url('/proveedores'));
+
+        $this->proveedorRepository->Store($request);
+        return redirect()->to(url('/proveedores'))->with('message',
+        'Se ha creado un nuevo proveedor' );
         //
     }
 
@@ -73,12 +74,12 @@ class ProveedorController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(AutorizeRequest $request, int $id)
-    {     
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        } 
-        $data=[          
+        }
+        $data=[
             'proveedor'=>$this->proveedorRepository->Find($id),
         ];
         return view ('Proveedores.edit',$data);
@@ -88,15 +89,16 @@ class ProveedorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request,int $id) 
+    public function update(UpdateRequest $request,int $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-             
-        $this->proveedorRepository->Update($id,$request);        
-        return redirect()->to(url('/proveedores'));
+
+        $this->proveedorRepository->Update($id,$request);
+        return redirect()->to(url('/proveedores'))->with('message',
+        'Se ha actualizado el proveedor' );
         //
     }
 
@@ -109,9 +111,9 @@ class ProveedorController extends Controller
         {
             return redirect()->to('login');
         }
-        
-        $this->proveedorRepository->Delete($id);       
-        return redirect()->to(url('/proveedores'));
+        $this->proveedorRepository->Delete($id);
+        return redirect()->to(url('/proveedores'))->with('message',
+        'Se ha eliminado el proveedor' );
         //
     }
 }

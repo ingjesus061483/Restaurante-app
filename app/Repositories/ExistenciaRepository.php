@@ -11,32 +11,32 @@ class ExistenciaRepository implements IRepository
 {
     protected ProductoRepository $_productoRepository;
     protected MateriaPrimaRepository $_materiaprimaRepository;
-    
+
   /**
      * Suma el total de inventario .
      *
      * @return decimal
      */
-    public function TotalizarInventario(){        
-        $sum=0;        
-        foreach($this-> getInventario() as $item)                    
-        {            
-            $sum=$sum +$item->total_inventario;                        
-        }            
-        return $sum;    
-    } 
-   
+    public function TotalizarInventario(){
+        $sum=0;
+        foreach($this-> getInventario() as $item)
+        {
+            $sum=$sum +$item->total_inventario;
+        }
+        return $sum;
+    }
+
     public function GetAll()
     {
-        return $this-> getInventario();        
+        return $this-> getInventario();
     }
     public function Find($id)
     {
-        
+
     }
     public function Store($request)
     {
-        $tipo=$request->tipo;     
+        $tipo=$request->tipo;
         $existencia=new Existencia();
         $existencia->fecha=$request->fecha;
         $existencia->cantidad=$request->cantidad;
@@ -47,11 +47,11 @@ class ExistenciaRepository implements IRepository
     }
     public function Update($id, $request)
     {
-        
+
     }
     public function Delete($id)
     {
-        
+
     }
 
     /**
@@ -66,20 +66,20 @@ class ExistenciaRepository implements IRepository
         $column[2]."=?":"";
         $query="SELECT mat_prod.* FROM(SELECT materia_primas.id,codigo,materia_primas. nombre,costo_unitario,0 AS precio,
                 0 AS procesado,imagen,categorias.nombre AS categoria, unidad_medidas.nombre AS unidad_medida,'materia_prima'AS tipo,
-                IFNULL((SELECT SUM(cantidad)FROM existencias WHERE materia_prima_id=materia_primas.id AND entrada=1 GROUP BY 
-                materia_prima_id),0)AS total_entrada,IFNULL((SELECT SUM(cantidad) FROM existencias WHERE 
+                IFNULL((SELECT SUM(cantidad)FROM existencias WHERE materia_prima_id=materia_primas.id AND entrada=1 GROUP BY
+                materia_prima_id),0)AS total_entrada,IFNULL((SELECT SUM(cantidad) FROM existencias WHERE
                 materia_prima_id=materia_primas.id AND entrada=0 GROUP BY materia_prima_id),0) AS total_salida,
                 IFNULL((SELECT SUM(cantidad) FROM existencias WHERE materia_prima_id=materia_primas.id AND entrada=1 GROUP BY
-                materia_prima_id),0)-IFNULL((SELECT SUM(cantidad) FROM existencias WHERE materia_prima_id=materia_primas.id AND 
-                entrada=0 GROUP BY materia_prima_id),0) AS total_inventario FROM materia_primas JOIN categorias ON 
+                materia_prima_id),0)-IFNULL((SELECT SUM(cantidad) FROM existencias WHERE materia_prima_id=materia_primas.id AND
+                entrada=0 GROUP BY materia_prima_id),0) AS total_inventario FROM materia_primas JOIN categorias ON
                 categorias.id=materia_primas.categoria_id JOIN unidad_medidas ON unidad_medidas.id=materia_primas.unidad_medida_id
-                UNION 
+                UNION
                 SELECT productos.id,codigo, productos.nombre,costo_unitario,precio,procesado,imagen,categorias.nombre AS categoria,
                 unidad_medidas.nombre AS unidad_medida,'producto'AS tipo,IFNULL((SELECT SUM(cantidad)FROM existencias WHERE
-                producto_id=productos.id AND entrada=1 GROUP BY producto_id),0)AS total_entrada,IFNULL((SELECT SUM(cantidad) 
+                producto_id=productos.id AND entrada=1 GROUP BY producto_id),0)AS total_entrada,IFNULL((SELECT SUM(cantidad)
                 FROM existencias WHERE producto_id=productos.id AND entrada=0 GROUP BY producto_id),0) AS total_salida,
-                IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=1 GROUP BY 
-                producto_id),0)-IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=0 
+                IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=1 GROUP BY
+                producto_id),0)-IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=0
                 GROUP BY producto_id),0) AS total_inventario FROM productos JOIN categorias ON categorias.id=productos.categoria_id
                 JOIN unidad_medidas ON unidad_medidas.id=productos.unidad_medida_id )AS mat_prod ".$where." ORDER BY total_inventario DESC; ";
         return DB::select($query,$bindindgs);

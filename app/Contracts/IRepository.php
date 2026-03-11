@@ -6,7 +6,7 @@ interface IRepository
      * Devuelve todos los registros de una tabla determinada .
      *
      * @return array
-     */   
+     */
     function GetAll();
 
     /**

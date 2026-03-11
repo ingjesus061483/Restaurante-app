@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
-use App\Repositories\CabanaRepository;
+use App\Repositories\MesaRepository;
 use App\Repositories\ConfiguracionRepository;
 use App\Repositories\EmpleadoRepository;
 use App\Repositories\ExistenciaRepository;
@@ -16,13 +16,14 @@ use App\Repositories\OrdenServicioRepository;
 use App\Repositories\PrinterTemplateRepository;
 use App\Repositories\ProductoRepository;
 use Exception;
-use Illuminate\Http\Request;
+use App\Http\Requests\Printer\StoreRequest;
+use App\Http\Requests\Printer\UpdateRequest;
 use Illuminate\Support\Facades\Auth;
 class PrinterController extends Controller
 {
     protected ConfiguracionRepository $_configuracionRepository;
     protected ExistenciaRepository  $_existenciaRepository;
-    protected CabanaRepository $_cabanaRepository;
+    protected MesaRepository $_cabanaRepository;
     protected FileRepository $_fileRepository;
     protected PrinterTemplateRepository $_printerTemplateRepository;
     protected EmpleadoRepository $_empleadoRepository;
@@ -34,7 +35,7 @@ class PrinterController extends Controller
     public function __construct(ExistenciaRepository $existenciaRepository,
                                 PrinterTemplateRepository $printerTemplateRepository,
                                 FileRepository $fileRepository,
-                                CabanaRepository $cabanaRepository,
+                                MesaRepository $cabanaRepository,
                                 ConfiguracionRepository $configuracionRepository,
                                 EmpleadoRepository $empleadoRepository,
                                 ProductoRepository $productoRepository,
@@ -55,7 +56,7 @@ class PrinterController extends Controller
         $this->_materiaPrimarepository=$materiaPrimarepository;
         $this->_ordenservicioRepository=$ordenServicioRepository;
         $this->_impresoraRepository=$impresoraRepository;
-    }  
+    }
     /**
      * Display a listing of the resource.
      */
@@ -64,7 +65,7 @@ class PrinterController extends Controller
         if (!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }
         $data =[
             'impresoras'=>$this->_impresoraRepository->GetAll()
         ];
@@ -78,7 +79,7 @@ class PrinterController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }       
+        }
         return view('Printer.create');
         //
     }
@@ -86,25 +87,25 @@ class PrinterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {        
+    public function store(StoreRequest $request)
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
+      /*  if(!$this-> autorizar(Auth::user()))
         {
-            return back();            
-        }     
+            return back();
+        }
         $validacion=$request->validate([
             'codigo'=>'required|max:50|unique:impresoras',
             'nombre'=>'required|max:50',
             'recurso_compartido'=>'required|max:50',
             'tamaño_fuente_encabezado'=>'required|numeric',
-            'tamaño_fuente_contenido'=>'required|numeric',                    
-        ]);           
+            'tamaño_fuente_contenido'=>'required|numeric',
+        ]);           */
         $this->_impresoraRepository->Store((object)$request->all());
-        return redirect()->to(url('/impresoras'));  
+        return redirect()->to(url('/impresoras'));
         //
     }
 
@@ -124,7 +125,7 @@ class PrinterController extends Controller
         if (!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }
         $data =[
             'impresora'=>$this->_impresoraRepository->Find($id)
         ];
@@ -135,25 +136,25 @@ class PrinterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
+      /*  if(!$this-> autorizar(Auth::user()))
         {
-            return back();            
-        }     
+            return back();
+        }
         $validacion=$request->validate([
             'nombre'=>'required|max:50',
             'recurso_compartido'=>'required|max:50',
             'tamaño_fuente_encabezado'=>'required|numeric',
-            'tamaño_fuente_contenido'=>'required|numeric',                    
+            'tamaño_fuente_contenido'=>'required|numeric',
             'codigo'=>'required|max:50|unique:impresoras,codigo,'.$id,
-        ]);
+        ]);*/
         $this->_impresoraRepository->Update( $id,(object)$request->all());
-        return redirect()->to(url('/impresoras'));  
+        return redirect()->to(url('/impresoras'));
         //
     }
 
@@ -167,68 +168,68 @@ class PrinterController extends Controller
             return redirect()->to('login');
         }
         $this->_impresoraRepository->Delete($id);
-        return redirect()->to(url('/impresoras'));   
+        return redirect()->to(url('/impresoras'));
         //
     }
     function Comanda($id)
     {
         try
         {
-            if(!Auth::check())            
+            if(!Auth::check())
             {
-                return redirect()->to('login');            
-            }            
-            $empresa=Auth::user()->empresa; 
-            $ordenservicio=$this->_ordenservicioRepository->GetOrdenServicio($id,$empresa);               
-            $err=[];                
+                return redirect()->to('login');
+            }
+            $empresa=Auth::user()->empresa;
+            $ordenservicio=$this->_ordenservicioRepository->GetOrdenServicio($id,$empresa);
+            $err=[];
             $cont=0;
-            $detalles=$ordenservicio-> orden_encabezado->orden_detalles; 
+            $detalles=$ordenservicio-> orden_encabezado->orden_detalles;
             $impresoras=$this->_impresoraRepository->GetAll();
-            $this->_printerTemplateRepository-> Comanda($impresoras, $ordenservicio,$detalles,$err,$cont);       
+            $this->_printerTemplateRepository->Comanda($impresoras, $ordenservicio,$detalles,$err,$cont);
             if (count($err)>0)
             {
                 return redirect()->to('ordenservicio')->withErrors($err);
-            }         
+            }
             if($cont==0)
             {
                 throw new Exception("No hay productos para imprimir");
-            }         
+            }
             $this->_ordendetalleRepository->ActualizarImpresos($id);
-            return redirect()->to('ordenservicio');        
+            return redirect()->to('ordenservicio');
         }
         catch(Exception $ex)
         {
             return  redirect()->to('ordenservicio')->withErrors($ex->getMessage());
         }
     }
-    public function ComandaSesion($id)    
+    public function ComandaSesion($id)
     {
         try
         {
-            if(!Auth::check())            
+            if(!Auth::check())
             {
-                return redirect()->to('login');            
-            }            
+                return redirect()->to('login');
+            }
             if(!session()->has('detalles'))
             {
                 throw new Exception('No hay detalles disponibles');
             }
-      
-            $empresa=Auth::user()->empresa; 
+
+            $empresa=Auth::user()->empresa;
             $ordenservicio=$this->_ordenservicioRepository->GetOrdenServicio($id,$empresa);
-            $detalles=session('detalles');                           
-            $err=[];    
-            $cont=0;     
+            $detalles=session('detalles');
+            $err=[];
+            $cont=0;
             $impresoras=$this->_impresoraRepository->GetAll();
             $this->_printerTemplateRepository-> Comanda($impresoras, $ordenservicio,$detalles,$err,$cont);
             if (count($err)>0)
             {
-                session()->forget('detalles');                       
+                session()->forget('detalles');
                 return redirect()->to('ordenservicio')->withErrors($err);
-            }            
+            }
             $this->_ordendetalleRepository->ActualizarImpresos($id);
             session()->forget('detalles');
-            return redirect()->to('ordenservicio');        
+            return redirect()->to('ordenservicio');
         }
         catch(Exception $ex)
         {
@@ -240,29 +241,29 @@ class PrinterController extends Controller
     {
         try
         {
-            if(!Auth::check())            
+            if(!Auth::check())
             {
-                return redirect()->to('login');            
-            }        
-          
-            $empresa=Auth::user()->empresa; 
-            $ordenservicio=$this->_ordenservicioRepository->GetOrdenServicio($id,$empresa);  
-            $ordenservicio-> domicilio=$this->_configuracionRepository->getConfigByNombre('Valor_Domicilio')->valor;            
-            $ordenservicio->propina=$this->_configuracionRepository->getConfigByNombre("propina")->valor;            
-            $err=[];            
+                return redirect()->to('login');
+            }
+
+            $empresa=Auth::user()->empresa;
+            $ordenservicio=$this->_ordenservicioRepository->GetOrdenServicio($id,$empresa);
+            $ordenservicio-> domicilio=$this->_configuracionRepository->getConfigByNombre('Valor_Domicilio')->valor;
+            $ordenservicio->propina=$this->_configuracionRepository->getConfigByNombre("propina")->valor;
+            $err=[];
             $impresoras=$this->_impresoraRepository->GetAll();
             $recurso_compartido=$this->_configuracionRepository->getConfigByNombre('Impresora_cajero')->valor;
             $this->_printerTemplateRepository->Factura($recurso_compartido,$impresoras,$ordenservicio,$err);
             if (count($err)>0)
             {
                 return  redirect()->to('ordenservicio')->withErrors($err);
-            }            
-            return redirect()->to('ordenservicio');        
+            }
+            return redirect()->to('ordenservicio');
         }
         catch(Exception $ex)
         {
             return  redirect()->to('ordenservicio')->withErrors($ex->getMessage());
-        }    
+        }
     }
-   
+
 }

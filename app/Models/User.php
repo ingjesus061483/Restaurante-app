@@ -20,13 +20,13 @@ class User extends Authenticatable
     public function clientes(){
         return $this->hasMany(Cliente::class,'user_id');
     }
-   
+
     public function role(){
         return $this->belongsTo(Role::class,'role_id');
     }
     public function empresa()
     {
-        return $this->belongsTo(empresa::class,'empresa_id');
+        return $this->belongsTo(Empresa::class,'empresa_id');
     }
 
     /**

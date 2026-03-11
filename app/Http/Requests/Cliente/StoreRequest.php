@@ -15,7 +15,7 @@ class StoreRequest extends FormRequest
         if($user->role_id==1||$user->role_id==2)
         {
             return true;
-        }   
+        }
         return false;
     }
 
@@ -31,8 +31,36 @@ class StoreRequest extends FormRequest
             'nombre'=>'required|max:50',
             'apellido'=>'required|max:50',
             'direccion'=>'required|max:50',
-            'telefono'=>'required|max:50',                    
+            'telefono'=>'required|max:50',
             'email'=>'required|email',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'identificacion.required'=>'El campo :attribute es obligatorio',
+            'identificacion.unique'=>'El campo :attribute ya existe',
+            'identificacion.max'=>'El campo :attribute no debe ser mayor a 50 caracteres',
+            'nombre.required'=>'El campo :attribute es obligatorio',
+            'nombre.max'=>'El campo :attribute no debe ser mayor a 50 caracteres',
+            'apellido.required'=>'El campo :attribute es obligatorio',
+            'apellido.max'=>'El campo :attribute no debe ser mayor a 50 caracteres',
+            'direccion.required'=>'El campo :attribute es obligatorio',
+            'direccion.max'=>'El campo :attribute no debe ser mayor a 50 caracteres',
+            'telefono.required'=>'El campo :attribute es obligatorio',
+            'telefono.max'=>'El campo :attribute no debe ser mayor a 50 caracteres',
+            'email.required'=>'El campo :attribute es obligatorio',
+            'email.email'=>'El campo :attribute debe ser un correo electrónico válido',
+        ];
+    }
+    public function attributes(){
+        return [
+            'identificacion'=>'Identificación',
+            'nombre'=>'Nombre',
+            'apellido'=>'Apellido',
+            'direccion'=>'Dirección',
+            'telefono'=>'Teléfono',
+            'email'=>'Email',
         ];
     }
 }

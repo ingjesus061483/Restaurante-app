@@ -12,20 +12,6 @@ use Illuminate\Support\Str;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
-    public function autorizar(User $user){
-        if($user->role_id==1||$user->role_id==2)
-        {
-            return true;
-        }
-    }
-    public function EstaLogueado()
-    {
-        $logueado=false;
-        if(Auth::check())
-        {
-            $logueado=true;
-        }
-        return $logueado;      
-    }
-  
+
+
 }

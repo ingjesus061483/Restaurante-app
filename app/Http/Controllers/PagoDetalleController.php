@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\StorePagoDetalleRequest;
 use App\Http\Requests\UpdatePagoDetalleRequest;
 use App\Models\PagoDetalle;
@@ -26,16 +27,11 @@ class PagoDetalleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
-            return redirect()->to('login');   
-        }      
-        $user=Auth::user();                
-        if(! $this->autorizar($user))        
-        {
-            return  back();        
+            return redirect()->to('login');
         }
         $fechaini=request()->fechaIni;
         $fechafin=request()->fechaFin;
@@ -53,13 +49,13 @@ class PagoDetalleController extends Controller
         }
 
         $data=[
-            'pagosdetalles'=>$pagos, 
+            'pagosdetalles'=>$pagos,
             'fechaIni'=>$fechaini,
             'fechaFin'=>$fechafin,
             'formaPagos'=>$this->_formaPagoRepository->GetAll() ,
-            'formaPago'=> $forma_pago         
+            'formaPago'=> $forma_pago
         ];
-        return  view('PagoDetalle.index',$data);      
+        return  view('PagoDetalle.index',$data);
         //
     }
 
@@ -74,62 +70,57 @@ class PagoDetalleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {      
+    public function store(AutorizeRequest $request)
+    {
         if(!Auth::check())
         {
-            return redirect()->to('login');   
-        }      
-       /* $user=Auth::user();                
-        if(! $this->autorizar($user))        
+            return redirect()->to('login');
+        }
+        $detalles=[];
+        $id=1;
+        if(session()->has('pagodetalles'))
         {
-            return  back();        
-        }*/   
-        $detalles=[];                
-        $id=1;                       
-        if(session()->has('pagodetalles'))                
-        {           
-           $detalles=session('pagodetalles');                   
-           $id=count($detalles)+1;                                
+           $detalles=session('pagodetalles');
+           $id=count($detalles)+1;
         }
         $encontrado=false;
         foreach($detalles as $item){
             if($item->forma_pago_id==$request->forma_pago_id){
                 $encontrado=true;
-                break;            
+                break;
             }
         }
         if(!$encontrado)
         {
-            $acum=0;                
-            foreach($detalles as $item)            
-            {           
-                $acum=$acum+ $item->valor_recibido;                               
+            $acum=0;
+            foreach($detalles as $item)
+            {
+                $acum=$acum+ $item->valor_recibido;
             }
             $acum=$acum+$request->valorRecibido;
             if(!$acum<=$request->totalpagar)
             {
-                $detalles[]=(object)[                            
-                    'id'=>$id,  
-                    'pago_id'=>null,              
+                $detalles[]=(object)[
+                    'id'=>$id,
+                    'pago_id'=>null,
                     'forma_pago_id'=>$request->forma_pago,
                     'forma_pago'=>$this->_formaPagoRepository->Find($request->forma_pago)->nombre,
                     'detalle_pago'=>$request->detallepago,
-                    'valor_recibido'=>$request->valorRecibido,            
-                ];                            
-            }           
-            $data=[            
+                    'valor_recibido'=>$request->valorRecibido,
+                ];
+            }
+            $data=[
                 "message"=>"has insertado un pago" ,
-                "error"=>false        
+                "error"=>false
             ];
         }
         else{
-            $data=[            
+            $data=[
                 "message"=>"inserte otra forma de pago",
-                "error"=>true 
+                "error"=>true
             ];
         }
-        session(['pagodetalles' => $detalles]);                            
+        session(['pagodetalles' => $detalles]);
         return json_encode($data);        //
     }
 
@@ -161,11 +152,11 @@ class PagoDetalleController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(int $id)
-    {  
-        $i=0;     
-        $orden_id=request()->input('orden_id');           
-        $newdetalle=[];        
-        $detalles=session('pagodetalles');    
+    {
+        $i=0;
+        $orden_id=request()->input('orden_id');
+        $newdetalle=[];
+        $detalles=session('pagodetalles');
         foreach($detalles as $item)
         {
             if($item->id!=$id)
@@ -177,12 +168,12 @@ class PagoDetalleController extends Controller
         if(count($newdetalle)==0)
         {
             session()->forget(['pagodetalles']);
-            
+
         }
         else{
             session(['pagodetalles' => $newdetalle]);
         }
-          return redirect()->to(url('/pagos/create?id='.$orden_id));     
+          return redirect()->to(url('/pagos/create?id='.$orden_id));
         //
     }
 }

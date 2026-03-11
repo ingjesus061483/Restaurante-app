@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\configuracion;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
-use App\Http\Requests\StoreconfiguracionRequest;
-use App\Http\Requests\UpdateconfiguracionRequest;
+use App\Http\Requests\Configuracion\StoreRequest;
+use App\Http\Requests\Configuracion\UpdateRequest;
 use App\Repositories\ConfiguracionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ class ConfiguracionController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
+        }
         $configuraciones=$this->_configuracionRepository->GetAll();
         $data=['configuraciones'=>$configuraciones];
         return view('Configuracion.index',$data);
@@ -42,7 +42,7 @@ class ConfiguracionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreconfiguracionRequest $request)
+    public function store(StoreRequest $request)
     {
         //
     }
@@ -63,10 +63,6 @@ class ConfiguracionController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
         }
         $configuracion=$this->_configuracionRepository->Find($id);
         $data=['configuracion'=>$configuracion];
@@ -77,18 +73,17 @@ class ConfiguracionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(UpdateRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
+        }
         if(!$this-> autorizar(Auth::user()))
         {
-            return back();            
+            return back();
         }
-        $validacion=$request->validate(['nombre'=>'required|max:50']);
-        $this->_configuracionRepository->Update($id,(object)$request->all());  
+        $this->_configuracionRepository->Update($id,(object)$request->all());
         return redirect()->to("configuracion");
         //
     }

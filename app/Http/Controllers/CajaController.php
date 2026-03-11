@@ -7,14 +7,12 @@ use App\Http\Requests\Caja\StoreRequest;
 use App\Http\Requests\Caja\UpdateRequest;
 use App\Repositories\CajaMovimientoRepository;
 use App\Repositories\CajaRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 class CajaController extends Controller
 {
     protected CajaRepository $_cajaRepository;
     protected CajaMovimientoRepository $_cajaMovimientoRepository;
-    public function __construct(CajaRepository $cajaRepository, CajaMovimientoRepository $cajaMovimientoRepository) 
+    public function __construct(CajaRepository $cajaRepository, CajaMovimientoRepository $cajaMovimientoRepository)
     {
         $this->_cajaMovimientoRepository=$cajaMovimientoRepository;
         $this->_cajaRepository = $cajaRepository;
@@ -41,7 +39,7 @@ class CajaController extends Controller
      */
     public function create(AutorizeRequest $request)
     {
-        if(!Auth::check())
+         if(!Auth::check())
         {
             return redirect()->to('login');
         }
@@ -53,13 +51,13 @@ class CajaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreRequest $request)
-    {    
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        $this->_cajaRepository->Store($request);        
-        return redirect()->to(url('/cajas'));    
+        $this->_cajaRepository->Store($request);
+        return redirect()->to(url('/cajas'));
         //
     }
 
@@ -82,18 +80,18 @@ class CajaController extends Controller
                                                              ->get();
         }
         else
-        {            
+        {
             $fechaIni=$fechaIni==null?date("Y-m-d H:i:s"):$fechaIni;
-            $fechaFin=$fechaFin==null?date("Y-m-d H:i:s"):$fechaFin;            
+            $fechaFin=$fechaFin==null?date("Y-m-d H:i:s"):$fechaFin;
             $cajaMovimientos=$this->_cajaMovimientoRepository->GetAll()
                                                              ->where('cajas.id',$id)
                                                              ->whereBetween('caja_movimientos.fecha_hora',[
                                                                  $fechaIni,$fechaFin
-                                                                ])                                                                
+                                                                ])
                                                             ->get();
         }
         $ingreso=$this->_cajaMovimientoRepository->ValorByIngreso($id,1);
-        $egreso=$this->_cajaMovimientoRepository->ValorByIngreso($id);       
+        $egreso=$this->_cajaMovimientoRepository->ValorByIngreso($id);
         $data=[
             'caja'=>$caja,
             'ingreso'=>$ingreso!=null?$ingreso->Valor_total:0,
@@ -113,11 +111,10 @@ class CajaController extends Controller
         {
             return redirect()->to('login');
         }
-       
         $data=[
             'caja'=>$this->_cajaRepository->find($id)
         ];
-        return view ('Caja.edit',$data);
+        return view('Caja.edit',$data);
         //
     }
 
@@ -131,7 +128,7 @@ class CajaController extends Controller
             return redirect()->to('login');
         }
         $this->_cajaRepository->Update($id,$request);
-        return redirect()->to(url('/cajas'));  
+        return redirect()->to(url('/cajas'));
         //
     }
 
@@ -145,7 +142,7 @@ class CajaController extends Controller
             return redirect()->to('login');
         }
         $this->_cajaRepository->Delete($id);
-        return redirect()->to(url('/cajas'));         
+        return redirect()->to(url('/cajas'));
 
         //
     }

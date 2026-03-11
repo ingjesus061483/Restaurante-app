@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Observacion;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreObeservacionRequest;
-use App\Http\Requests\UpdateObeservacionRequest;
+use App\Http\Requests\AutorizeRequest;
+use App\Http\Requests\Observacion\StoreRequest;
+use App\Http\Requests\Observacion\UpdateRequest;
 use App\Repositories\ObservacionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,7 @@ class ObservacionController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
+        }
         $data=[
             "observaciones"=>$this->_observacionRepository->GetAll(),
         ];
@@ -43,16 +44,12 @@ class ObservacionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AutorizeRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }  
+        }
         return view("Observaciones.create");
         //
     }
@@ -60,20 +57,12 @@ class ObservacionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
         }
-        $validacion=$request->validate([
-            'codigo'=>'required|max:50|unique:observacions',
-            'descripcion'=>'required'    
-        ]);
         $this->_observacionRepository->Store((object)$request->all());
         return redirect()->to(url('/observaciones'));
         //
@@ -90,16 +79,12 @@ class ObservacionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }  
+        }
         $data=[
             "observacion"=>$this->_observacionRepository->Find($id),
         ];
@@ -110,20 +95,12 @@ class ObservacionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }  
-        $validacion=$request->validate([
-            'codigo'=>'required|max:50|unique:observacions,codigo,'.$id,
-            'descripcion'=>'required'    
-        ]);
+        }
         $this->_observacionRepository->Update($id,$request);
         return redirect()->to(url('/observaciones'));
         //
@@ -132,16 +109,12 @@ class ObservacionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }  
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();            
-        }  
+        }
         $this->_observacionRepository->Delete($id);
         return redirect()->to(url('/observaciones'));
         //

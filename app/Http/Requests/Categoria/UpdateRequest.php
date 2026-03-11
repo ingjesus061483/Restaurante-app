@@ -12,12 +12,12 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $user=Auth::user();        
+        $user=Auth::user();
         if($user->role_id==1||$user->role_id==2)
         {
             return true;
         }
-        return false;        
+        return false;
     }
 
     /**
@@ -28,8 +28,21 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'=>'required|max:50'  
+            'nombre'=>'required|max:50'
             //
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'nombre.required'=>'El campo :attribute es obligatorio',
+            'nombre.max'=>'El campo :attribute no debe ser mayor a 50 caracteres',
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            'nombre'=>'Nombre',
         ];
     }
 }

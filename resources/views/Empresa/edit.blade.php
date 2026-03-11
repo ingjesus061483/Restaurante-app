@@ -1,11 +1,12 @@
 @extends('shared/layout')
 @section('title','Crear empresa')
-@section('content')  
+@section('content')
 <div class="card mb-4">
-    <div class="card-body">        
+    <div class="card-body">
         <form action="{{url('/empresas')}}/{{$empresa->id}}" enctype="multipart/form-data" autocomplete="off" method="post">
             @csrf
             @method('PATCH')
+            <input type="hidden" name="id" value="{{$empresa->id}}">
             <div class="mb-3">
                 <label class="form-label" for="identificacion">
                     Nit
@@ -28,34 +29,34 @@
                 <label class="form-label" for="direccion">
                     Direccion
                 </label>
-                <input type="text" name="direccion" id="direccion" value="{{$empresa->direccion}}" class="form-control">        
+                <input type="text" name="direccion" id="direccion" value="{{$empresa->direccion}}" class="form-control">
             </div>
-            
+
             <div class ="mb-3">
                 <label class="form-label" for="telefono">
                     Telefono
                 </label>
-                <input type="text" name="telefono" id="telefono" value="{{$empresa->telefono}}" class="form-control">        
+                <input type="text" name="telefono" id="telefono" value="{{$empresa->telefono}}" class="form-control">
             </div>
-            
+
             <div class ="mb-3">
                 <label class="form-label" for="email">
                     Email
                 </label>
-                <input type="text" name="email" id="email" value="{{$empresa->email}}" class="form-control">        
+                <input type="text" name="email" id="email" value="{{$empresa->email}}" class="form-control">
             </div>
             <div class ="mb-3">
                 <label class="form-label" for="contacto">
                     Contacto
                 </label>
-                <input type="text" name="contacto" id="contacto" value="{{$empresa->contacto}}" class="form-control">        
+                <input type="text" name="contacto" id="contacto" value="{{$empresa->contacto}}" class="form-control">
             </div>
             <div class ="mb-3">
                 <label class="form-label" for="imagen">
                     Logo
                 </label>
                 <input type="file" name="imagen" accept="image/*"   class="form-control" id="imagen">
-            </div> 
+            </div>
             <div class ="mb-3">
                 <label class="form-label" for="slogan">
                     Slogan
@@ -66,7 +67,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="tipo_regimen">
-                    Tipo regimen            
+                    Tipo regimen
                 </label>
                 <select class="form-select" name="tipo_regimen" id="tipo_regimen">
                     <option value="">seleccione un tipo regimen</option>
@@ -75,14 +76,14 @@
                         @if($item->id==$empresa->tipo_regimen_id)
                         {{'selected'}}
                         @endif
-                        >{{$item->nombre}}</option>        
+                        >{{$item->nombre}}</option>
                     @endforeach
                 </select>
             </div>
-           
+
             <a class="btn btn-primary" href="{{url('/')}}/empresas">
                 Regresar
-            </a> 
+            </a>
             <button class="btn btn-success" type="submit">
                 Guardar
             </button>

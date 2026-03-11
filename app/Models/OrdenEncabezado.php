@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class OrdenEncabezado extends Model
 {
     use HasFactory;
-    public function cabaña(){
-        return $this->belongsTo(Cabaña::class,'cabaña_id');
+    public function mesa(){
+        return $this->belongsTo(Mesa::class,'mesa_id');
     }
     public function cliente(){
         return $this->belongsTo(cliente::class,'cliente_id');
@@ -19,8 +19,8 @@ class OrdenEncabezado extends Model
     }
     public function estado()
     {
-        return $this->belongsTo(Estado::class,'estado_id');        
-    }  
+        return $this->belongsTo(Estado::class,'estado_id');
+    }
     public function orden_detalles()
     {
         return $this->hasMany(OrdenDetalle::class,'orden_encabezado_id');
@@ -33,9 +33,9 @@ class OrdenEncabezado extends Model
     {
         return $this->hasMany(CuentasCobrar::class,"orden_id");
     }
-    
+
     protected $fillable=[
         'codigo','tipo_documento_id','fecha','hora','hora_entrega','observaciones','total',
-        'cabaña_id','cliente_id','empleado_id','estado_id','credito','domicilio',
+        'mesa_id','cliente_id','empleado_id','estado_id','credito','domicilio',
     ];
 }

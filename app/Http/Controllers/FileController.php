@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\File\OrdenesRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\CabanaRepository;
+use App\Repositories\MesaRepository;
 use App\Repositories\ConfiguracionRepository;
 use App\Repositories\EmpleadoRepository;
 use App\Repositories\ExistenciaRepository;
@@ -19,16 +20,16 @@ class FileController extends Controller
 {
     protected ConfiguracionRepository $_configuracionRepository;
     protected ExistenciaRepository  $_existenciaRepository;
-    protected CabanaRepository $_cabanaRepository;
+    protected MesaRepository $_cabanaRepository;
     protected FileRepository $_fileRepository;
     protected EmpleadoRepository $_empleadoRepository;
     protected MateriaPrimaRepository $_materiaPrimarepository;
     protected ProductoRepository $_productoRepository;
     protected OrdenDetalleRepository $_ordendetalleRepository;
-    protected OrdenServicioRepository $_ordenservicioRepository;   
-    public function __construct(ExistenciaRepository $existenciaRepository,                             
+    protected OrdenServicioRepository $_ordenservicioRepository;
+    public function __construct(ExistenciaRepository $existenciaRepository,
                                 FileRepository $fileRepository,
-                                CabanaRepository $cabanaRepository,
+                                MesaRepository $cabanaRepository,
                                 ConfiguracionRepository $configuracionRepository,
                                 EmpleadoRepository $empleadoRepository,
                                 ProductoRepository $productoRepository,
@@ -41,17 +42,17 @@ class FileController extends Controller
         $this->_cabanaRepository=$cabanaRepository;
         $this->_productoRepository=$productoRepository;
         $this->_empleadoRepository=$empleadoRepository;
-        $this->_configuracionRepository=$configuracionRepository;        
+        $this->_configuracionRepository=$configuracionRepository;
         $this ->_fileRepository=$fileRepository;
         $this->_existenciaRepository = $existenciaRepository;
         $this->_materiaPrimarepository=$materiaPrimarepository;
-        $this->_ordenservicioRepository=$ordenServicioRepository;        
+        $this->_ordenservicioRepository=$ordenServicioRepository;
 
-    }  
+    }
    /**
      * You can use the following code to generate a PDF file from a view:
      *
-     */   
+     */
     public function Inventario()
     {
         if(!Auth::check())
@@ -63,7 +64,7 @@ class FileController extends Controller
     //   $union= $materiaprimas->union($productos)->get();
         $inventario_view=$this->_existenciaRepository->GetAll();
         $data=[
-            'inventario'=> $inventario_view,          
+            'inventario'=> $inventario_view,
             'total_inventario'=>$this->_existenciaRepository->TotalizarInventario(),
         ];
        // return view('File.inventario',$data);
@@ -82,7 +83,7 @@ class FileController extends Controller
             'total_venta'=>$this->_cabanaRepository->TotalVentaByCabana(),
         ];
          //return view('File.VentasByMesas',$data);
-         return $this->_fileRepository->GetPdf('File.VentasByMesas',$data);   
+         return $this->_fileRepository->GetPdf('File.VentasByMesas',$data);
     }
     public function PropinasByEmpleado()
     {
@@ -91,91 +92,83 @@ class FileController extends Controller
             return redirect()->to('login');
         }
         $data=[
-            'propinas'=>$this->_empleadoRepository->propinasByEmpleado()        
+            'propinas'=>$this->_empleadoRepository->propinasByEmpleado()
         ];
-//       return view ('File.PropinasByEmpleado',$data);
+//       return view('File.PropinasByEmpleado',$data);
        return $this->_fileRepository->GetPdf('File.PropinasByEmpleado',$data);
     }
-    public function OrdenesByFecha(Request $request)
+    public function OrdenesByFecha(OrdenesRequest $request)
     {
-   
+
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        $validacion=$request->validate([
-            'fechaIni'=>'required',
-            'fechaFin'=>'required|after_or_equal:fechaIni',
-        ]);
+
         $fechaini=date_create(request()->fechaIni);
         $fechafin=request()->fechaFin!=null ?date_create( request()->fechaFin):date_create();
         $ordenes=$this->_ordenservicioRepository->GetorderByDate($fechaini,$fechafin)
-                                          ->where('estado_id',3)                                          
+                                          ->where('estado_id',3)
                                           ->orderby('id','Desc')
-                                          ->get(); 
+                                          ->get();
         $data=[
-            'ordenes'=>$ordenes,            
-            'total'=>$this->_ordenservicioRepository-> Totalizar($ordenes)            
-        ];        
+            'ordenes'=>$ordenes,
+            'total'=>$this->_ordenservicioRepository-> Totalizar($ordenes)
+        ];
         //return view ('File.OrdenesByFechaPdf',$data);
-        return $this->_fileRepository->GetPdf('File.OrdenesByFecha',$data);        
+        return $this->_fileRepository->GetPdf('File.OrdenesByFecha',$data);
 
 
     }
-    public function ProductosVendidosByFecha(Request $request)
+    public function ProductosVendidosByFecha(OrdenesRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        $validacion=$request->validate([
-            'fechaIni'=>'required',
-            'fechaFin'=>'required|after_or_equal:fechaIni',
-        ]);
-
         $ventas= $this->_productoRepository->ProductosVendidosByFecha($request);
         $data=[
             'productosvendidos'=>$ventas,
             'total_vemtas'=>$this->_productoRepository-> TotalVentaProductos($ventas)
         ];
-       // return view ('File.ProductosVendidosByFecha',$data);
-        return $this->_fileRepository->GetPdf('File.ProductosVendidosByFecha',$data);        
-    }   
-    public function  OrdenServicio($id)
+       // return view('File.ProductosVendidosByFecha',$data);
+        return $this->_fileRepository->GetPdf('File.ProductosVendidosByFecha',$data);
+    }
+    public function OrdenServicio($id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }
         $ordenEncabezado=$this->_ordenservicioRepository-> Find($id);
         $OrdenDetalles=$ordenEncabezado->orden_detalles;
         $data=[
             'ordenEncabezado'=>$ordenEncabezado,
             'orden_detalle'=>$OrdenDetalles,
-        ];        
-       // return view ('file.OrdenServicio',$data);   
-       return $this->_fileRepository->GetPdf('file.OrdenServicio',$data);        
+        ];
+       // return view ('file.OrdenServicio',$data);
+       return $this->_fileRepository->GetPdf('file.OrdenServicio',$data);
     }
     function MostrarExistenciaPorProducto($id)
     {
-        if(!Auth::check())        
+        if(!Auth::check())
         {
-            return redirect()->to('login');        
-        }                
+            return redirect()->to('login');
+        }
         $producto= $this->_productoRepository->Find($id);
         if($producto-> procesado==0)
         {
             $entradas=$this->_productoRepository->existencias($id,1); //Existencia:: where('entrada',1)->where('producto_id',$id)->get();
             $salidas=$this->_productoRepository->existencias($id);//Existencia:: where('entrada',0)->where('producto_id',$id)->get();
-            $total_entrada= $this->_productoRepository->totalizarExistencia($id,1);//$entradas!=null? $this->totalizar($entradas):0;            
+            $total_entrada= $this->_productoRepository->totalizarExistencia($id,1);//$entradas!=null? $this->totalizar($entradas):0;
             $total_salida=$this->_productoRepository->totalizarExistencia($id);//$salidas!=null?$this->totalizar($salidas):0;
-            $data=[                
-                'producto'=>$producto,                     
+            $data=[
+                'producto'=>$producto,
                 "entradas"=>$entradas,
                 "salidas"=>$salidas,
                 "total_entrada"=>$total_entrada,
                 "total_salida"=>$total_salida
-            ];     
+            ];
         }
         else
         {
@@ -183,15 +176,15 @@ class FileController extends Controller
           /*  if(count($preparacions)==0)
             {
                 session(['producto' => $producto]);
-                return redirect()->to(url('ingredientes/create'));   
+                return redirect()->to(url('ingredientes/create'));
             }            */
-            $data=[                
-                'producto'=>$producto,                 
-            ];  
-        
+            $data=[
+                'producto'=>$producto,
+            ];
+
         }
-        return $this->_fileRepository->GetPdf('file.MostrarExistenciaPorProducto',$data);        
-        //return view('File.MostrarExistenciaPorProducto',$data);
-}     
+        return $this->_fileRepository->GetPdf('file.MostrarExistenciaPorProducto',$data);
+    //return view('File.MostrarExistenciaPorProducto',$data);
+}
     //
 }

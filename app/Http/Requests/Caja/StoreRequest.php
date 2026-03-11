@@ -27,10 +27,30 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'codigo'=>'required|unique:cajas|max:50',            
-            'nombre'=>'required|max:50',           
-            'valor_inicial'=>'required|numeric',            
+            'codigo'=>'required|unique:cajas|max:50',
+            'nombre'=>'required|max:50',
+            'valor_inicial'=>'required|numeric',
             //
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'codigo.required'=>'El :attribute es requerido',
+            'codigo.unique'=>'El :attribute  ya existe',
+            'codigo.max'=>'El :attribute no debe exceder los 50 caracteres',
+            'nombre.required'=>'El :attribute es requerido',
+            'nombre.max'=>'El :attribute no debe exceder los 50 caracteres',
+            'valor_inicial.required'=>'El :attribute es requerido',
+            'valor_inicial.numeric'=>'El :attribute debe ser un numero',
+        ];
+    }
+    public function attributes(): array
+    {
+        return [
+            'codigo'=>'codigo',
+            'nombre'=>'nombre',
+            'valor_inicial'=>'valor inicial',
         ];
     }
 }

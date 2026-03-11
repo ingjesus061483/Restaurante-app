@@ -8,14 +8,14 @@ class OrdenServicioRepository implements IRepository
     protected SessionRepository $_sesionRepository;
     protected OrdenDetalleRepository $_OrdenDetalleRepository;
     protected ProductoRepository $_productoRepository;
-    protected CabanaRepository $_cabanaRepository;    
+    protected MesaRepository $_cabanaRepository;
     protected EmpleadoRepository $_empleadoRepository;
     protected ClienteRepository $_clienteRepository;
     protected ExistenciaRepository $_existenciaRepository;
     public function __construct(ProductoRepository $productoRepository,
-                                CabanaRepository $cabanaRepository,
+                                MesaRepository $cabanaRepository,
                                 EmpleadoRepository $empleadoRepository,
-                                ClienteRepository $clienteRepository,                                
+                                ClienteRepository $clienteRepository,
                                 ExistenciaRepository $existenciaRepository,
                                 OrdenDetalleRepository $ordenDetalleRepository,
                                 SessionRepository $sessionRepository,)
@@ -50,8 +50,8 @@ class OrdenServicioRepository implements IRepository
     }
     function GetOrdenServicio ($id,$empresa)
     {
-         
-        $ordenEncabezado=$this-> Find($id) ;        
+
+        $ordenEncabezado=$this-> Find($id) ;
         $ordenservicio=(object)[
                         "empresa"=>$empresa,
                         "orden_encabezado"=>$ordenEncabezado ,
@@ -60,14 +60,14 @@ class OrdenServicioRepository implements IRepository
                         "domicilio"=>'',
                         "propina"=>'',
                         ];
-        return $ordenservicio;    
+        return $ordenservicio;
     }
 
     public function GetOrdenByMesa($mesa_id)
     {
         return OrdenEncabezado::where('cabaña_id',$mesa_id)
-                              ->where('estado_id',1) 
-                              ->first();       
+                              ->where('estado_id',1)
+                              ->first();
     }
     public function totalizar($ordenes){
         $sum=0;
@@ -84,31 +84,31 @@ class OrdenServicioRepository implements IRepository
             $sum =$sum +$item->total;
         }
         return $sum;
-    } 
+    }
     public function GetOrdenesByEmpleados($empleado_id,$fechaini,$fechaFin)
     {
         return OrdenEncabezado::where('empleado_id',$empleado_id)
                               ->wherebetween('fecha',[date_format($fechaini,'Y-m-d'),
                                                       date_format($fechaFin,'Y-m-d')])
                               ->orderBy('id', 'DESC')
-                              ->get();       
+                              ->get();
     }
     public function GetorderByDate($fechaini,$fechaFin)
     {
         return OrdenEncabezado::wherebetween('fecha',[date_format($fechaini,'Y-m-d'),
                                                       date_format($fechaFin,'Y-m-d')]);
-                      
+
                               //->get();
     }
     public function GetAll()
     {
-        $fecha1 = date_create();        
+        $fecha1 = date_create();
         date_add($fecha1, date_interval_create_from_date_string('-1 days'));
-        $fecha2=date_create();        
+        $fecha2=date_create();
         return OrdenEncabezado::wherebetween('fecha',[date_format($fecha1,'Y-m-d'),
                                                       date_format($fecha2,'Y-m-d')])
-                            
-                              ->orderby('id','Desc') 
+
+                              ->orderby('id','Desc')
                               ->get();
     }
 
@@ -125,8 +125,8 @@ class OrdenServicioRepository implements IRepository
         $ordenEncabezado=$this->Find($request->orden_id);
         if ($ordenEncabezado->cliente ==null){
             $ordenEncabezado->cliente_id=$cliente->id;
-            $ordenEncabezado->update();            
-        }        
+            $ordenEncabezado->update();
+        }
     }
     public function  PagarOrden($id){
         $ordenEncabezado= $this->Find($id);
@@ -150,17 +150,17 @@ class OrdenServicioRepository implements IRepository
         }
 
         $ordenservicio->total=$total;
-        $ordenservicio->update();    
+        $ordenservicio->update();
 
-    } 
+    }
     public function Update($id, $request)
     {
         $ordenEncabezado= $this->Find($id);
         $OrdenDetalles=$ordenEncabezado->orden_detalles;
         $ordenEncabezado->estado_id=2;
         $ordenEncabezado->save();
-        $this-> DescontarProductoDeExistencia($OrdenDetalles);        
-    }  
+        $this-> DescontarProductoDeExistencia($OrdenDetalles);
+    }
     public function Delete($id)
     {
         $ordenEncabezado=OrdenEncabezado::find($id);
@@ -189,18 +189,18 @@ class OrdenServicioRepository implements IRepository
           'tipo_documento_id'=>$request->input('tipo_documento'),
           'fecha'=>$request->input('fecha'),
           'hora'=>$request->input('hora'),
-          'hora_entrega'=>$request->input('hora_entrega'),       
+          'hora_entrega'=>$request->input('hora_entrega'),
           "total"=>$this->totalizarOrden($detalles),
           'credito'=>$credito,
           'domicilio'=>$domicilio,
           'cabaña_id'=>$request->input('cabaña'),
           'cliente_id'=>$cliente!=null?$cliente->id:null,
           'empleado_id'=>$empleado!=null?$empleado->id:null,
-        ]);           
+        ]);
         foreach($detalles as $item)
         {
             $item-> orden_id=$ordenEncabezado->id;
-            $this->_OrdenDetalleRepository-> Store($item);  
+            $this->_OrdenDetalleRepository-> Store($item);
         }
         if($domicilio==0)
         {
@@ -209,15 +209,15 @@ class OrdenServicioRepository implements IRepository
         return $ordenEncabezado->id;
     }
     public function GetHoraEntrega($detalles){
-        $tiempoCoccion=$this->_productoRepository-> GetTiempoCoccion($detalles);        
-        $now=date_create();        
-        date_add($now,date_interval_create_from_date_string($tiempoCoccion.' minutes'));     
+        $tiempoCoccion=$this->_productoRepository-> GetTiempoCoccion($detalles);
+        $now=date_create();
+        date_add($now,date_interval_create_from_date_string($tiempoCoccion.' minutes'));
         return date_format($now, 'H:i:s');
     }
     public function ComprobarExistenciaProductoDetalle($detalles)
     {
         $errors=[];
-        foreach($detalles as $item)                    
+        foreach($detalles as $item)
         {
             $producto_id=$item->producto_id;
             $producto=$this->_productoRepository->Find($producto_id);
@@ -225,23 +225,23 @@ class OrdenServicioRepository implements IRepository
             if($procesado==0)
             {
                 $viewInventario =$this->_existenciaRepository-> getInventario(['producto',$item->cantidad,$producto_id],
-                                        ['tipo','total_inventario','id']);                                        
+                                        ['tipo','total_inventario','id']);
                 if(count($viewInventario)==0)
-                {                    
+                {
 
-                    $errors[]=['La cantidad de '.$item->detalleOrden .' pedida en esta 
-                                orden es mayor a la cantidad que hay en el inventario',];                 
+                    $errors[]=['La cantidad de '.$item->detalleOrden .' pedida en esta
+                                orden es mayor a la cantidad que hay en el inventario',];
                     $this->_sesionRepository->delete($item->id);
-                
-                }             
+
+                }
             }
             else{
-                $ingredientes=$producto->preparacions; 
+                $ingredientes=$producto->preparacions;
                 if(count($ingredientes)==0)
                 {
                     $errors[]=[
-                        'El producto '.$item->detalleOrden .' no tiene ingrediente asignados',                        
-                    ];                     
+                        'El producto '.$item->detalleOrden .' no tiene ingrediente asignados',
+                    ];
                     $this->_sesionRepository->delete($item->id);
                 }
                 else{
@@ -249,14 +249,14 @@ class OrdenServicioRepository implements IRepository
                         $materia_prima_id=$ingrediente->materia_prima_id;
                         $cantidad=$ingrediente->cantidad;
                         $viewInventario =$this->_existenciaRepository-> getInventario(['materia_prima',$cantidad,$materia_prima_id],
-                                        ['tipo','total_inventario','id']);                                                                                
-                        if(count($viewInventario)==0){                                                
-                            $errors[]=[                                
-                                'La cantidad de '.$ingrediente->materia_prima->nombre .' pedida en esta                                 
-                                orden es mayor a la cantidad que hay en el inventario',                             
-                            ];                                  
-                            $this->_sesionRepository->delete($item->id);           
-                        }                    
+                                        ['tipo','total_inventario','id']);
+                        if(count($viewInventario)==0){
+                            $errors[]=[
+                                'La cantidad de '.$ingrediente->materia_prima->nombre .' pedida en esta
+                                orden es mayor a la cantidad que hay en el inventario',
+                            ];
+                            $this->_sesionRepository->delete($item->id);
+                        }
                     }
                 }
             }
@@ -266,16 +266,16 @@ class OrdenServicioRepository implements IRepository
             'detalles'=>$detalles,
             'errors'=>$errors,
         ];
-        return $data;    
-    }  
+        return $data;
+    }
     FUNCTION ComprobarTiempoEntrega($fechahora_entrega)
     {
-        $tiempo_entrega= date_timestamp_get(date_create($fechahora_entrega));        
+        $tiempo_entrega= date_timestamp_get(date_create($fechahora_entrega));
         $now=date_create();
         $string_date= date_format($now,'Y-m-d H:i:s');
-        $tiempo_ahora=date_timestamp_get(date_create($string_date));        
+        $tiempo_ahora=date_timestamp_get(date_create($string_date));
        return $tiempo_entrega>$tiempo_ahora;
-        
+
     }
     public function DescontarProductoDeExistencia($OrdenDetalles)
     {
@@ -284,15 +284,15 @@ class OrdenServicioRepository implements IRepository
             $producto=$this->_productoRepository->Find( $detalle->producto_id);
             $cantidad_producto=$detalle->cantidad;
             if(!$producto->procesado)
-            {    
+            {
                 $existencia=(object)[
-                    'tipo'=>'producto',                    
+                    'tipo'=>'producto',
                     'fecha'=>date('Y-m-d'),
                     'cantidad'=>$cantidad_producto,
                     'esEntrada'=>0,
-                    'materiaprima_id'=>$producto->id                   
+                    'materiaprima_id'=>$producto->id
                 ];
-                $this->_existenciaRepository-> Store($existencia);         
+                $this->_existenciaRepository-> Store($existencia);
             }
             else
             {
@@ -305,11 +305,11 @@ class OrdenServicioRepository implements IRepository
                         'fecha'=>date('Y-m-d'),
                         'cantidad'=>$cantidad_ingrediente,
                         'esEntrada'=>0,
-                        'materiaprima_id'=>$materia_prima_id              
-                    ];  
+                        'materiaprima_id'=>$materia_prima_id
+                    ];
                     $this->_existenciaRepository -> Store($existencia);
                 }
-            }            
+            }
         }
     }
 }

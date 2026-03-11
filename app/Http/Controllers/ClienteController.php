@@ -1,22 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Cliente;
-use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\Cliente\StoreRequest;
 use App\Http\Requests\Cliente\UpdateRequest;
 use App\Repositories\ClienteRepository;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
 class ClienteController extends Controller
 {
-    protected ClienteRepository $_repository;   
+    protected ClienteRepository $_repository;
     public function __construct(ClienteRepository $repository ) {
         $this->_repository=$repository;
     }
@@ -32,16 +25,16 @@ class ClienteController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {     
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-           
-        $data=[         
+
+        $data=[
             'clientes'=> $this->_repository->GetAll()
         ];
-        return view ('Cliente.index',$data);      
+        return view ('Cliente.index',$data);
         //
     }
 
@@ -49,7 +42,7 @@ class ClienteController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(AutorizeRequest $request)
-    {        
+    {
         $empresa=Auth::user()->empresa;
         $data=[
             "empresa"=>$empresa
@@ -62,12 +55,11 @@ class ClienteController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreRequest $request)
-    {   
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-             
         $this->_repository->Store(((object)$request->all() ));
         return redirect()->to(url('/clientes'));
         //
@@ -76,7 +68,7 @@ class ClienteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showClient( $id)    
+    public function showClient( $id)
     {
         $data=[
             "cliente"=>$this-> _repository->Getcliente($id)
@@ -89,7 +81,6 @@ class ClienteController extends Controller
         {
             return redirect()->to('login');
         }
-        
         $data=[
             "cliente"=>$this-> _repository->Find($id)
         ];
@@ -101,16 +92,15 @@ class ClienteController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(AutorizeRequest $request, $id)
-    {   
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-             
-        $data=[          
+        $data=[
             'cliente'=>$this->_repository->Find($id),
         ];
-        return view ('Cliente.edit',$data);
+        return view('Cliente.edit',$data);
         //
     }
 
@@ -118,13 +108,13 @@ class ClienteController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateRequest $request, $id)
-    {   
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-             
-        $this->_repository->Update($id,(object)$request->all());        
+
+        $this->_repository->Update($id,(object)$request->all());
         return redirect()->to(url('/clientes'));
 
         //
@@ -134,13 +124,13 @@ class ClienteController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(AutorizeRequest $request, $id)
-    {        
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        
-        $this->_repository->Delete($id);       
+
+        $this->_repository->Delete($id);
         return redirect()->to(url('/clientes'));
         //
     }

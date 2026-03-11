@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Usuario\UpdateRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -12,10 +13,10 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\Password;
 class UserController extends Controller
 {
-    protected UserRepository $_userRepository; 
+    protected UserRepository $_userRepository;
     public function __construct(UserRepository $userRepoitory,)
     {
-        $this->_userRepository=$userRepoitory;       
+        $this->_userRepository=$userRepoitory;
     }
 
     /**
@@ -26,10 +27,10 @@ class UserController extends Controller
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
-        $users=$this->_userRepository->UsersAdmin();              
-        $data=[            
-            'msg'=>'La operacion ha sido realizada con exito'        
+        }
+        $users=$this->_userRepository->UsersAdmin();
+        $data=[
+            'msg'=>'La operacion ha sido realizada con exito'
         ];
             return json_encode($data);
         //
@@ -71,25 +72,18 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id)
     {
-        $validation=$request->validate([  
-            'current_password'=>['required',Password::default()],          
-            'password'=>['required','confirmed',Password::default()],            
-        ]);
         if(!Auth::validate(['email'=>$request->input('user_email'),
         'password'=>$request->input('current_password')])){
-        //     return redirect()->to('/login')->withErrors('auth.failed');
-        return back()->withErrors('auth.failed');
+            return back()->withErrors('auth.failed');
         }
-        //$user =Auth::getProvider()->retrieveByCredentials(['email'=>$request->input('email'),
-        //'password'=>$request->input('password')]);
         $user=User::find($id);
         $user->password=Hash::make($request->input('password'));
         $user->save();
         session::flush();
         Auth::logout();
-        return redirect()->to('/login');    
+        return redirect()->to('/login');
         //print_r( $request->all());
         //
     }

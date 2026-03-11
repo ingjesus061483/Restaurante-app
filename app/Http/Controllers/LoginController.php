@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use App\Http\Requests\Usuario\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\Password;
@@ -33,17 +34,17 @@ class LoginController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {   
-        $credentials = $request->validate([
+    public function store(LoginRequest $request)
+    {
+       /* $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required',Password::default()],
-        ]);
+        ]);*/
         if(!$this->_userRepository->Login($request))
         {
             return redirect()->to('/login')->withErrors('Auth.failed');
-        }        
-        return redirect()->to('/');      
+        }
+        return redirect()->to('/');
         //
     }
 
@@ -80,8 +81,8 @@ class LoginController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->_userRepository->Logout();    
-        return redirect()->to('/login');    
+        $this->_userRepository->Logout();
+        return redirect()->to('/login');
         //
     }
 }

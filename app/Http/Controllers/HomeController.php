@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\CabanaRepository;
+use App\Repositories\MesaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    protected CabanaRepository $_cabanaRepository;
-    public function __construct(CabanaRepository $cabanaRepository) 
+    protected MesaRepository $_cabanaRepository;
+    public function __construct(MesaRepository $cabanaRepository)
     {
         $this->_cabanaRepository = $cabanaRepository;
     }
@@ -18,11 +18,11 @@ class HomeController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {         
+    {
         if(!Auth::check())
         {
             return redirect()->to('login');
-        }        
+        }
         $cabanas=$this->_cabanaRepository->GetAll();
         $data=["cabanas"=>$cabanas];
         return view('Home.index',$data);
@@ -50,7 +50,7 @@ class HomeController extends Controller
      */
     public function show(string $id)
     {
-      
+
         //
     }
 
