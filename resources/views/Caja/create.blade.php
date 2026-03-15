@@ -1,8 +1,8 @@
 @extends('shared/layout')
 @section('title','Crear caja')
-@section('content')  
+@section('content')
 <div class="card mb-4">
-    <div class="card-body">        
+    <div class="card-body">
         <form action="{{url('/cajas')}}" autocomplete="off" method="post">
             @csrf
             <div class="mb-3">
@@ -33,12 +33,12 @@
                     Valor inicial
                 </label>
                 <input type="text" name="valor_inicial" value="{{old('valor_inicial')}}" class="form-control" id="valor_inicial">
-            </div>            
-            <a class="btn btn-primary" href="{{url('/cajas')}}">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+            </div>
+            <a title="Regresar" class="btn btn-primary" href="{{url('/cajas')}}">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button title="Guardar" class="btn btn-success"  type="submit">
+                <i class="fa-regular fa-floppy-disk"></i>
             </button>
         </form>
     </div>

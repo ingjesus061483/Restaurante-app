@@ -6,10 +6,10 @@
     <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
     <div class="card-body">
         @if($errors->any())
-        <div class="alert alert-danger">
+        <div id="errors" style="display: none" class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
-                <li>{{$error}}</li>
+                <li style="list-style: none;" >{{$error}}</li>
                 @endforeach
             </ul>
         </div>
@@ -39,5 +39,7 @@
     <div class="card-footer text-center py-3">
         <!--<div class="small"><a href="register.html">Need an account? Sign up!</a></div>-->
     </div>
+
+
 </div>
 @endsection

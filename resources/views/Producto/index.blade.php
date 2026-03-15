@@ -3,35 +3,36 @@
 @section('content')
 <div class="card mb-4">
     <div class="card-header">
+         <i class="fa-solid fa-filter"></i>&nbsp; Filtro
+    </div>
+    <div class="card-body">
         <div class="row">
-            <div class="col-3">
-                <br>
-                <a href="{{url('/productos/create')}}" class="btn btn-primary">Crear productos </a>
-            </div>
-            <div class="col-4">
+            <div class="col-12" style="padding: 10px">
                 @include('shared/Categorias')
             </div>
-            <div class="col-5">
+        </div>
+        <div class="row">
+            <div class="col-12">
                 <form target="blank" action="{{url('file/ProductosVendidosByFecha')}}">
                     <input type="hidden" name="categoria_id" value="{{$categoria_id}}">
                     <div class="row">
-                        <div class="col-4" >
-                            <label class="form-label" for="codigo">
-                                Fecha inicio
+                        <div class="col-6">
+                            <label class="form-label" style="font-weight: bold" for="codigo">
+                                Fecha inicio:
                             </label>
                             <input name="fechaIni" value=""  class="form-control" type="date"/>
                         </div>
-                        <div class="col-4">
-                            <label class="form-label" for="codigo">
-                                Fecha fin
+                        <div class="col-6">
+                            <label class="form-label" style="font-weight: bold" for="codigo">
+                                Fecha fin:
                             </label>
                             <input name="fechaFin" class="form-control" value="" type="date"/>
                         </div>
-                        <div class="col-4">
-                            <br>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="padding-top: 10px">
                             <button title="Ver reporte" type="submit" class="btn btn-danger">
                                 <i class="fa-solid fa-file-pdf"></i>
-
                             </button>
                         </div>
                     </div>
@@ -40,9 +41,16 @@
             </div>
 
         </div>
-
     </div>
+</div>
+
+<div class="card mb-4">
     <div class="card-body">
+        <div style="padding-bottom: 10px">
+        <a title="Crear producto" href="{{url('/productos/create')}}" class="btn btn-primary">
+            <i class="fa-solid fa-circle-plus"></i>
+        </a>
+        </div>
         <table id="datatablesSimple">
             <thead>
                 <tr>

@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>@yield('title')</title>
-        <link rel="shortcut icon" type="image/x-icon" href="{{url('/')}}/login.ico" />             
+        <link rel="shortcut icon" type="image/x-icon" href="{{url('/')}}/login.ico" />
         <link href="{{url('/')}}/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
@@ -39,7 +39,20 @@
                 </footer>
             </div>
         </div>
+        <script src="{{url('js/jquery.js')}}" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npmbootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="{{url('/')}}/js/scripts.js"></script>
+        <script src="{{url('/')}}/js/switchalert2.js"></script>
+        <script type="text/javascript">
+         if( $("#errors").length>0 )
+            {
+                Swal.fire({
+                  title: "Se han encontrado los siguientes errores:",
+                  icon: "error",
+                  html:$("#errors").html(),
+                  draggable: true
+                });
+            }
+        </script>
     </body>
 </html>

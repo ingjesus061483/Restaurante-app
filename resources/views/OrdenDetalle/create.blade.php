@@ -1,12 +1,12 @@
 @extends('shared/layout')
 @section('title','Listado de productos')
-@section('content')  
-<div class="card mb-4"> 
+@section('content')
+<div class="card mb-4">
     <div  class="card-header">
         @include('shared/Categorias')
-        
-    </div>   
-    <div class="card-body"> 
+
+    </div>
+    <div class="card-body">
         <table id="datatablesSimple">
             <thead>
                 <th></th>
@@ -28,10 +28,10 @@
             <tbody>
                 @foreach($productos as $item)
                 <tr>
-		     <td>                        
-                        <a title="Comprar"  onclick="ordenservicio({{$item->id}});" class="btn btn-primary">
-                            <i class="fa-solid fa-cart-shopping"></i>                        
-                        </a>                      
+		            <td>
+                        <a title="Comprar" onclick="ordenservicio({{$item->id}});" class="btn btn-primary">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
                     </td>
                     <td>{{$item->id}}</td>
                     <td>{{$item->nombre}}</td>
@@ -39,31 +39,30 @@
                     <td>${{number_format( $item->precio)}}</td>
                     <td>
                         @if ($item->imagen!=null)
-                          <img class="img-fluid" src="{{url('/')}}/img/{{$item->imagen}}" alt="" sizes="" srcset="" width="50px" height="50px"></td>
+                          <img class="img-fluid" src="{{url('/img')}}/{{$item->imagen}}" alt="" sizes="" srcset="" width="50px" height="50px">
                         @endif
-                    </td>                                            
-                  
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
-        </table>       
+        </table>
     </div>
     <div class="card-footer">
         <div class="row">
-                    
+
             <div class="col-4">
-                <a class="btn btn-primary" href="{{url('/ordenservicio')}}">                    
-                    Regresar                
-                </a>              
+                <a title="Regresar" class="btn btn-primary" href="{{url('/ordenservicio')}}">
+                    <i class="fa-solid fa-circle-arrow-left"></i>
+                </a>
             </div>
             @if(!isset($orden_id))
             <div class="col-4">
-                <a class="btn btn-primary" href="{{url('/ordenservicio/create')}}">                    
-                    Crear orden                
-                </a>              
+                <a title="Crear orden" class="btn btn-primary" href="{{url('/ordenservicio/create')}}">
+                    <i class="fa-solid fa-receipt"></i>
+                </a>
             </div>
             @endif
-        </div>        
+        </div>
     </div>
 </div>
 @endsection

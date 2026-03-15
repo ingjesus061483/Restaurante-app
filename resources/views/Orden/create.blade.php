@@ -103,18 +103,18 @@
                         <input type="checkbox" name="credito" id="">
                     </div>
 
-                    <a class="btn btn-primary" href="{{url('/ordenservicio')}}">
-                        Regresar
+                    <a title="Regresar" class="btn btn-primary" href="{{url('/ordenservicio')}}">
+                        <i class="fa-solid fa-arrow-left"></i>
                     </a>
-                    <button class="btn btn-success" type="submit">
-                        Guardar
+                    <button class="btn btn-success" title="Guardar" type="submit">
+                        <i class="fa-regular fa-floppy-disk"></i>
                     </button>
                 </form>
             </div>
             <div class="col-7">
                 <div class ="mb-3">
-                    <a href=" {{url('/ordendetalles/create')}}"  class="btn btn-primary">
-                        Crear detalle de Orden
+                    <a title="Crear detalle de Orden" href=" {{url('/ordendetalles/create')}}"  class="btn btn-primary">
+                        <i class="fa-solid fa-circle-plus"></i>
                     </a>
                 </div>
                 <div class ="mb-3">

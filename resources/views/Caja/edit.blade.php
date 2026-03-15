@@ -1,8 +1,8 @@
 @extends('shared/layout')
 @section('title','Editar caja')
-@section('content')  
+@section('content')
 <div class="card mb-4">
-    <div class="card-body">        
+    <div class="card-body">
         <form action="{{url('/cajas')}}/{{$caja->id}}" autocomplete="off" method="post">
             @csrf
             @method('PATCH')
@@ -35,13 +35,13 @@
                 </label>
                 <input type="text" name="valor_inicial" value="{{$caja->valor_inicial}}" class="form-control" id="precio">
             </div>
-           
 
-            <a class="btn btn-primary" href="{{url('/cajas')}}">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+
+            <a title="Regresar" class="btn btn-primary" href="{{url('/cajas')}}">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button title="Guardar" class="btn btn-success"  type="submit">
+                <i class="fa-regular fa-floppy-disk"></i>
             </button>
         </form>
     </div>

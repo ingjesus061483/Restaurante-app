@@ -45,13 +45,11 @@
                 </label>
                 <input type="text" name="capacidad" value="{{$cabana->capacidad_maxima}}" class="form-control" id="capacidad">
             </div>
-
-
-            <a class="btn btn-primary" href="{{url('/mesas')}}">
-                Regresar
+            <a title="Regresar" class="btn btn-primary" href="{{url('/mesas')}}">
+                <i class="fa-solid fa-arrow-left"></i>
             </a>
-            <button class="btn btn-success" type="submit">
-                Guardar
+            <button title="Guardar" class="btn btn-success" type="submit">
+                <i class="fa-regular fa-floppy-disk"></i>
             </button>
         </form>
     </div>

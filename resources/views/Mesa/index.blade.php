@@ -2,15 +2,15 @@
 @section('title','Listado de mesas')
 @section('content')
 <div class="card mb-4">
-    <div class="card-header">
-        <a href="{{url('/mesas/create')}}" title="Crear mesa" class="btn btn-primary">
-            <i class="fa-solid fa-circle-plus"></i>
-        </a>
-        <a href="{{url('/file/ventasbycabaña')}}" target="blank" title="Pdf" class="btn btn-danger">
-            <i class="fa-solid fa-file-pdf"></i>&nbsp;
-        </a>
-    </div>
     <div class="card-body">
+        <div style="padding-bottom: 10px">
+            <a href="{{url('/file/ventasbycabaña')}}" target="blank" title="Pdf" class="btn btn-danger">
+                <i class="fa-solid fa-file-pdf"></i>
+            </a>&nbsp;
+            <a href="{{url('/mesas/create')}}" title="Crear mesa" class="btn btn-primary">
+                <i class="fa-solid fa-circle-plus"></i>
+            </a>
+        </div>
         <table id="datatablesSimple">
             <thead>
                 <tr>

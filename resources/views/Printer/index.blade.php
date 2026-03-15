@@ -1,20 +1,23 @@
 @extends('shared/layout')
 @section('title','Listado de impresoras')
-@section('content')  
+@section('content')
 <div class="card mb-4">
-    <div class="card-header">
-        <a href="{{url('/impresoras')}}/create" class="btn btn-primary">Crear impresora </a>
-    </div>
+
     <div class="card-body">
+        <div style ="padding-bottom: 10px">
+            <a href="{{url('/impresoras')}}/create" title="Crear impresoras" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </div>
         <table id="datatablesSimple">
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Codigo</th>  
+                    <th>Codigo</th>
                     <th>Nombre</th>
                     <th>Recurso compartido</th>
                     <th>Tamaño fuente encabezado</th>
-                    <th>Tamaño fuente contnido</th>                                
+                    <th>Tamaño fuente contnido</th>
                     <th>Descripcion</th>
                     <th></th>
                     <th></th>
@@ -23,11 +26,11 @@
             <tfoot>
                 <tr>
                     <th>Id</th>
-                    <th>Codigo</th>  
+                    <th>Codigo</th>
                     <th>Nombre</th>
                     <th>Recurso compartido</th>
                     <th>Tamaño fuente encabezado</th>
-                    <th>Tamaño fuente contnido</th>                                
+                    <th>Tamaño fuente contnido</th>
                     <th>Descripcion</th>
                     <th></th>
                     <th></th>
@@ -37,8 +40,8 @@
                 @foreach($impresoras as $item)
                 <tr>
                     <td>{{$item->id}}</td>
-                    <td>{{$item->codigo}}</td>            
-                    <td>{{$item->nombre}}</td>            
+                    <td>{{$item->codigo}}</td>
+                    <td>{{$item->nombre}}</td>
                     <td>{{$item->recurso_compartido}}</td>
                     <td>{{$item->tamaño_fuente_encabezado}}</td>
                     <td>{{$item->tamaño_fuente_contenido}}</td>
@@ -48,18 +51,18 @@
                             <i class="fa-solid fa-pen"></i>
                         </a>
                     </td>
-                    <td>                
+                    <td>
                         <form action="{{url('/impresoras')}}/{{$item->id}}"
                              onsubmit="return validar('Desea eliminar este registro?');" method="post">
                             @csrf
                             @method('delete')
-                            <button title="Eliminar" class="btn btn-danger" type="submit"> 
+                            <button title="Eliminar" class="btn btn-danger" type="submit">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>
                     </td>
                 </tr>
-                @endforeach   
+                @endforeach
             </tbody>
         </table>
     </div>

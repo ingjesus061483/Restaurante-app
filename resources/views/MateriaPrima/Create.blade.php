@@ -1,9 +1,9 @@
 @extends('shared/layout')
 @section('title','Crear insumo')
-@section('content')  
+@section('content')
 <div class="card mb-4">
     <div class="card-body">
-        
+
         <form action="{{url('/materiaprimas')}}" enctype="multipart/form-data" autocomplete="off" method="post">
             @csrf
             <div class="mb-3">
@@ -12,7 +12,7 @@
                 </label>
                 <input type="text" name="codigo" value="{{old('codigo')}}" class="form-control" id="codigo">
             </div>
-            
+
             <div class="mb-3">
                 <label class="form-label" for="nombre">
                     Nombre
@@ -25,10 +25,10 @@
                 </label>
                 <input type="text" name="costo_unitario" value="{{old('costo_unitario')}}" class="form-control"
                  id="costo_unitario">
-            </div>            
+            </div>
             <div class="mb-3">
                 <label class="form-label" for="categoria">
-                    Categoria                
+                    Categoria
                 </label>
                 <select type="text" name="categoria" class="form-select"
                  id="categoria">
@@ -37,10 +37,10 @@
                  <option value="{{$item->id}}">{{$item->nombre}}</option>
                  @endforeach
                 </select>
-            </div>            
+            </div>
             <div class="mb-3">
                 <label class="form-label" for="unidad_medida">
-                    Unidad medida                
+                    Unidad medida
                 </label>
                 <select type="text" name="unidad_medida" class="form-select"
                  id="unidad_medida">
@@ -55,13 +55,13 @@
                     Imagen
                 </label>
                 <input type="file" name="imagen" accept="image/*"   class="form-control" id="imagen">
-            </div>                        
+            </div>
             <div class="mb-3">
                 <label class="form-label" for="costo_unitario">
                     Existencias
                 </label>
                 <input type="text" name="existencias" value="{{old('existencia')}}" class="form-control">
-            </div>            
+            </div>
 
             <div class ="mb-3">
                 <label class="form-label" for="descripcion">
@@ -72,11 +72,11 @@
                  {{old('descripcion')}}
                 </textarea>
             </div>
-            <a class="btn btn-primary" href="{{url('/')}}/categorias">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+            <a title="Regresar" class="btn btn-primary" href="{{url('/materiaprimas')}}">
+                 <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button title="Guardar" class="btn btn-success" type="submit">
+                <i class="fa-regular fa-floppy-disk"></i>
             </button>
         </form>
     </div>

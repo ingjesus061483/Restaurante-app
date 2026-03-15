@@ -1,16 +1,16 @@
 @extends('shared/layout')
 @section('title','Crear impuesto')
-@section('content')  
+@section('content')
 <div class="card mb-4">
     <div class="card-body">
-        
-        <form action="{{url('/')}}/impuestos" autocomplete="off" method="post">
+
+        <form action="{{url('/impuestos')}}" autocomplete="off" method="post">
             @csrf
             <div class="mb-3">
                 <label class="form-label" for="nombre">
                     Nombre
                 </label>
-                <input type="text" name="nombre" value="{{old('nombre')}}" 
+                <input type="text" name="nombre" value="{{old('nombre')}}"
                 class="form-control" id="nombre">
             </div>
             <div class="mb-3">
@@ -29,11 +29,11 @@
                  {{old('descripcion')}}
                 </textarea>
             </div>
-            <a class="btn btn-primary" href="{{url('/')}}/impuestos">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+            <a title="Regresar" class="btn btn-primary" href="{{url('/impuestos')}}">
+               <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button title="Guardar" class="btn btn-success" type="submit">
+                <i class="fa-regular fa-floppy-disk"></i>
             </button>
         </form>
     </div>

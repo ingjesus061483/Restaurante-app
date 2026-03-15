@@ -1,9 +1,9 @@
 @extends('shared/layout')
 @section('title','Editar roles')
-@section('content')  
+@section('content')
 <div class="card mb-4">
     <div class="card-body">
-        
+
         <form action="{{url('/')}}/roles/{{$role->id}}" autocomplete="off" method="post">
             @csrf
             @method('PATCH')
@@ -18,17 +18,17 @@
                 <label class="form-label" for="descripcion">
                     Descripcion
                 </label>
-                
+
                 <textarea name="descripcion" id="descripcion"  class="form-control"
                 cols="30" rows="10">
                     {{$role->descripcion}}
                </textarea>
             </div>
-            <a class="btn btn-primary" href="{{url('/')}}/roles">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+            <a title="Regresar" class="btn btn-primary" href="{{url('/roles')}}">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button  title="Guardar" class="btn btn-success" type="submit">
+                <i class="fa-solid fa-floppy-disk"></i>
             </button>
         </form>
     </div>

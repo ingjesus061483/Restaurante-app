@@ -1,8 +1,8 @@
 @extends('shared/layout')
 @section('title','Editar cliente')
-@section('content')  
+@section('content')
 <div class="card mb-4">
-    <div class="card-body">        
+    <div class="card-body">
         <form action="{{url('/clientes')}}/{{$cliente->id}}" autocomplete="off" method="post">
             @csrf
             @method('patch')
@@ -25,7 +25,7 @@
                 <label class="form-label" for="nombre">
                     Apellido
                 </label>
-                <input type="text" name="apellido" class="form-control" value="{{$cliente->apellido}}" 
+                <input type="text" name="apellido" class="form-control" value="{{$cliente->apellido}}"
                 id="apellido">
             </div>
             <div class ="mb-3">
@@ -33,27 +33,27 @@
                     Direccion
                 </label>
                 <input type="text" name="direccion" id="direccion" value="{{$cliente->direccion}}"
-                 class="form-control">        
+                 class="form-control">
             </div>
-            
+
             <div class ="mb-3">
                 <label class="form-label" for="direccion">
                     Telefono
                 </label>
-                <input type="text" name="telefono" id="telefono" value="{{$cliente->telefono}}" class="form-control">        
+                <input type="text" name="telefono" id="telefono" value="{{$cliente->telefono}}" class="form-control">
             </div>
-            
+
             <div class ="mb-3">
                 <label class="form-label" for="direccion">
                     Email
                 </label>
-                <input type="text" name="email"  id="email" value="{{$cliente->email}}" class="form-control">        
+                <input type="text" name="email"  id="email" value="{{$cliente->email}}" class="form-control">
             </div>
-            <a class="btn btn-primary" href="{{url('/')}}/clientes">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+            <a title="Regresar" class="btn btn-primary" href="{{url('/')}}/clientes">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button title="Guardar" class="btn btn-success" type="submit">
+                <i class="fa-regular fa-floppy-disk"></i>
             </button>
         </form>
     </div>

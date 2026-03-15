@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             ImpresoraSeeder::class,
             TipoCobroSeeder::class,
             MesaSeeder::class,
+            CategoriaSeeder::class,
         ]);
     }
 }

@@ -65,7 +65,7 @@ class OrdenServicioRepository implements IRepository
 
     public function GetOrdenByMesa($mesa_id)
     {
-        return OrdenEncabezado::where('cabaña_id',$mesa_id)
+        return OrdenEncabezado::where('mesa_id',$mesa_id)
                               ->where('estado_id',1)
                               ->first();
     }
@@ -88,15 +88,13 @@ class OrdenServicioRepository implements IRepository
     public function GetOrdenesByEmpleados($empleado_id,$fechaini,$fechaFin)
     {
         return OrdenEncabezado::where('empleado_id',$empleado_id)
-                              ->wherebetween('fecha',[date_format($fechaini,'Y-m-d'),
-                                                      date_format($fechaFin,'Y-m-d')])
+                              ->wherebetween('fecha',[$fechaini,$fechaFin])
                               ->orderBy('id', 'DESC')
                               ->get();
     }
     public function GetorderByDate($fechaini,$fechaFin)
     {
-        return OrdenEncabezado::wherebetween('fecha',[date_format($fechaini,'Y-m-d'),
-                                                      date_format($fechaFin,'Y-m-d')]);
+        return OrdenEncabezado::wherebetween('fecha',[$fechaini,$fechaFin]);
 
                               //->get();
     }
@@ -164,7 +162,7 @@ class OrdenServicioRepository implements IRepository
     public function Delete($id)
     {
         $ordenEncabezado=OrdenEncabezado::find($id);
-        $cabaña =$this->_cabanaRepository->find($ordenEncabezado->cabaña_id);
+        $cabaña =$this->_cabanaRepository->find($ordenEncabezado->mesa_id);
         $this->_cabanaRepository->desocuparCabana($cabaña);
         $ordenEncabezado->delete();
     }
@@ -193,7 +191,7 @@ class OrdenServicioRepository implements IRepository
           "total"=>$this->totalizarOrden($detalles),
           'credito'=>$credito,
           'domicilio'=>$domicilio,
-          'cabaña_id'=>$request->input('cabaña'),
+          'mesa_id'=>$request->input('cabaña'),
           'cliente_id'=>$cliente!=null?$cliente->id:null,
           'empleado_id'=>$empleado!=null?$empleado->id:null,
         ]);

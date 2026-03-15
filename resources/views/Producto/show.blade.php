@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="codigo">
                                         Codigo:
@@ -20,7 +20,7 @@
                                     {{$producto->codigo}}
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="codigo">
                                         Nombre:
@@ -28,7 +28,9 @@
                                     {{$producto->nombre}}
                                 </div>
                             </div>
-                            <div class="col-4">
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="costo_unitario">
                                         Costo unitario:
@@ -36,9 +38,7 @@
                                     ${{number_format($producto->costo_unitario)}}
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="costo_unitario">
                                         Precio:
@@ -46,7 +46,9 @@
                                     ${{number_format($producto->precio)}}
                                 </div>
                             </div>
-                            <div class="col-4">
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="categoria">
                                         Categoria:
@@ -54,7 +56,7 @@
                                     {{$producto->categoria->nombre}}
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="unidad_medida">
                                         Unidad medida:
@@ -64,7 +66,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="costo_unitario">
                                         Procesado:
@@ -72,7 +74,7 @@
                                     {{$producto->procesado==1?'si':'no'}}
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="costo_unitario">
                                         Impresora asociada:
@@ -81,18 +83,29 @@
                                 </div>
                             </div>
                         </div>
+                        @if($producto->procesado==1)
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                     <label class="form-label" style="font-weight: bold" for="tiempo_coccion">
+                                        Tiempo coccion:
+                                    </label>
+                                    {{$producto->tiempo_coccion!=null? $producto->tiempo_coccion.' minutos':''}}
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-12">
-                                @if($producto->procesado==1)
                                 <div class ="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="descripcion">
                                         Preparacion:
                                     </label>
                                     {{$producto->preparacion}}
                                 </div>
-                                @endif
+
                             </div>
                         </div>
+                         @endif
                     </div>
                     <div class="col-6">
                         @if($producto->imagen!=null)
@@ -111,21 +124,17 @@
         @if($producto->procesado==1)
         <div class="card mb-4">
             <div class="card-header">
-                <div class="row">
-                    <div class="col-4" >
-                        Ingredientes
-                    </div>
-                    <div class="col-4" >
-                    </div>
-                    <div class="col-4" >
-                        <form action="{{url('ingredientes/create')}}" method="get">
-                            <input type="hidden" name="producto" value="{{$producto->id}}">
-                            <button class="btn btn-primary" type="submit">Nuevo ingrediente </button>
-                        </form>
-                    </div>
-                </div>
+                Ingredientes
             </div>
             <div class="card-body">
+                <div style="padding-bottom:10px" >
+                        <form action="{{url('ingredientes/create')}}" method="get">
+                            <input type="hidden" name="producto" value="{{$producto->id}}">
+                            <button title="Nuevo ingrediente" class="btn btn-primary" type="submit">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </form>
+                    </div>
                 <table id="datatablesSimple">
                     <thead>
                         <tr>
@@ -173,65 +182,69 @@
             </div>
         </div>
         @else
-        <div class="card mb-4">
-            <div class="card-header">
-                Detalles de movimiento
-            </div>
-            <div class="card-body">
+        <div style="padding: 10px">
                 <div class="row">
                     <div class="col-6">
-                        <div class="mb-3">
-                            Detalles de entrada
-                        </div>
-                        <div class="mb-3">
-                            <table class="table">
-                                <thead>
-                                    <th>Id</th>
-                                    <th>Fecha</th>
-                                    <th>Cantidad</th>
-                                </thead>
-                                <tbody>
-                                    @foreach($entradas as $item )
-                                    <tr>
-                                        <td>{{ $item->id}}</td>
-                                        <td>{{ $item->fecha}}</td>
-                                        <td>{{number_format( $item->cantidad)}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Detalles de entrada
+                            </div>
+                            <div class="card-body" >
+                                <div style="overflow-x: scroll; ">
+                                <table class="table">
+                                    <thead>
+                                        <th>Id</th>
+                                        <th>Fecha</th>
+                                        <th>Cantidad</th>
+                                    </thead>
+                                    <tbody   >
+                                        @foreach($entradas as $item )
+                                        <tr>
+                                            <td>{{ $item->id}}</td>
+                                            <td>{{ $item->fecha}}</td>
+                                            <td>{{number_format( $item->cantidad)}}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="mb-3">
-                            Detalles de salida
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Detalles de salida
+                            </div>
+                            <div class="card-body">
+                                <div style="overflow-x: scroll; ">
+                                <table class="table">
+                                    <thead>
+                                        <th>Id</th>
+                                        <th>Fecha</th>
+                                        <th>Cantidad</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($salidas as $item )
+                                        <tr>
+                                            <td>{{ $item->id}}</td>
+                                            <td>{{ $item->fecha}}</td>
+                                            <td>{{number_format( $item->cantidad)}}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <table class="table">
-                                <thead>
-                                    <th>Id</th>
-                                    <th>Fecha</th>
-                                    <th>Cantidad</th>
-                                </thead>
-                                <tbody>
-                                    @foreach($salidas as $item )
-                                    <tr>
-                                        <td>{{ $item->id}}</td>
-                                        <td>{{ $item->fecha}}</td>
-                                        <td>{{number_format( $item->cantidad)}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4" >
                         <div class="mb-3">
-                            <label class="form-label" for="imagen">
-                                Total entrada
+                            <label class="form-label" style="font-weight: bold" for="imagen">
+                                Total entrada:
                             </label>
                             {{number_format( $total_entrada)}}
                         </div>
@@ -239,8 +252,8 @@
                     </div>
                     <div class="col-4" >
                         <div class="mb-3">
-                            <label class="form-label" for="imagen">
-                                Total salida
+                            <label class="form-label" style="font-weight: bold" for="imagen">
+                                Total salida:
                             </label>
                             {{ number_format($total_salida)}}
                         </div>
@@ -249,20 +262,20 @@
                     <div class="col-4" >
 
                         <div class="mb-3">
-                            <label class="form-label" for="imagen">
-                                Total movimiento
+                            <label class="form-label" style="font-weight: bold" for="imagen">
+                                Total movimiento:
                             </label>
                             {{number_format($total_entrada-$total_salida)}}
                         </div>
 
                     </div>
                 </div>
-            </div>
-        </div>
 
+        </div>
         @endif
-        <a class="btn btn-primary" href="{{url('/productos')}}">
-            Regresar
+        <a title="Regresar" class="btn btn-primary" href="{{url('/productos')}}">
+            <i class="fa-solid fa-arrow-left"></i>
+
         </a>
         <a class="btn btn-danger" target="blank" title="Mostrar existencia por producto" href="{{url('file/MostrarExistenciaPorProducto')}}/{{$producto->id}}">
             <i class="fa-solid fa-file-pdf"></i>

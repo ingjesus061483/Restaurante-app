@@ -1,9 +1,9 @@
 @extends('shared/layout')
 @section('title','Crear observacion')
-@section('content')  
+@section('content')
 <div class="card mb-4">
     <div class="card-body">
-        
+
         <form action="{{url('/')}}/observaciones" autocomplete="off" method="post">
             @csrf
             <div class="mb-3">
@@ -21,11 +21,11 @@
                  {{old('descripcion')}}
                 </textarea>
             </div>
-            <a class="btn btn-primary" href="{{url('/')}}/observaciones">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+            <a title="Regresar" class="btn btn-primary" href="{{url('/')}}/observaciones">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button title="Guardar" class="btn btn-success" type="submit">
+                <i class="fa-solid fa-floppy-disk"></i>
             </button>
         </form>
     </div>

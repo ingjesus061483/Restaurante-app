@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\OrdenEncabezado;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutorizeRequest;
+use App\Http\Requests\OrdenEncabezado\IndexRequest;
 use App\Http\Requests\OrdenEncabezado\StoreRequest;
 use App\Http\Requests\UpdateOrdenEncabezadoRequest;
 use App\Repositories\MesaRepository;
@@ -34,7 +36,6 @@ class OrdenEncabezadoController extends Controller
     }
     public function MoveTableByOrder(Request $request,$id){
         $cabanaSource=$this->_cabanaRepository->GetCabanabyCode($request->source);
-
         if($cabanaSource!=null)
         {
             $this->_ordenServicioRepository->updateTableByOrder($request,$id);
@@ -60,18 +61,16 @@ class OrdenEncabezadoController extends Controller
         /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if (request()->accion=="PDF")
-        {
-            $request=request();
+        if ($request->accion=="PDF"){
             return redirect()->to("file/OrdenesByFecha?fechaIni=$request->fechaIni&fechaFin=$request->fechaFin");
         }
-        if (session()->has('detalles'))
+        if(session()->has('detalles'))
         {
             $detalles =session('detalles');
             $orden_id=$detalles[0]->orden_id;
@@ -81,16 +80,8 @@ class OrdenEncabezadoController extends Controller
             }
             return  redirect()->to('ordenservicio/create');
         }
-        if( $this->_ordenServicioRepository->GetDate(request(),$fechaini,$fechafin))
-        {
-            $ordenes=[];
-            $data=[
-                'fechaIni'=>date_format($fechaini,'Y-m-d'),
-                'fechaFin'=>date_format($fechafin,'Y-m-d'),
-                'ordenes'=>$ordenes
-            ];
-            return view('Orden.index',$data)->withErrors("fecha inicial no puede ser mayor a la final.");
-        }
+        $fechaini=$request->fechaIni;
+        $fechafin=$request->fechaFin;
         $user=Auth::user();
         if($user->role_id==5)
         {
@@ -105,8 +96,8 @@ class OrdenEncabezadoController extends Controller
 
         }
         $data=[
-            'fechaIni'=>date_format($fechaini,'Y-m-d'),
-            'fechaFin'=>date_format($fechafin,'Y-m-d'),
+            'fechaIni'=>$fechaini,
+            'fechaFin'=>$fechafin,
             'cabanas'=>$this->_cabanaRepository-> GetCabanasDesocupadas(),
             'ordenes'=>$ordenes
         ];
@@ -216,7 +207,7 @@ class OrdenEncabezadoController extends Controller
         $fechahora_entrega =$ordenEncabezado->fecha.' '.$ordenEncabezado->hora_entrega;
         if($this->_ordenServicioRepository->ComprobarTiempoEntrega($fechahora_entrega))
         {
-            return back()->withErrors('El pedido'.$ordenEncabezado->codigo.' no esta listo aun');
+            return back()->withErrors('El pedido'.$ordenEncabezado->codigo.' aun no esta listo');
         }
         $this->_ordenServicioRepository->Update($id,null);
         return redirect()->to(url('/ordenservicio'));
@@ -226,16 +217,13 @@ class OrdenEncabezadoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(AutorizeRequest $request, $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back()->withErrors("Usted no tiene permisos para borrar esta operacion");
-        }
+
         $this->_ordenServicioRepository->Delete($id);
         return redirect()->to(url('/ordenservicio'));
         //

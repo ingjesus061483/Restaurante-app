@@ -1,51 +1,49 @@
 @extends('shared/reportes')
 @section('title','vista previa ordenes')
-@section('content')  
-<h2> Ordenes de servicio </h2>      
-<div class="row">    
+@section('content')
+<h2> Ordenes de servicio </h2>
+<div class="row">
     <div class="col-12">
     <table class="table">
             <thead>
-                <tr>                    
+                <tr>
                     <th>Id</th>
-                    <th>Codigo </th>                    
-                    <th>Fecha </th>                    
-                    <th>hora</th>                    
+                    <th>Codigo </th>
+                    <th>Fecha-hora </th>
                     <th>Cabaña</th>
                     <th>Cliente</th>
-                    <th>Mesero</th>                    
-                    <th>Total</th>                    
+                    <th>Mesero</th>
+                    <th>Total</th>
                 </tr>
-            </thead>            
-            <tbody>    
+            </thead>
+            <tbody>
                 @foreach($ordenes as $item)
                 <tr style="{{$item->estado_id==2?'color:green':'color:black'}}">
                     <td>{{$item->id}}</td>
-                    <td>{{$item->codigo}}</td>                    
-                    <td>{{$item->fecha}} </td>                    
-                    <td>{{$item->hora}}</td>                                        
-                    <td>{{$item->cabaña!=null? $item->cabaña->codigo.' - '.$item->cabaña->nombre:""}}</td>
+                    <td>{{$item->codigo}}</td>
+                    <td>{{$item->fecha.' '.$item->hora}} </td>
+                    <td>{{$item->mesa!=null? $item->mesa->codigo.' - '.$item->mesa->nombre:""}}</td>
                     <td>{{$item->cliente!=null?$item->cliente->nombre.' '.$item->cliente->apellido:""}}</td>
-                    <td>{{$item->empleado->nombre. ' '.$item->empleado->apellido}}</td>                    
-                    <td>${{number_format($item->total)}}</td>                    
+                    <td>{{$item->empleado->nombre. ' '.$item->empleado->apellido}}</td>
+                    <td>${{number_format($item->total)}}</td>
                 </tr>
-                @endforeach   
+                @endforeach
             </tbody>
         </table>
     </div>
 </div>
-<div class="row">            
-    <div class="col-4">          
+<div class="row">
+    <div class="col-4">
         &nbsp;
-    </div>            
-    <div class="col-4" >                    
+    </div>
+    <div class="col-4" >
         &nbsp;
-    </div>                        
-    <div class="col-4" >                      
-        <strong>                                               
-            Total ventas:                        
-        </strong>                                    
-        ${{number_format($total)}}                        
+    </div>
+    <div class="col-4" >
+        <strong>
+            Total ventas:
+        </strong>
+        ${{number_format($total)}}
     </div>
 </div>
 @endsection

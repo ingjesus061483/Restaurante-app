@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pago;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
+use App\Http\Requests\Pago\IndexRequest;
 use App\Http\Requests\Pago\StoreRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdatePagoRequest;
@@ -83,7 +84,7 @@ class PagoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(AutorizeRequest $request  )
+    public function index(IndexRequest $request  )
     {
         if(!Auth::check())
         {
@@ -92,21 +93,21 @@ class PagoController extends Controller
 
        // $forma_pago=request()->input('forma_pago');
 
-        if( $this->_pagoRepository->GetDate(request(),$fechaini,$fechafin))
+      /*  if( $this->_pagoRepository->GetDate(request(),$fechaini,$fechafin))
         {
-              $pagos=$this->_pagoRepository->GetAll();;
+              $pagos=$this->_pagoRepository->GetAll();
             $data=[
                 'fechaIni'=>date_format($fechaini,'Y-m-d'),
                 'fechaFin'=>date_format($fechafin,'Y-m-d'),
                 'ordenes'=>$pagos
             ];
             return view('Orden.index',$data)->withErrors("fecha inicial no puede ser mayor a la final.");
-        }
-        $pagos=$this->_pagoRepository-> getPagosbyDate($fechaini,$fechafin);
+        }*/
+        $pagos=$this->_pagoRepository-> getPagosbyDate($request->fechaIni,$request->fechaFin);
 
         $data=[
-            'fechaIni'=>date_format($fechaini,'Y-m-d'),
-            'fechaFin'=>date_format($fechafin,'Y-m-d'),
+            'fechaIni'=>$request->fechaIni,
+            'fechaFin'=>$request->fechaFin,
             'forma_pago'=>$this->_formapagoRepository->GetAll(),
             'totales'=>$this->_pagoRepository-> TotalesPagos(),
             'pagos'=>$pagos
@@ -200,7 +201,7 @@ class PagoController extends Controller
         settype($recibido,"double");
         settype($total_pagar,"double");
         $ordenServicio=$this->_ordenServicioRepository->Find($request->input('orden_id'));
-        $cabana=$ordenServicio->cabaña!=null?$ordenServicio->cabaña:null;
+        $cabana=$ordenServicio->mesa!=null?$ordenServicio->mesa:null;
         $this->_cabanaRepository->desocuparCabana($cabana);
         if($ordenServicio->credito==0)
         {

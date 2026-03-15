@@ -1,14 +1,17 @@
 @extends('shared/layout')
-@section('title','Totales de pago por formas de pagos')
-@section('content')  
-<div class="card mb-4">  
+@section('title','Totales por formas de pagos')
+@section('content')
+<div class="card mb-4">
     <div class="card-header">
+        <i class="fa-solid fa-filter"></i> &nbsp; Filtros
+    </div>
+    <div class="card-body">
         <div class="row">
-            <div class="col-3">
+            <div class="col-12">
                 <div class="mb-3">
-                    <label class="form-label" for="codigo">
-                        Forma de pago                
-                    </label>                    
+                    <label style="font-weight: bold" class="form-label" for="codigo">
+                        Forma de pago
+                    </label>
                     <select name="" class="form-select" id="forma-pago">
                         <option value="">seleccione una forma de pago </option>
                         @foreach($formaPagos as $item)
@@ -17,54 +20,60 @@
                     </select>
                 </div>
             </div>
-            <div class="col-9">
-                <form action="{{url('/pagodetalle')}}">   
-                    <input type="hidden" name="forma_pago"value="{{$formaPago!=null?$formaPago:''}}" >                       
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="{{url('/pagodetalle')}}">
+                    <input type="hidden" name="forma_pago"value="{{$formaPago!=null?$formaPago:''}}" >
                     <div class="row">
-                        <div class="col-4" >
-                            <label class="form-label" for="codigo">                        
-                                Fecha inicio                                           
-                            </label>                    
-                            <input name="fechaIni" value="{{$fechaIni}}"  class="form-control" type="date"/>                                        
+                        <div class="col-6" >
+                            <label class="form-label" for="codigo">
+                                Fecha inicio
+                            </label>
+                            <input name="fechaIni" value="{{$fechaIni}}"  class="form-control" type="date"/>
                         </div>
-                        <div class="col-4">
-                            <label class="form-label" for="codigo">                        
-                                Fecha fin                                           
-                            </label>                                        
+                        <div class="col-6">
+                            <label class="form-label" for="codigo">
+                                Fecha fin
+                            </label>
                             <input name="fechaFin" class="form-control" value="{{$fechaFin}}" type="date"/>
                         </div>
-                        <div class="col-4">
-                            <br>
-                            <button type="submit" class="btn btn-primary"> Buscar</button>    
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="margin-top: 10px">
+                             <button type="submit" title="Buscar"  name="accion" class="btn btn-primary" >
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
                         </div>
-                    </div>                              
+                    </div>
                 </form>
             </div>
         </div>
-        
-    </div> 
+    </div>
+</div>
+<div class="card mb-4">
     <div class="card-body">
         <table id="datatablesSimple">
             <thead>
-                <tr>             
-                    <th>Forma  pago</th>                    
-                    <th> Total valor recibido</th>                    
+                <tr>
+                    <th>Forma  pago</th>
+                    <th> Total valor recibido</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <th>Forma  pago</th>                                        
+                    <th>Forma  pago</th>
                     <th> Total valor recibido</th>
-                </tr>        
+                </tr>
             </tfoot>
             <tbody>
                 @foreach($pagosdetalles as $item)
-                <tr>               
-                    <td>{{$item->forma_pago}}</td>                                     
-                    <td>${{number_format($item->Total_valor_recibido)}}</td>                                
+                <tr>
+                    <td>{{$item->forma_pago}}</td>
+                    <td>${{number_format($item->Total_valor_recibido)}}</td>
                 </tr>
-                @endforeach   
-            </tbody>        
+                @endforeach
+            </tbody>
         </table>
     </div>
 </div>

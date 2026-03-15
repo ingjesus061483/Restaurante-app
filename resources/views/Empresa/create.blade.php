@@ -1,8 +1,8 @@
 @extends('shared/layout')
 @section('title','Crear empresa')
-@section('content')  
+@section('content')
 <div class="card mb-4">
-    <div class="card-body">           
+    <div class="card-body">
         <form action="{{url('/empresas')}}" enctype="multipart/form-data" autocomplete="off" method="post">
             @csrf
             <div class="mb-3">
@@ -27,34 +27,34 @@
                 <label class="form-label" for="direccion">
                     Direccion
                 </label>
-                <input type="text" name="direccion" id="direccion" value="{{old('direccion')}}" class="form-control">        
+                <input type="text" name="direccion" id="direccion" value="{{old('direccion')}}" class="form-control">
             </div>
-            
+
             <div class ="mb-3">
                 <label class="form-label" for="telefono">
                     Telefono
                 </label>
-                <input type="text" name="telefono" id="telefono" value="{{old('telefono')}}" class="form-control">        
+                <input type="text" name="telefono" id="telefono" value="{{old('telefono')}}" class="form-control">
             </div>
-            
+
             <div class ="mb-3">
                 <label class="form-label" for="email">
                     Email
                 </label>
-                <input type="text" name="email" id="email" value="{{old('email')}}" class="form-control">        
+                <input type="text" name="email" id="email" value="{{old('email')}}" class="form-control">
             </div>
             <div class ="mb-3">
                 <label class="form-label" for="contacto">
                     Contacto
                 </label>
-                <input type="text" name="contacto" id="contacto" value="{{old('contacto')}}" class="form-control">        
+                <input type="text" name="contacto" id="contacto" value="{{old('contacto')}}" class="form-control">
             </div>
             <div class ="mb-3">
                 <label class="form-label" for="imagen">
                     Logo
                 </label>
                 <input type="file" name="imagen" accept="image/*"   class="form-control" id="imagen">
-            </div> 
+            </div>
             <div class ="mb-3">
                 <label class="form-label" for="slogan">
                     Slogan
@@ -65,21 +65,21 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="tipo_regimen">
-                    Tipo regimen            
+                    Tipo regimen
                 </label>
                 <select class="form-select" name="tipo_regimen" id="tipo_regimen">
                     <option value="">seleccione un tipo regimen</option>
                     @foreach ($tipo_regimen as $item)
-                    <option value="{{$item->id}}">{{$item->nombre}}</option>        
+                    <option value="{{$item->id}}">{{$item->nombre}}</option>
                     @endforeach
                 </select>
             </div>
-           
-            <a class="btn btn-primary" href="{{url('/')}}/empresas">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+
+            <a  title="Regresar" class="btn btn-primary" href="{{url('/empresas')}}">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button title="Guardar" class="btn btn-success" type="submit">
+                <i class="fa-regular fa-floppy-disk"></i>
             </button>
         </form>
     </div>

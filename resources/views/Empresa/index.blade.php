@@ -1,18 +1,19 @@
 @extends('shared/layout')
 @section('title','Listado de empresas')
-@section('content')  
+@section('content')
 <div class="card mb-4">
-    <div class="card-header">
-        <a href="{{url('/empresas/create')}}" class="btn btn-primary">Crear empresa </a>
-    </div>
+
     <div class="card-body">
+        <div style="padding-bottom: 10px">
+            <a href="{{url('/empresas/create')}}" class="btn btn-primary">Crear empresa </a>
+        </div>
         <table id="datatablesSimple">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>nit</th>
                     <th>nombre</th>
-                    <th>Camara de comercio</th>                             
+                    <th>Camara de comercio</th>
                     <th>Direccion</th>
                     <th>Telefono</th>
                     <th>Email</th>
@@ -29,7 +30,7 @@
                     <th>Id</th>
                     <th>nit</th>
                     <th>nombre</th>
-                    <th>Camara de comercio</th>                             
+                    <th>Camara de comercio</th>
                     <th>Direccion</th>
                     <th>Telefono</th>
                     <th>Email</th>
@@ -39,14 +40,14 @@
                     <th>Tipo de regimen</th>
                     <th></th>
                     <th></th>
-                </tr>        
+                </tr>
             </tfoot>
             <tbody>
                 @foreach($empresas as $item)
                 <tr>
-                    <td>{{$item->id}}</td>            
+                    <td>{{$item->id}}</td>
                     <td>{{$item->nit}}</td>
-                    <td>{{$item->nombre }}</td>            
+                    <td>{{$item->nombre }}</td>
                     <td>{{$item->camara_de_comercio}}</td>
                     <td>{{$item->direccion}}</td>
                     <td>{{$item->telefono}}</td>
@@ -60,18 +61,18 @@
                             <i class="fa-solid fa-pen"></i>
                         </a>
                     </td>
-                    <td>                
+                    <td>
                         <form onsubmit="return validar('Desea eliminar este registro?');" action="{{url('/')}}/empresas/{{$item->id}}" method="post">
                             @csrf
                             @method('delete')
-                            <button title="Eliminar" class="btn btn-danger" type="submit"> 
+                            <button title="Eliminar" class="btn btn-danger" type="submit">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>
-                    </td>        
+                    </td>
                 </tr>
-                @endforeach   
-            </tbody>        
+                @endforeach
+            </tbody>
         </table>
     </div>
 </div>

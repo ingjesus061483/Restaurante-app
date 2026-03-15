@@ -1,17 +1,17 @@
 @extends('shared/layout')
 @section('title','Editar impuesto')
-@section('content')  
+@section('content')
 <div class="card mb-4">
     <div class="card-body">
-        
-        <form action="{{url('/')}}/impuestos/{{$impuesto->id}}" autocomplete="off" method="post">
+
+        <form action="{{url('/impuestos')}}/{{$impuesto->id}}" autocomplete="off" method="post">
             @csrf
             @method('PATCH')
             <div class="mb-3">
                 <label class="form-label" for="nombre">
                     Nombre
                 </label>
-                <input type="text" name="nombre" value="{{$impuesto->nombre}}" 
+                <input type="text" name="nombre" value="{{$impuesto->nombre}}"
                 class="form-control" id="nombre">
             </div>
             <div class="mb-3">
@@ -30,11 +30,11 @@
                  {{$impuesto->descripcion}}
                 </textarea>
             </div>
-            <a class="btn btn-primary" href="{{url('/')}}/impuestos">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+            <a  class="btn btn-primary" href="{{url('/impuestos')}}">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button title="Guardar" class="btn btn-success" type="submit">
+                <i class="fa-regular fa-floppy-disk"></i>
             </button>
         </form>
     </div>

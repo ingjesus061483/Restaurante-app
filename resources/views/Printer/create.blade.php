@@ -1,8 +1,8 @@
 @extends('shared/layout')
 @section('title','Crear impresora')
-@section('content')  
+@section('content')
 <div class="card mb-4">
-    <div class="card-body">        
+    <div class="card-body">
         <form action="{{url('/impresoras')}}" autocomplete="off" method="post">
             @csrf
             <div class="mb-3">
@@ -26,7 +26,7 @@
 
             <div class="mb-3">
                 <label class="form-label" for="nombre">
-                    Tamaño fuente encabezado                
+                    Tamaño fuente encabezado
                 </label>
                 <input type="text" name="tamaño_fuente_encabezado" value="{{old('tamaño_fuente_encbezado')}}" class="form-control" id="nombre">
             </div>
@@ -46,11 +46,11 @@
                  {{old('descripcion')}}
                 </textarea>
             </div>
-            <a class="btn btn-primary" href="{{url('/')}}/impresoras">
-                Regresar
-            </a> 
-            <button class="btn btn-success" type="submit">
-                Guardar
+            <a title="Regresar" class="btn btn-primary" href="{{url('/impresoras')}}">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <button title="Guardar"  class="btn btn-success" type="submit">
+                <i class="fa-solid fa-floppy-disk"></i>
             </button>
         </form>
     </div>
