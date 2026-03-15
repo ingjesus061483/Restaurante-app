@@ -5,7 +5,9 @@
 
     <div class="card-body">
         <div style="padding-bottom: 10px">
-            <a href="{{url('/clientes/create')}}" class="btn btn-primary">Crear cliente </a>
+            <a title="Crear cliente" href="{{url('/clientes/create')}}" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i>
+            </a>
         </div>
         <table id="datatablesSimple">
             <thead>

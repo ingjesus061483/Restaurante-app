@@ -34,7 +34,7 @@
                                     <label style="font-weight: bold" class="form-label" for="costo_unitario">
                                         Costo unitario:
                                     </label>
-                                    {{number_format( $materiaprima->costo_unitario)}}
+                                    ${{number_format( $materiaprima->costo_unitario)}}
                                 </div>
                             </div>
                             <div class="col-6">

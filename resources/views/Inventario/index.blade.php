@@ -19,10 +19,10 @@
                     <th>Costo unitario</th>
                     <th>Categoria</th>
                     <th>Unidad medida</th>
-                    <th>Tipo</th>
                     <th>Total enetrada </th>
                     <th>Total salida</th>
                     <th>Total</th>
+                    <th>Tipo</th>
                     <th></th>
                 </tr>
             </thead>
@@ -34,10 +34,10 @@
                     <th>Costo unitario</th>
                     <th>Categoria</th>
                     <th>Unidad medida</th>
-                    <th>Tipo</th>
                     <th>Total enetrada </th>
                     <th>Total salida</th>
                     <th>Total</th>
+                    <th>Tipo</th>
                     <th></th>
                 </tr>
             </tfoot>
@@ -50,10 +50,10 @@
                     <td>${{number_format($item->costo_unitario)}}</td>
                     <td>{{$item->categoria}}</td>
                     <td>{{$item->unidad_medida}}</td>
-                    <td>{{str_replace('_', ' ', $item->tipo)}}</td>
                     <td>{{number_format( $item->total_entrada)}}</td>
                     <td>{{number_format($item->total_salida)}}</td>
                     <td>{{number_format($item->total_inventario)}}</td>
+                    <td>{{str_replace('_', ' ', $item->tipo)}}</td>
                     <td>
                         <a title="Ver detalles" class="btn btn-success"
                             href="{{url('/')}}/{{$item->tipo=='producto'?'productos':'materiaprimas'}}/{{$item->id}}">
