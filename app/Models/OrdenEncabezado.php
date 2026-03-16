@@ -12,7 +12,7 @@ class OrdenEncabezado extends Model
         return $this->belongsTo(Mesa::class,'mesa_id');
     }
     public function cliente(){
-        return $this->belongsTo(cliente::class,'cliente_id');
+        return $this->belongsTo(Cliente::class,'cliente_id');
     }
     public function empleado(){
         return  $this->belongsTo(Empleado::class,'empleado_id');

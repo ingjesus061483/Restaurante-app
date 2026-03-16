@@ -11,20 +11,17 @@ class Producto extends Model
     public function existencias(){
         return $this->hasMany(Existencia::class,'producto_id');
     }
-  
+
     public function categoria(){
        return $this->belongsTo(Categoria::class,'categoria_id');
     }
     public function unidad_medida(){
-        return $this->belongsTo(UnidadMedida::class,'unidad_medida_id');    
+        return $this->belongsTo(UnidadMedida::class,'unidad_medida_id');
     }
     public  function impresora()
-    {       
-        return $this->belongsTo(impresora::class,'impresora_id');        
+    {
+        return $this->belongsTo(Impresora::class,'impresora_id');
     }
-    public function factura_detalles(){
-        return $this->hasMany(FacturaDetalle::class,'producto_id');
-    } 
     public function preparacions(){
         return $this->hasMany(Preparacion::class,'producto_id');
     }

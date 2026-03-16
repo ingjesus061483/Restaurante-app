@@ -14,9 +14,7 @@ class Cliente extends Model
     public function ordens(){
         return $this->hasMany(OrdenEncabezado::class,'cliente_id');
     }
-    public function facturas(){
-        return $this->hasMany(FacturaEncabezado::class,'cliente_id');
-    } 
-  
+
+
 }
 

@@ -5,19 +5,19 @@ use App\Contracts\IRepository;
 use App\Models\Pago;
 use App\Models\PagoDetalle;
 class PagoRepository implements IRepository{
-    protected impuestoRepository $_impuestoRepository;
+    protected ImpuestoRepository $_impuestoRepository;
     protected PagoDetalleRepository $_pagoDetalleRepository ;
-    public function __construct(impuestorepository $impuestoRepository ,PagoDetalleRepository $pagoDetalleRepository) 
+    public function __construct(ImpuestoRepository $impuestoRepository ,PagoDetalleRepository $pagoDetalleRepository)
     {
         $this->_pagoDetalleRepository=$pagoDetalleRepository;
         $this->_impuestoRepository = $impuestoRepository;
     }
     function acumular($pagoDetalles,&$acum)
     {
-        
+
         foreach($pagoDetalles as $item)
         {
-            $acum=$acum+ $item->valor_recibido;                   
+            $acum=$acum+ $item->valor_recibido;
         }
     }
     public function valorRecibido($pagos)
@@ -58,19 +58,19 @@ class PagoRepository implements IRepository{
         return $fechaini>$fechafin;
     }
     public function GetAll()
-    {  
-        $fecha1 = date_create();        
+    {
+        $fecha1 = date_create();
         date_add($fecha1, date_interval_create_from_date_string('-1 days'));
-        $fecha2=date_create();        
+        $fecha2=date_create();
         return Pago::wherebetween('fecha_hora',[date_format($fecha1,'Y-m-d'),
                                    date_format($fecha2,'Y-m-d')])
-                                 ->orderby('id','Desc') 
+                                 ->orderby('id','Desc')
                                  ->get();
     }
     public function getPagosbyDate($fechaini,$fechaFin){
         return Pago::wherebetween('fecha_hora',[$fechaini,
         $fechaFin])
-      ->orderby('id','Desc') 
+      ->orderby('id','Desc')
       ->get();
     }
     public function Find($id){
@@ -88,7 +88,7 @@ class PagoRepository implements IRepository{
             'total_pagar'=>$request->total_pagar,
             'servicio_voluntario'=>$request->serviciovol==null?0:$request->serviciovol,
             'recibido'=>$request->acumulado,
-            'cambio'=>-1*$request-> faltante,  
+            'cambio'=>-1*$request-> faltante,
             'observaciones'=>$request->observaciones,
             'orden_id'=>$request->orden_id
         ]);
@@ -97,7 +97,7 @@ class PagoRepository implements IRepository{
         {
             $item->pago_id=$pago->id;
             $this->_pagoDetalleRepository->Store($item);
-           
+
         }
 
     }
@@ -107,5 +107,5 @@ class PagoRepository implements IRepository{
     public function Delete($id){
 
     }
-  
+
 }
