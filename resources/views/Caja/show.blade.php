@@ -45,13 +45,13 @@
                             <label class="form-label" for="">
                                 Fecha inicial
                             </label>
-                            <input type="date" class="form-control" name="fechaIni" id="">
+                            <input type="date" class="form-control" name="fechaIni" value="{{$fechaIni}}" id="">
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label" for="">
                                 Fecha fin
                             </label>
-                            <input type="date" class="form-control" name="fechaFin" id="">
+                            <input type="date" class="form-control" name="fechaFin" value="{{$fechaFin}}" id="">
                         </div>
                     </div>
                     <div style="padding-top:5px ">
@@ -74,7 +74,8 @@
                         <tr>
                             <th>Id</th>
                             <th>Caja</th>
-                            <th>Fecha hora</th>
+                            <th>Fecha </th>
+                            <th>Hora</th>
                             <th>Concepto</th>
                             <th>Valor</th>
                         </tr>
@@ -84,7 +85,8 @@
                         <tr style="{{$item->ingreso==1?'color:green':'color:red'}}"  >
                             <td>{{$item->id}}</td>
                             <td>{{$item->caja}}</td>
-                            <td>{{$item->fecha_hora}}</td>
+                            <td>{{$item->fecha}}</td>
+                            <td>{{$item->hora}}</td>
                             <td>{{$item->concepto}}</td>
                             <td>${{number_format( $item->valor)}}</td>
                         </tr>

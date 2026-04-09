@@ -69,7 +69,8 @@ class PagoController extends Controller
             if($item->forma_pago_id==1)
             {
                 $CajaMovimiento =(object)[
-                    "fecha_hora"=>date("Y-m-d H:i:s"),
+                    "fecha"=>date("Y-m-d"),
+                    "hora"=>date("H:i:s"),
                     "concepto"=>'Ingreso de pago',
                     "valor"=>$item->valor_recibido,
                     "ingreso"=>1,

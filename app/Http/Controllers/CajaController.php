@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
+use App\Http\Requests\caja\ShowRequest;
 use App\Http\Requests\Caja\StoreRequest;
 use App\Http\Requests\Caja\UpdateRequest;
 use App\Repositories\CajaMovimientoRepository;
@@ -64,16 +65,15 @@ class CajaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show (AutorizeRequest $request, int $id)
+    public function show (ShowRequest $request, int $id)
     {
         if(!Auth::check())
         {
             return redirect()->to('login');
         }
-        $fechaIni=request()->fechaIni;
-        $fechaFin=request()->fechaFin;
-        $caja=$this->_cajaRepository->Find($id);   
-             
+        $fechaIni=$request->fechaIni;
+        $fechaFin=$request->fechaFin;
+        $caja=$this->_cajaRepository->Find($id);
         if($fechaIni==null && $fechaFin===null)
         {
             $cajaMovimientos=$this->_cajaMovimientoRepository->GetAll()
@@ -82,19 +82,25 @@ class CajaController extends Controller
         }
         else
         {
-            $fechaIni=$fechaIni==null?date("Y-m-d H:i:s"):$fechaIni;
-            $fechaFin=$fechaFin==null?date("Y-m-d H:i:s"):$fechaFin;
+          //  $fechaIni=$fechaIni==null?date("Y-m-d H:i:s"):$fechaIni;
+           // $fechaFin=$fechaFin==null?date("Y-m-d H:i:s"):$fechaFin;
             $cajaMovimientos=$this->_cajaMovimientoRepository->GetAll()
                                                              ->where('cajas.id',$id)
-                                                             ->whereBetween('caja_movimientos.fecha_hora',[
+                                                             ->whereBetween('caja_movimientos.fecha',[
                                                                  $fechaIni,$fechaFin
                                                                 ])
                                                             ->get();
         }
-        $ingreso=$this->_cajaMovimientoRepository->ValorByIngreso($id,1);
-        $egreso=$this->_cajaMovimientoRepository->ValorByIngreso($id);
+        $ingreso=$this->_cajaMovimientoRepository->ValorByIngreso($id,1)->wherebetween('fecha',[
+            $fechaIni,$fechaFin
+           ])->first();
+        $egreso=$this->_cajaMovimientoRepository->ValorByIngreso($id,0)->wherebetween('fecha',[
+            $fechaIni,$fechaFin
+           ])->first();
         $data=[
             'caja'=>$caja,
+            'fechaIni'=>$fechaIni,
+            'fechaFin'=>$fechaFin,
             'ingreso'=>$ingreso!=null?$ingreso->Valor_total:0,
             'egreso'=>$egreso!=null?$egreso->Valor_total:0,
             'cajaMovimientos'=>$cajaMovimientos

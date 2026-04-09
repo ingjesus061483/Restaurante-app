@@ -46,7 +46,8 @@ class CajaMovimientoController extends Controller
         if($total_caja>=$caja->valor_inicial)
         {
             $CajaMovimiento=(object)[
-                'fecha_hora'=>date("Y-m-d H:i:s"),
+                'fecha'=>date("Y-m-d H:i:s"),
+                'hora'=>date("H:i:s"),
                 'concepto'=>$request->concepto,
                 'valor'=>$request->valor,
                 'ingreso'=>$request->ingreso,

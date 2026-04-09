@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('caja_movimientos', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('fecha_hora');
+            $table->date('fecha_hora');
+            $table->time('hora');
             $table->string('concepto',50);
             $table->decimal('valor',10);
             $table->tinyInteger('ingreso')
@@ -23,7 +24,7 @@ return new class extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->timestamps();
-            
+
         });
     }
 
