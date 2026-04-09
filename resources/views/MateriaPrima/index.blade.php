@@ -11,47 +11,39 @@
         <table id="datatablesSimple">
             <thead>
                 <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                     <th>Id</th>
                     <th>Codigo </th>
                     <th>Nombre</th>
-                    <th>Descripcion</th>
                     <th>Costo unitario</th>
                     <th>Unidad medida</th>
                     <th>Categoria</th>
                     <th>Total inventario</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+
                 </tr>
             </thead>
             <tfoot>
                 <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                     <th>Id</th>
                     <th>Codigo </th>
                     <th>Nombre</th>
-                    <th>Descripcion</th>
                     <th>Costo unitario</th>
                     <th>Unidad medida</th>
                     <th>Categoria</th>
                     <th>Total inventario</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+
                 </tr>
             </tfoot>
             <tbody>
                 @foreach($materiaprimas as $item)
                 <tr>
-                    <td>{{$item->id}}</td>
-                    <td>{{$item->codigo}}</td>
-                    <td>{{$item->nombre}}</td>
-                    <td>{{$item->descripcion}}</td>
-                    <td>${{number_format( $item->costo_unitario)}}</td>
-                    <td>{{$item->unidad_medida}}</td>
-                    <td>{{$item->categoria}}</td>
-                    <td>{{number_format( $item->total_inventario)}}</td>
                     <td>
                         <a title="Ver detalles" class="btn btn-success" href="{{url('/materiaprimas')}}/{{$item->id}}">
                             <i class="fa-solid fa-eye"></i>
@@ -77,6 +69,13 @@
                             </button>
                         </form>
                     </td>
+                    <td>{{$item->id}}</td>
+                    <td>{{$item->codigo}}</td>
+                    <td>{{$item->nombre}}</td>
+                    <td>${{number_format( $item->costo_unitario)}}</td>
+                    <td>{{$item->unidad_medida}}</td>
+                    <td>{{$item->categoria}}</td>
+                    <td>{{number_format( $item->total_inventario)}}</td>
                 </tr>
                 @endforeach
             </tbody>

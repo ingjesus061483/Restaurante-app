@@ -7,13 +7,13 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-        <title>@yield('title')</title>   
-        <link rel="shortcut icon" type="image/x-icon" href="{{url('/restaurante-app.ico')}}" />             
+        <title>@yield('title')</title>
+        <link rel="shortcut icon" type="image/x-icon" href="{{url('/restaurante-app.ico')}}" />
         <link rel="stylesheet" href="{{url('/jquery-ui-1.12.1.custom/jquery-ui.css')}}">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="{{url('/css/styles.css')}}" rel="stylesheet" />
         <script src="{{url('/js/fontawesome.js')}}"></script>
-        <!--<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>  -->      
+        <!--<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>  -->
     </head>
     <body class="sb-nav-fixed">
         <input type="hidden" name="base_url" id="base_url" value="{{url('/')}}">
@@ -29,9 +29,9 @@
                     <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                 </div>
             </form>-->
-            <!-- Navbar-->    
+            <!-- Navbar-->
             <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
-          
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,19 +40,19 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         @if(auth()->user()->role_id==1||auth()->user()->role_id==2)
                         <li><a class="dropdown-item" href="{{url('/configuracion')}}">Configuracion</a> </li>
-                        <li><a class="dropdown-item" href="#!">Registro de actividad</a></li> 
-                        <li><hr class="dropdown-divider" /></li> 
-                        @endif                                 
+                        <li><a class="dropdown-item" href="#!">Registro de actividad</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        @endif
                         <li> <a class="dropdown-item"  href="{{url('/usuarios')}}/{{auth()->user()->id}}/edit">Cambiar Contraseña </a></li>
                         <li>
-                          <form class="d-none d-md-inline-block form-inline" action="{{url('/login')}}/{{auth()->user()->id }}"                                    
+                          <form  action="{{url('/login')}}/{{auth()->user()->id }}"
                                     onsubmit="return validar('Desea cerrar la sesion?')" method="post">
                                 @csrf
                                 @method('delete')
                                 <button title="Cerrar sesion" type="submit" class="btn">
-                                  Cerrar sesion  <i class="fa-solid fa-right-from-bracket"></i>                                
+                                  Cerrar sesion  <i class="fa-solid fa-right-from-bracket"></i>
                                 </button>
-                            </form>    
+                            </form>
                         </li>
                     </ul>
                 </li>
@@ -64,16 +64,16 @@
                     <div class="sb-sidenav-menu">
                         @include('shared/menu')
                     </div>
-                    <div class="sb-sidenav-footer">                        
-                      
-                    </div>                
+                    <div class="sb-sidenav-footer">
+
+                    </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">@yield('title')</h1>
-                        @include('shared/errors')    
+                        @include('shared/errors')
                         @yield('content')
                     </div>
                 </main>

@@ -133,8 +133,8 @@
     });
     var dialogingrediente=$("#ingredientes").dialog({
         autoOpen: false,
-        height:520,
-        width: 500,
+        height:450,
+        width: 600,
         modal: true,
         buttons:
         {
@@ -147,8 +147,8 @@
     });
     var dialogexistencia=$("#existencias").dialog({
         autoOpen: false,
-        height:420,
-        width: 500,
+        height:450,
+        width: 600,
         modal: true,
         buttons:
         {

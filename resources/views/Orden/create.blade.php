@@ -4,7 +4,56 @@
 <div class="card mb-4">
     <div class="card-body">
         <div class="row">
-            <div class="col-5">
+            <div class="col-sm-6">
+                <div style="padding-bottom: 5px">
+                    <a title="Crear detalle de Orden" href=" {{url('/ordendetalles/create')}}"
+                    class="btn btn-primary">
+                        <i class="fa-solid fa-circle-plus"></i>
+                    </a>
+                </div>
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Cantidad  </th>
+                            <th>Detalle</th>
+                            <th>Observaciones</th>
+                            <th>Valor Unitario </th>
+                            <th>Total</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach( $orden_detalle as $item)
+                        <tr>
+                            <td>{{$item->id}}</td>
+                            <td>{{number_format( $item->cantidad)}}</td>
+                            <td>{{$item->detalleOrden}}</td>
+                            <td>{{$item->observaciones}}</td>
+                            <td>${{number_format( $item->valor_unitario)}}</td>
+                            <td>${{number_format( $item->total)}} </td>
+                            <td>
+                                <a title="Editar" onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <form action="{{url('/ordendetalles')}}/{{$item->id}}"
+                                    onsubmit="return validar('Desea eliminar este registro?');" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button title="Eliminar" class="btn btn-danger" type="submit">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-6">
                 <form action="{{url('/ordenservicio')}}" enctype="multipart/form-data" autocomplete="off" method="post">
                     @csrf
                     <input type="hidden" name="fecha" value="{{date('Y-m-d')}}" class="form-control"
@@ -39,13 +88,11 @@
                                 Cliente
                             </label>
                             <div id="pnlcliente" class="row"style="display:none">
-                                <div class="col-7">
+                                <div class="input-group">
                                     <input type="text" name="cliente"
                                     value="{{old('cliente')}}" class="form-control" id="cliente">
-                                </div>
-                                <div class="col-5">
-                                    <a class="btn btn-success" href="{{url('/clientes/create')}}">
-                                    Nuevo cliente
+                                    <a class="btn btn-success" title="Nuevo cliente" href="{{url('/clientes/create')}}">
+                                        <i class="fa-solid fa-circle-plus"></i>
                                     </a>
                                 </div>
                             </div>
@@ -102,64 +149,16 @@
                         </label>
                         <input type="checkbox" name="credito" id="">
                     </div>
-
                     <a title="Regresar" class="btn btn-primary" href="{{url('/ordenservicio')}}">
                         <i class="fa-solid fa-arrow-left"></i>
                     </a>
                     <button class="btn btn-success" title="Guardar" type="submit">
                         <i class="fa-regular fa-floppy-disk"></i>
                     </button>
-                </form>
-            </div>
-            <div class="col-7">
-                <div class ="mb-3">
-                    <a title="Crear detalle de Orden" href=" {{url('/ordendetalles/create')}}"  class="btn btn-primary">
-                        <i class="fa-solid fa-circle-plus"></i>
+                    <a class="btn btn-danger" href="{{url('ordenservicio/CancelarOrden/0')}}" title="Cancelar orden">
+                        <i class="fa-solid fa-circle-stop"></i>
                     </a>
-                </div>
-                <div class ="mb-3">
-                    <table id="datatablesSimple">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Cantidad  </th>
-                                <th>Detalle</th>
-                                <th>Observaciones</th>
-                                <th>Valor Unitario </th>
-                                <th>Total</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach( $orden_detalle as $item)
-                            <tr>
-                                <td>{{$item->id}}</td>
-                                <td>{{number_format( $item->cantidad)}}</td>
-                                <td>{{$item->detalleOrden}}</td>
-                                <td>{{$item->observaciones}}</td>
-                                <td>${{number_format( $item->valor_unitario)}}</td>
-                                <td>${{number_format( $item->total)}} </td>
-                                <td>
-                                    <a title="Editar" onclick="EditarDetalleOrden({{$item->id}})" class="btn btn-warning">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <form action="{{url('/ordendetalles')}}/{{$item->id}}"
-                                        onsubmit="return validar('Desea eliminar este registro?');" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button title="Eliminar" class="btn btn-danger" type="submit">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                </form>
             </div>
         </div>
     </div>

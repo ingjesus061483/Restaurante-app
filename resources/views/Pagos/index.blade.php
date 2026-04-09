@@ -8,13 +8,13 @@
     <div class="card-body">
         <form action="{{url('/pagos')}}">
             <div class="row">
-                <div class="col-4">
+                <div class="col-sm-6">
                     <label class="form-label" for="codigo">
                         Fecha inicio
                     </label>
                     <input name="fechaIni" value="{{$fechaIni}}"  class="form-control" type="date"/>
                 </div>
-                <div class="col-6">
+                <div class="col-sm-6">
                     <label class="form-label" for="codigo">
                         Fecha fin
                     </label>
@@ -104,7 +104,7 @@
                 @endforeach
             </tbody>
         </table>
-         <div class="col-3">
+         <div style="padding-top:5px ">
                 <label class="form-label" style="font-weight: bold" for="categoria">
                     Total de venta:
                 </label>

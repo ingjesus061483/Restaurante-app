@@ -4,7 +4,60 @@
 <div class="card mb-4">
     <div class="card-body">
         <div class="row">
-            <div class="col-5">
+            <div class="col-sm-6">
+                <div class ="row">
+                    <div class="col-12">
+                        <div style="padding-bottom: 10px">
+                            <a title="Detalle de pago" id="detalle" class="btn btn-primary" >
+                                <i class="fa-solid fa-list"></i>
+
+                            </a>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th > Forma pago </th>
+                                    <th> Detalle pago</th>
+                                    <th> Valor recibido</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach( $pagoDetalles as $item)
+                                <tr>
+                                    <td>{{$item->id}}</td>
+                                    <td >{{$item->forma_pago}}</td>
+                                    <td>{{$item->detalle_pago}}</td>
+                                    <td>{{$item->valor_recibido}}</td>
+                                    <td>
+                                        <form action="{{url('/pagodetalle')}}/{{$item->id}}" onsubmit="return validar('Desea eliminar este registro?');" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="orden_id" value="{{$ordenServicio->id}}">
+                                            <button title="Eliminar" class="btn btn-danger" type="submit">
+                                            <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <strong> acumulado:</strong> {{$acumulado}}
+                    </div>
+                    <div class="col-6">
+                        <strong>{{$faltante>0?'Faltante:':'Sobrante:'}} </strong>{{$faltante<0?-1*$faltante:$faltante }}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-sm-6">
                 <form action="{{url('/pagos')}}" enctype="multipart/form-data" autocomplete="off" method="post">
                     <input type="hidden" name="acumulado"value="{{$acumulado}}" >
                     <input type="hidden" name="faltante" value="{{$faltante}}">
@@ -104,59 +157,6 @@
                         <i class="fa-regular fa-floppy-disk"></i>
                     </button>
                 </form>
-            </div>
-            <div class="col-7">
-                <div class ="row">
-                    <div class="col-12">
-                        <div style="padding-bottom: 10px">
-                            <a title="Detalle de pago" id="detalle" class="btn btn-primary" >
-                                <i class="fa-solid fa-list"></i>
-
-                            </a>
-                        </div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th > Forma pago </th>
-                                    <th> Detalle pago</th>
-                                    <th> Valor recibido</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach( $pagoDetalles as $item)
-                                <tr>
-                                    <td>{{$item->id}}</td>
-                                    <td >{{$item->forma_pago}}</td>
-                                    <td>{{$item->detalle_pago}}</td>
-                                    <td>{{$item->valor_recibido}}</td>
-                                    <td>
-                                        <form action="{{url('/pagodetalle')}}/{{$item->id}}" onsubmit="return validar('Desea eliminar este registro?');" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <input type="hidden" name="orden_id" value="{{$ordenServicio->id}}">
-                                            <button title="Eliminar" class="btn btn-danger" type="submit">
-                                            <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <strong> acumulado:</strong> {{$acumulado}}
-                    </div>
-                    <div class="col-6">
-                        <strong>{{$faltante>0?'Faltante:':'Sobrante:'}} </strong>{{$faltante<0?-1*$faltante:$faltante }}
-                    </div>
-
-                </div>
-
             </div>
         </div>
     </div>

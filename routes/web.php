@@ -75,6 +75,7 @@ Route::resource("usuarios",UserController::class);
 Route::resource('productos',ProductosController::class);
 Route::resource('cuentascobrar',CuentasCobrarController::class);
 Route::resource('detallecuentascobrar',CuentasCobrarDetallesController::class);
+Route::get('ordenservicio/CancelarOrden/{cancel}',[OrdenEncabezadoController::class,'CancelServiceOrder']);
 Route::get('clientes/GetClientes/{cliente}',[ClienteController::class,'GetClientes']);
 Route::get('productos/cargarProductos/{search}',[ProductosController::class,'loadProduct']);
 Route::get('productos/BuscarProductos/{id}',[ProductosController::class,'SearchProductById']);
@@ -102,3 +103,6 @@ Route::get('impresoras/{id}/edit', [PrinterController::class,'edit']);
 Route::get('reportes/printComandaSesion/{id}', [PrinterController::class,'ComandaSesion']);
 Route::get('reportes/printordenservicio/{id}',[PrinterController::class,'OrdenServicio']);
 Route::get('reportes/printComanda/{id}',[PrinterController::class,'Comanda']);
+Route::get('UnAutorize', function () {
+    return view('Shared.UnAutorize');
+});

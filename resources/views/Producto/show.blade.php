@@ -10,9 +10,9 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-sm-6">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="codigo">
                                         Codigo:
@@ -20,7 +20,7 @@
                                     {{$producto->codigo}}
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="codigo">
                                         Nombre:
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="costo_unitario">
                                         Costo unitario:
@@ -38,7 +38,7 @@
                                     ${{number_format($producto->costo_unitario)}}
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="costo_unitario">
                                         Precio:
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="categoria">
                                         Categoria:
@@ -56,7 +56,7 @@
                                     {{$producto->categoria->nombre}}
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="unidad_medida">
                                         Unidad medida:
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="costo_unitario">
                                         Procesado:
@@ -74,7 +74,7 @@
                                     {{$producto->procesado==1?'si':'no'}}
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="form-label" style="font-weight:bold" for="costo_unitario">
                                         Impresora asociada:
@@ -85,7 +85,7 @@
                         </div>
                         @if($producto->procesado==1)
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                      <label class="form-label" style="font-weight: bold" for="tiempo_coccion">
                                         Tiempo coccion:
@@ -100,14 +100,27 @@
                                     <label class="form-label" style="font-weight:bold" for="descripcion">
                                         Preparacion:
                                     </label>
+                                    <br>
                                     {{$producto->preparacion}}
                                 </div>
-
                             </div>
                         </div>
                          @endif
+                         @if($producto->descripcion!='')
+                         <div class="row">
+                            <div class="col-12">
+                                <div class ="mb-3">
+                                    <label class="form-label" style="font-weight:bold" for="descripcion">
+                                        Descripcion:
+                                    </label>
+                                    <br>
+                                    {{$producto->descripcion}}
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
-                    <div class="col-6">
+                    <div class="col-sm-6">
                         @if($producto->imagen!=null)
                         <div class="mb-3">
                             <label class="form-label" style="font-weight:bold" for="imagen">
@@ -139,7 +152,7 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Materia prima</th>
+                            <th>Insumo</th>
                             <th>Cantidad</th>
                             <th></th>
                             <th></th>
@@ -148,7 +161,7 @@
                     <tfoot>
                         <tr>
                             <th>Id</th>
-                            <th>Materia prima</th>
+                             <th>Insumo</th>
                             <th>Cantidad</th>
                             <th></th>
                             <th></th>
@@ -159,7 +172,7 @@
                         <tr>
                             <td>{{$item->id}}</td>
                             <td>{{$item->materia_prima->codigo.' - '.$item->materia_prima->nombre}}</td>
-                            <td>{{$item->cantidad}}</td>
+                            <td>{{number_format( $item->cantidad)}}</td>
                             <td>
                                 <a title="Editar" class="btn btn-warning" onclick="editar_ingredientes(this);">
                                     <i class="fa-solid fa-pen"></i>
@@ -184,7 +197,7 @@
         @else
         <div style="padding: 10px">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-sm-6">
                         <div class="card mb-4">
                             <div class="card-header">
                                 Detalles de entrada
@@ -212,7 +225,7 @@
 
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-sm-6">
                         <div class="card mb-4">
                             <div class="card-header">
                                 Detalles de salida
@@ -241,7 +254,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-4" >
+                    <div class="col-sm-4" >
                         <div class="mb-3">
                             <label class="form-label" style="font-weight: bold" for="imagen">
                                 Total entrada:
@@ -250,7 +263,7 @@
                         </div>
 
                     </div>
-                    <div class="col-4" >
+                    <div class="col-sm-4" >
                         <div class="mb-3">
                             <label class="form-label" style="font-weight: bold" for="imagen">
                                 Total salida:
@@ -259,7 +272,7 @@
                         </div>
 
                     </div>
-                    <div class="col-4" >
+                    <div class="col-sm-4" >
 
                         <div class="mb-3">
                             <label class="form-label" style="font-weight: bold" for="imagen">

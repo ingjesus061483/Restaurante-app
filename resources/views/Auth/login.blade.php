@@ -32,7 +32,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                <!-- <a class="small" href="{{url('/usuarios')}}/-1/edit">Forgot Password?</a>-->
-                <button style="width: 100%" class="btn btn-primary" >Login</button>
+                <button class="btn btn-primary" >Login</button>
             </div>
         </form>
     </div>

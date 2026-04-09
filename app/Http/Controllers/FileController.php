@@ -183,7 +183,7 @@ class FileController extends Controller
             ];
 
         }
-        return $this->_fileRepository->GetPdf('file.MostrarExistenciaPorProducto',$data);
+        return $this->_fileRepository->GetPdf('File.MostrarExistenciaPorProducto',$data);
     //return view('File.MostrarExistenciaPorProducto',$data);
 }
     //

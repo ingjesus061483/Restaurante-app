@@ -7,23 +7,23 @@
     </div>
     <div class="card-body">
         <div  class="row" >
-            <div class="col-6">
+            <div class="col-sm-6">
                 <label class="form-label" style="font-weight: bold" for="">Codigo: </label>
                 {{$caja->codigo}}
             </div>
-            <div class="col-6">
+            <div class="col-sm-6">
                 <label class="form-label" style="font-weight: bold" for="">Nombre: </label>
                 {{$caja->nombre}}
             </div>
         </div>
         <div  class="row" >
-            <div class="col-6">
+            <div class="col-sm-6">
                 <label class="form-label" style="font-weight: bold" for="">
                     Valor inicial
                 </label>
                 ${{number_format($caja->valor_inicial)}}
             </div>
-            <div class="col-6">
+            <div class="col-sm-6">
                 <label class="form-label" style="font-weight: bold" for="">
                     Descripcion
                 </label>
@@ -39,31 +39,27 @@
                 <i class="fa-solid fa-filter"></i> &nbsp; Filtros
             </div>
             <div class="card-body">
-                <div class ="row" >
-                    <form action="{{url('/cajas')}}/{{$caja->id}}">
-                        <div class="row">
-                            <div class="col-6">
+                <form action="{{url('/cajas')}}/{{$caja->id}}">
+                    <div class="row">
+                        <div class="col-sm-6">
                             <label class="form-label" for="">
                                 Fecha inicial
                             </label>
                             <input type="date" class="form-control" name="fechaIni" id="">
-                            </div>
-                            <div class="col-6">
+                        </div>
+                        <div class="col-sm-6">
                             <label class="form-label" for="">
                                 Fecha fin
                             </label>
                             <input type="date" class="form-control" name="fechaFin" id="">
-                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12" style="padding-top: 10px" >
-                                <button class="btn btn-success" title="Buscar" type="submit">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div style="padding-top:5px ">
+                        <button class="btn btn-success" title="Buscar" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
         <div style="padding-bottom: 10px">
@@ -98,21 +94,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-4">
-                <label class="form-label" for="">
-                   Total ingresos
+            <div class="col-sm-4">
+                <label class="form-label" for="" style="font-weight: bold">
+                   Total ingresos:
                 </label>
                 ${{number_format($ingreso)}}
             </div>
-            <div class="col-4">
-                <label class="form-label" for="">
-                   Total egresos
+            <div class="col-sm-4">
+                <label class="form-label" for="" style="font-weight: bold">
+                   Total egresos:
                 </label>
                 ${{number_format($egreso)}}
             </div>
-            <div class="col-4">
-                <label class="form-label" for="">
-                    Total en caja
+            <div class="col-sm-4">
+                <label class="form-label" for="" style="font-weight: bold">
+                    Total en caja:
                 </label>
                  ${{number_format($ingreso-$egreso)}}
             </div>

@@ -9,9 +9,9 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-sm-6">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label style="font-weight: bold" class="form-label" for="codigo">
                                         Codigo:
@@ -19,7 +19,7 @@
                                     {{$materiaprima->codigo}}
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label style="font-weight: bold" class="form-label" for="codigo">
                                         Nombre:
@@ -29,7 +29,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label style="font-weight: bold" class="form-label" for="costo_unitario">
                                         Costo unitario:
@@ -37,7 +37,7 @@
                                     ${{number_format( $materiaprima->costo_unitario)}}
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label style="font-weight: bold" class="form-label" for="categoria">
                                         Categoria:
@@ -47,8 +47,7 @@
                             </div>
                         </div>
                         <div class="row">
-
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label style="font-weight: bold" class="form-label" for="unidad_medida">
                                         Unidad medida:
@@ -57,6 +56,7 @@
                                 </div>
                             </div>
                         </div>
+                        @if($materiaprima->descripcion!='')
                         <div class="row">
                             <div class="col-12">
                                 <div class ="mb-3">
@@ -67,8 +67,9 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
-                    <div class="col-6">
+                    <div class="col-sm-6">
                         <div class="mb-3">
                             <label style="font-weight: bold" class="form-label" for="imagen">
                                 Imagen
@@ -84,7 +85,7 @@
         </div>
          <div style="padding: 10px">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-sm-6">
                         <div class="card mb-4">
                             <div class="card-header">
                                 Detalles de entrada
@@ -112,7 +113,7 @@
 
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-sm-6">
                         <div class="card mb-4">
                             <div class="card-header">
                                 Detalles de salida
@@ -141,7 +142,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-4" >
+                    <div class="col-sm-4" >
                         <div class="mb-3">
                             <label class="form-label" style="font-weight: bold" for="imagen">
                                 Total entrada:
@@ -150,7 +151,7 @@
                         </div>
 
                     </div>
-                    <div class="col-4" >
+                    <div class="col-sm-4" >
                         <div class="mb-3">
                             <label class="form-label" style="font-weight: bold" for="imagen">
                                 Total salida:
@@ -159,7 +160,7 @@
                         </div>
 
                     </div>
-                    <div class="col-4" >
+                    <div class="col-sm-4" >
 
                         <div class="mb-3">
                             <label class="form-label" style="font-weight: bold" for="imagen">

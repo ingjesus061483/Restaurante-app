@@ -11,13 +11,13 @@
             <div class="col-12">
                 <form action="{{url('/ordenservicio')}}">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-sm-6">
                             <label class="form-label" for="codigo">
                                 Fecha inicio
                             </label>
                             <input name="fechaIni" value="{{$fechaIni}}"  class="form-control" type="date"/>
                         </div>
-                        <div class="col-6">
+                        <div class="col-sm-6">
                             <label class="form-label" for="codigo">
                                 Fecha fin
                             </label>

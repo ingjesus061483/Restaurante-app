@@ -4,7 +4,6 @@
 <div class="card mb-4">
     <div  class="card-header">
         @include('shared/Categorias')
-
     </div>
     <div class="card-body">
         <table id="datatablesSimple">
@@ -48,21 +47,14 @@
         </table>
     </div>
     <div class="card-footer">
-        <div class="row">
-
-            <div class="col-4">
-                <a title="Regresar" class="btn btn-primary" href="{{url('/ordenservicio')}}">
-                    <i class="fa-solid fa-circle-arrow-left"></i>
-                </a>
-            </div>
-            @if(!isset($orden_id))
-            <div class="col-4">
-                <a title="Crear orden" class="btn btn-primary" href="{{url('/ordenservicio/create')}}">
-                    <i class="fa-solid fa-receipt"></i>
-                </a>
-            </div>
-            @endif
-        </div>
+        <a title="Regresar" class="btn btn-primary" href="{{url('/ordenservicio')}}">
+            <i class="fa-solid fa-circle-arrow-left"></i>
+        </a>
+        @if(!isset($orden_id))
+        <a title="Crear orden" class="btn btn-primary" href="{{url('/ordenservicio/create')}}">
+            <i class="fa-solid fa-receipt"></i>
+        </a>
+        @endif
     </div>
 </div>
 @endsection

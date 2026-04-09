@@ -34,6 +34,16 @@ class OrdenEncabezadoController extends Controller
         $this->_empleadoRepository=$empleadoRepository;
 
     }
+    public function CancelServiceOrder($id){
+        if(session()->has('detalles')){
+             session()->forget('detalles');
+        }
+        if(session()->has('cabana'))
+        {
+            session()->forget('cabana');
+        }
+            return redirect()->to(url('/ordenservicio'));
+    }
     public function MoveTableByOrder(Request $request,$id){
         $cabanaSource=$this->_cabanaRepository->GetCabanabyCode($request->source);
         if($cabanaSource!=null)

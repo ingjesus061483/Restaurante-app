@@ -1,15 +1,15 @@
 <div id="egreso" class="container">
     <input type="hidden" id="caja_id" value="{{isset($caja)?$caja->id:''}}">
     <div class="mb-3">
-        <label class="form-label" for="unidad_medida">
-            Concepto
+        <label class="form-label" style="font-weight: bold" for="unidad_medida">
+            Concepto:
         </label>
         <input type="text" name="detallepago"  class="form-control"
         id="concepto">
     </div>
     <div class="mb-3">
-        <label class="form-label" for="unidad_medida">
-            Valor
+        <label class="form-label" style="font-weight: bold" for="unidad_medida">
+            Valor:
         </label>
         <input type="text" name="valor"  class="form-control"
         id="valor">
@@ -59,7 +59,7 @@
         </div>
     </div>
 </div>
-<div id="ingredientes" class="container">
+<div title="Ingredientes" id="ingredientes" class="container">
     <div class="card mb-4">
         <div class="card-body">
             <div class="card mb-4">
@@ -70,16 +70,16 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="mb-3">
-                                <label class="form-label" for="codigo">
-                                    Codigo
+                                <label class="form-label" style="font-weight: bold" for="codigo">
+                                    Codigo:
                                 </label>
                                 <span id="codigo"></span>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="mb-3">
-                                <label class="form-label" for="codigo">
-                                    Nombre
+                                <label class="form-label" style="font-weight: bold" for="codigo">
+                                    Nombre:
                                 </label>
                                 <span id="nombre"></span>
                             </div>
@@ -96,15 +96,15 @@
                         <input type="hidden" id="ingrediente_id">
                         <input type="hidden" id="materia_prima_id">
                         <div class="mb-3">
-                            <label class="form-label" for="codigo">
-                                Materia prima
+                            <label class="form-label" style="font-weight: bold" for="codigo">
+                                Materia prima:
                             </label>
                             <input class="form-control" type="text"  name="ingrediente"
                             id="ingrediente">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="cantidad">
-                                Cantidad
+                            <label class="form-label" style="font-weight: bold" for="cantidad">
+                                Cantidad:
                             </label>
                             <input type="text" class="form-control"value="1" name="cantidad" id="cantidad">
                         </div>
@@ -114,7 +114,7 @@
         </div>
     </div>
 </div>
-<div id="DetalleOrden" class="container">
+<div title="Detalle de orden" id="DetalleOrden" class="container">
     <div class="card mb-4">
         <div class="card-body">
             <form action="">
@@ -123,53 +123,52 @@
                 <input type="hidden" id="producto_id">
                 <div class="row" >
                     <div class="col-7">
-                        <div class="mb-3">
-                            <label class="form-label" for="cantidad">
-                                Cantidad
+                        <div class="mb-3" style="font-size: 12px">
+                            <label class="form-label" style="font-weight: bold" for="cantidad">
+                                Cantidad:
                             </label>
                             <input type="text" class="form-control" value="1" name="cantidad" id="cantidadDetalleOrden">
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="codigo">
-                                Detalle
+                        <div class="mb-3" style="font-size: 12px">
+                            <label class="form-label" style="font-weight: bold" for="codigo">
+                                Detalle:
                             </label>
                             <input class="form-control" type="text"  name="detalleOrden"
                             id="detalleOrden">
                         </div>
-                        <div class="mb-3" style="display:none">
-                            <label class="form-label" for="codigo">
-                                Venta a costo
+                        <div class="mb-3"  style="font-size: 12px; display:none">
+                            <label class="form-label" style="font-weight: bold" for="codigo">
+                                Venta a costo:
                             </label>
                             <input class="form-check-inline" type="checkbox"  name="venta_costo"
                             id="venta_costo">
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="unidad_medida">
-                                Valor unitario
+                        <div class="mb-3" style="font-size: 12px; ">
+                            <label class="form-label" style="font-weight: bold" for="unidad_medida">
+                                Valor unitario:
                             </label>
                             <input class="form-control" type="text"  name="ValorUnitarioDetalleOrden"
                             id="ValorUnitarioDetalleOrden">
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="unidad_medida">
-                                Observaciones
+                        <div class="mb-3" style="font-size: 12px">
+                            <label  class="form-label" style="font-weight: bold" for="unidad_medida">
+                                Observaciones:
                             </label>
-                            <textarea class="form-control" name="" id="observaciones" cols="30" rows="10"></textarea>
+                            <textarea class="form-control" name="" id="observaciones" cols="30" rows="5"></textarea>
                         </div>
                     </div>
                     <div class="col-5">
                         <img id="producto_img" src="" alt="" style="width:90%;heigth:100%">
-
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<div id="formasPagos" class="container">
+<div title="Formas de pago" id="formasPagos" class="container">
     <div class="mb-3">
         <label class="form-label" for="categoria">
-            Forma pago
+            Forma pago:
         </label>
         @if(isset($forma_pago))
         <select type="text" name="forma_pago" class="form-select"
@@ -182,32 +181,32 @@
         @endif
     </div>
     <div class="mb-3">
-        <label class="form-label" for="unidad_medida">
-            Detalle pago
+        <label class="form-label" style="font-weight: bold" for="unidad_medida">
+            Detalle pago:
         </label>
         <input type="text" name="detallepago"  class="form-control"
         id="detallepago">
     </div>
     <div class="mb-3">
-        <label class="form-label" for="unidad_medida">
-            Valor recibido
+        <label class="form-label" style="font-weight: bold" for="unidad_medida">
+            Valor recibido:
         </label>
         <input type="text" name="valorRecibido"  class="form-control"
         id="valorRecibido">
     </div>
 </div>
-<div id="CambioDeMesa" class="container">
+<div title="Cambio de mesa" id="CambioDeMesa" class="container">
     <input type="hidden" name="" id="ordenId">
     <div class="mb-3">
-        <label class="form-label" for="unidad_medida">
-           Origen
+        <label class="form-label" style="font-weight: bold" for="unidad_medida">
+           Origen:
         </label>
         <span id="source"></span>
     </div>
     @if(isset( $cabanas))
     <div class="mb-3">
-        <label class="form-label" for="categoria">
-            Destino
+        <label class="form-label" style="font-weight: bold"    for="categoria">
+            Destino:
         </label>
         <select type="text" name="forma_pago" class="form-select"
          id="moveTo">

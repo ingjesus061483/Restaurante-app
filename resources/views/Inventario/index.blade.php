@@ -50,9 +50,27 @@
                     <td>${{number_format($item->costo_unitario)}}</td>
                     <td>{{$item->categoria}}</td>
                     <td>{{$item->unidad_medida}}</td>
-                    <td>{{number_format( $item->total_entrada)}}</td>
-                    <td>{{number_format($item->total_salida)}}</td>
-                    <td>{{number_format($item->total_inventario)}}</td>
+                    <td>
+                        @if($item->procesado==0)
+                            {{number_format( $item->total_entrada)}}
+                        @else
+                            N/A
+                        @endif
+                    </td>
+                    <td>
+                        @if($item->procesado==0)
+                            {{number_format($item->total_salida)}}
+                        @else
+                            N/A
+                        @endif
+                    </td>
+                    <td>
+                        @if($item->procesado==0)
+                            {{number_format($item->total_inventario)}}
+                        @else
+                            N/A
+                        @endif
+                    </td>
                     <td>{{str_replace('_', ' ', $item->tipo)}}</td>
                     <td>
                         <a title="Ver detalles" class="btn btn-success"

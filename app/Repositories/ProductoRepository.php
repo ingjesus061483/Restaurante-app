@@ -7,21 +7,21 @@ use App\Repositories\FileRepository;
 
 class ProductoRepository implements IRepository{
     protected FileRepository $_filerepository;
-  
+
     protected ExistenciaRepository $_existenciaRepository;
     public function __construct(FileRepository $fileRepository,
-                                ExistenciaRepository $existenciaRepository,)  
-    {  
+                                ExistenciaRepository $existenciaRepository,)
+    {
         $this->_existenciaRepository=$existenciaRepository;
         $this->_filerepository = $fileRepository;
     }
     public  function GetTiempoCoccion($detalles)
     {
         $productos=[];
-        foreach($detalles as $item)                    
+        foreach($detalles as $item)
         {
             $producto_id=$item->producto_id;
-            $producto=$this->Find($producto_id);            
+            $producto=$this->Find($producto_id);
             $procesado=$producto!=null?$producto->procesado:0;
             if($procesado==1){
                 $productos=[$producto];
@@ -37,22 +37,23 @@ class ProductoRepository implements IRepository{
 
         }
         return $tiempoCoccion;
-    } 
+    }
     public function GetProductos()
     {
         $totalentrada="IFNULL((SELECT SUM(cantidad)FROM existencias WHERE producto_id=productos.id AND entrada=1
                        GROUP BY producto_id),0)AS total_entrada";
-        $totalsalida="IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=0 
+        $totalsalida="IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=0
                       GROUP BY producto_id),0) AS total_salida";
-        $totalinventario="IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=1 
+        $totalinventario="IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=1
                           GROUP BY producto_id),0)-
-                          IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=0 
+                          IFNULL((SELECT SUM(cantidad) FROM existencias WHERE producto_id=productos.id AND entrada=0
                           GROUP BY producto_id),0) AS total_inventario";
         return Producto::select("productos.id",
                                 "codigo",
                                 "productos.nombre",
                                 "costo_unitario",
                                 "precio",
+                                "tiempo_coccion",
                                 "procesado",
                                 "imagen",
                                 "categorias.nombre AS categoria",
@@ -65,8 +66,8 @@ class ProductoRepository implements IRepository{
                         ->join('categorias', 'categorias.id', '=', 'productos.categoria_id')
                         ->join('unidad_medidas', 'unidad_medidas.id', '=', 'productos.unidad_medida_id');
     }
-    public function TotalVentaProductos($ventas)    
-    {        
+    public function TotalVentaProductos($ventas)
+    {
         $sum =0;
         foreach($ventas as $item)
         {
@@ -74,7 +75,7 @@ class ProductoRepository implements IRepository{
         }
         return $sum;
     }
-    public function ProductosVendidosByFecha($request)    
+    public function ProductosVendidosByFecha($request)
     {
         $fechaIni=$request->fechaIni;
         $fechaFin=$request->fechaFin;
@@ -85,25 +86,25 @@ class ProductoRepository implements IRepository{
         ->selectRaw("IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='C' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_comidas'),0)END,0)*SUM(orden_detalles.cantidad)comision_comidas")
         ->selectRaw("SUM( orden_detalles.total )-
                      IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='B' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_bebidas'),0)END,0) *SUM(orden_detalles.cantidad)-
-                     IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='C' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_comidas'),0)END,0)*SUM(orden_detalles.cantidad) ventas")                                             
+                     IFNULL( CASE WHEN  SUBSTRING(productos.codigo, 1, 1) ='C' THEN IFNULL((SELECT valor FROM configuracions WHERE nombre ='comision_comidas'),0)END,0)*SUM(orden_detalles.cantidad) ventas")
         ->join('orden_detalles','productos.id','=','orden_detalles.producto_id')
         ->join('orden_encabezados','orden_Encabezados.id','=','orden_detalles.orden_encabezado_id')
         ->where('orden_encabezados.estado_id',3);
-        
+
         $categoria_id =$request->categoria_id;
         return $categoria_id==null? $productos->whereBetween('orden_encabezados.fecha',[$fechaIni,$fechaFin])
                                               ->groupby('productos.codigo')
-                                              ->groupby('productos.nombre')     
-                                              ->groupby('orden_detalles.valor_unitario')                                                                
+                                              ->groupby('productos.nombre')
+                                              ->groupby('orden_detalles.valor_unitario')
                                               ->get()
-                                              
+
                                   :$productos->where('categoria_id',$categoria_id)
-                                             ->whereBetween('orden_encabezados.fecha',[$fechaIni,$fechaFin])                                             
-                                             ->groupby('productos.codigo')                                             
-                                             ->groupby('productos.nombre')                                             
-                                             ->groupby('orden_detalles.valor_unitario')                                                               
-                                             ->get();            
-    } 
+                                             ->whereBetween('orden_encabezados.fecha',[$fechaIni,$fechaFin])
+                                             ->groupby('productos.codigo')
+                                             ->groupby('productos.nombre')
+                                             ->groupby('orden_detalles.valor_unitario')
+                                             ->get();
+    }
     public function buscarproductosBynombre($nombre)
     {
         return Producto::where('nombre','like','%'.$nombre.'%')->get();
@@ -111,17 +112,17 @@ class ProductoRepository implements IRepository{
     public function BuscarProductoEnOrdenServicio($productos)
     {
         return Producto::whereNotIn('id',$productos);
-    } 
+    }
     public function ingredientes($id)
     {
        $producto= $this->Find($id);
-       return $producto-> preparacions()->select('materia_prima_id')->where('producto_id',$id)->get();        
+       return $producto-> preparacions()->select('materia_prima_id')->where('producto_id',$id)->get();
     }
     public function  existencias( $id,$entrada=0)
-    {                
+    {
         $producto= $this->Find($id);
-        return $producto->existencias()->where('entrada',$entrada)->get();    
-    }    
+        return $producto->existencias()->where('entrada',$entrada)->get();
+    }
     public function totalizarExistencia($id, $entrada = 0)
     {
        $existencias=$this->existencias($id,$entrada);
@@ -131,7 +132,7 @@ class ProductoRepository implements IRepository{
        }
        return $sum;
     }
-  
+
     public function GetAll()
     {
         return $this->GetProductos();
@@ -141,17 +142,17 @@ class ProductoRepository implements IRepository{
         return  Producto::Find($id);
     }
     public function Store($request)
-    {  
-        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado');     
+    {
+        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado');
         $codigo=$request->input('codigo');
-        $nombre =$request->input('nombre');  
-        $nombreimagen=$this->_filerepository-> getImage($request, $codigo.' '.$nombre);               
+        $nombre =$request->input('nombre');
+        $nombreimagen=$this->_filerepository-> getImage($request, $codigo.' '.$nombre);
         $producto=  Producto::create([
             'codigo'=>$request->input('codigo'),
             'nombre' =>$request->input('nombre'),
             'preparacion'=>$request->input('preparacion'),
             'descripcion'=>$request->input('descripcion'),
-            'costo_unitario'=>$request->input('costo_unitario'),                                   
+            'costo_unitario'=>$request->input('costo_unitario'),
             'precio'=>$request->input('precio'),
             'impresora_id'=>$request->input('impresora'),
             'procesado'=>$procesado,
@@ -159,18 +160,18 @@ class ProductoRepository implements IRepository{
             'tiempo_coccion'=>$request->input('tiempo_coccion'),
             'unidad_medida_id' =>$request->input('unidad_medida') ,
             'categoria_id'=>$request->input('categoria'),
-        ]);       
+        ]);
         if($producto ->procesado==0)
         {
-            $now=date_create();     
-            $fecha=date_format($now, 'Y-m-d');            
-            $existencia=(object)[                
-                "fecha"=>$fecha,                
-                "cantidad"=>$request->existencias,                
-                "esEntrada"=>1,                       
-                "materiaprima_id"=>$producto->id,                
+            $now=date_create();
+            $fecha=date_format($now, 'Y-m-d');
+            $existencia=(object)[
+                "fecha"=>$fecha,
+                "cantidad"=>$request->existencias,
+                "esEntrada"=>1,
+                "materiaprima_id"=>$producto->id,
                 "tipo"=>"producto"
-            ];            
+            ];
             $this->_existenciaRepository->Store($existencia);
         }
         return $producto;
@@ -178,10 +179,10 @@ class ProductoRepository implements IRepository{
     public function  Update($id, $request)
     {
         $codigo=$request->input('codigo');
-        $nombre =$request->input('nombre');  
-        $nombreimagen=$this->_filerepository-> getImage($request, $codigo.' '.$nombre);       
-        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado'); 
-        $producto=$this->Find($id); 
+        $nombre =$request->input('nombre');
+        $nombreimagen=$this->_filerepository-> getImage($request, $codigo.' '.$nombre);
+        $procesado=$request->input('procesado')==null?0:(bool)$request->input('procesado');
+        $producto=$this->Find($id);
         $producto-> codigo=$request->input('codigo');
         $producto->  nombre =$request->input('nombre');
         $producto->  preparacion=$request->input('preparacion');
@@ -194,7 +195,7 @@ class ProductoRepository implements IRepository{
         $producto-> imagen=$nombreimagen;
         $producto->unidad_medida_id =$request->input('unidad_medida') ;
         $producto->categoria_id=$request->input('categoria');
-        $producto->save();       
+        $producto->save();
     }
     public function Delete($id)
     {
@@ -203,7 +204,7 @@ class ProductoRepository implements IRepository{
         {
             $ruta=public_path("img/");
             unlink($ruta.$producto->imagen);
-        }       
+        }
         $producto->delete();
     }
 }

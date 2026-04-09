@@ -72,7 +72,8 @@ class CajaController extends Controller
         }
         $fechaIni=request()->fechaIni;
         $fechaFin=request()->fechaFin;
-        $caja=$this->_cajaRepository->Find($id);
+        $caja=$this->_cajaRepository->Find($id);   
+             
         if($fechaIni==null && $fechaFin===null)
         {
             $cajaMovimientos=$this->_cajaMovimientoRepository->GetAll()
