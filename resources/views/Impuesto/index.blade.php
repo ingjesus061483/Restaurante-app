@@ -20,16 +20,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Valor</th>
-                    <th>Descripcion</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($impuestos as $item)
                 <tr>

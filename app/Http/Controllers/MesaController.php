@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
 use App\Http\Requests\Mesa\StoreRequest;
 use App\Http\Requests\Mesa\UpdateRequest;
+use App\Models\Dependencia;
 use App\Repositories\MesaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,8 +45,11 @@ class MesaController extends Controller
         {
             return redirect()->to('login');
         }
+        $data=[
+            'dependencias'=>Dependencia::all(),
+        ];
 
-        return view('Mesa.create');
+        return view('Mesa.create',$data);
         //
     }
 
@@ -106,6 +110,7 @@ class MesaController extends Controller
         }
         $data=[
             'cabana'=>$this->_repository->Find($id),
+            'dependencias'=>Dependencia::all(),
         ];
         return view('Mesa.edit',$data);
 

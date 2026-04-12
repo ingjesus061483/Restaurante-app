@@ -1,17 +1,20 @@
 @extends('shared/layout')
-@section('title','Listado de roles')
+@section('title','Listado de dependencias')
 @section('content')
 <div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Listado de dependencias
+        <a style="float: right" class="btn btn-success" href="{{url('/dependencias/create')}}">
+            <i class="fa-solid fa-plus"></i>
+        </a>
+    </div>
     <div class="card-body">
-        <div style="padding-bottom:10px">
-            <a title="Crear roles" href="{{url('/roles/create')}}" class="btn btn-primary">
-                <i class="fa-solid fa-plus"></i>
-            </a>
-        </div>
         <table id="datatablesSimple">
             <thead>
                 <tr>
                     <th>Id</th>
+                    <th>Codigo</th>
                     <th>Nombre</th>
                     <th>Descripcion</th>
                     <th></th>
@@ -19,20 +22,21 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($roles as $item)
+                @foreach($dependencias as $item)
                 <tr>
                     <td>{{$item->id}}</td>
+                    <td>{{$item->codigo}}</td>
                     <td>{{$item->nombre}}</td>
                     <td>{{$item->descripcion}}</td>
                     <td>
-                        <a title="Editar" class="btn btn-warning" href="{{url('/')}}/roles/{{$item->id}}/edit">
-                            <i class="fa-solid fa-pen"></i>
+                        <a title="Editar" class="btn btn-primary" href="{{url('/dependencias')}}/{{$item->id}}/edit">
+                            <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                     </td>
                     <td>
-                        <form action="{{url('/')}}/roles/{{$item->id}}" onsubmit="return validar('Desea eliminar este registro?');" method="post">
+                        <form action="{{url('/dependencias')}}/{{$item->id}}" onsubmit="return validar('Desaea eliminar esta dependencia?')" method="POST">
                             @csrf
-                            @method('delete')
+                            @method('DELETE')
                             <button title="Eliminar" class="btn btn-danger" type="submit">
                                 <i class="fa-solid fa-trash"></i>
                             </button>

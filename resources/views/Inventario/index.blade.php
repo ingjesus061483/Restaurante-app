@@ -26,21 +26,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Codigo </th>
-                    <th>Nombre</th>
-                    <th>Costo unitario</th>
-                    <th>Categoria</th>
-                    <th>Unidad medida</th>
-                    <th>Total enetrada </th>
-                    <th>Total salida</th>
-                    <th>Total</th>
-                    <th>Tipo</th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($inventario as $item)
                 <tr>

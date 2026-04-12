@@ -48,7 +48,8 @@ class MesaRepository implements IRepository
     }
     public function GetAll()
     {
-        return Mesa::select ("id","codigo","nombre","ocupado","descripcion","capacidad_maxima","imagen")
+        return Mesa::select ("mesas.id","mesas.codigo","mesas.nombre","mesas.ocupado","mesas.descripcion","mesas.capacidad_maxima","mesas.imagen","dep.nombre as dependencia")
+                     ->join('dependencias as dep', 'mesas.dependencia_id', '=', 'dep.id')
                      ->selectRaw("IFNULL((SELECT  SUM(orden_encabezados.total) FROM orden_encabezados WHERE mesa_id=mesas.id AND fecha=CURDATE() AND  estado_id=3),0) as venta_diaria")
                      ->orderby('mesas.id','asc') ->get();
     }
@@ -82,6 +83,7 @@ class MesaRepository implements IRepository
         $cabana->capacidad_maxima=$request->capacidad;
         $cabana->imagen=$nombreimagen;
         $cabana->descripcion=$request->descripcion;
+        $cabana->dependencia_id=$request->dependencia;
         $cabana->save();
     }
     public function GetCabanabyCode($code){
@@ -100,6 +102,7 @@ class MesaRepository implements IRepository
         $cabana->capacidad_maxima=$request->capacidad;
         $cabana->imagen=$nombreimagen;
         $cabana->descripcion=$request->descripcion;
+        $cabana->dependencia_id=$request->dependencia;
         $cabana->save();
     }
     public function Delete($id)

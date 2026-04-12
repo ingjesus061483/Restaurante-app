@@ -71,24 +71,6 @@
 
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>Id</th>
-                    <th>Codigo </th>
-                    <th>Nombre</th>
-                    <th>Costo unitario</th>
-                    <TH>Precio</TH>
-                    <th>Tiempo de coccion</th>
-                    <th>Unidad medida</th>
-                    <th>Categoria</th>
-                    <th>Procesado</th>
-                    <th>Total existencias</th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($productos as $item)
                 <tr>
@@ -96,7 +78,6 @@
                         @if(!$item->procesado)
                         <button title="Existencias" onclick="existencias(this,'producto');" class="btn btn-info" >
                             <i class="fa-solid fa-warehouse"></i>
-
                         </button>
                         @endif
                     </td>

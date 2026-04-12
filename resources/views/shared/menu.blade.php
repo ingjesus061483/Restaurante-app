@@ -49,6 +49,7 @@
             <a class="nav-link" href="{{url('/roles')}}">Roles</a>
             <a class="nav-link" href="{{url('/impuestos')}}">Impuestos</a>
             <a class="nav-link" href="{{url('/observaciones')}}">Observaciones</a>
+            <a class="nav-link" href="{{url('/dependencias')}}">Dependencias</a>
         </nav>
     </div>
     @endif

@@ -32,6 +32,7 @@ class StoreRequest extends FormRequest
             'nombre'=>'required|max:50',
             'capacidad'=>'required|numeric',
             'imagen'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'dependencia'=>'required|exists:dependencias,id',
             //
         ];
     }
@@ -49,6 +50,8 @@ class StoreRequest extends FormRequest
             'imagen.image'=>'El campo :attribute debe ser una imagen',
             'imagen.mimes'=>'El campo :attribute debe ser de tipo jpeg, png, jpg o gif',
             'imagen.max'=>'El campo :attribute no debe ser mayor a 2048 kilobytes',
+            'dependencia.required'=>'El campo :attribute es obligatorio',
+            'dependencia.exists'=>'El campo :attribute no es válido',
 
         ];
     }
@@ -59,6 +62,7 @@ class StoreRequest extends FormRequest
             'nombre'=>'Nombre',
             'capacidad'=>'Capacidad',
             'imagen'=>'Imagen',
+            'dependencia'=>'Dependencia'
         ];
     }
 }

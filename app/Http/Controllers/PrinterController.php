@@ -93,17 +93,6 @@ class PrinterController extends Controller
         {
             return redirect()->to('login');
         }
-      /*  if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }
-        $validacion=$request->validate([
-            'codigo'=>'required|max:50|unique:impresoras',
-            'nombre'=>'required|max:50',
-            'recurso_compartido'=>'required|max:50',
-            'tamaño_fuente_encabezado'=>'required|numeric',
-            'tamaño_fuente_contenido'=>'required|numeric',
-        ]);           */
         $this->_impresoraRepository->Store((object)$request->all());
         return redirect()->to(url('/impresoras'));
         //
@@ -142,22 +131,10 @@ class PrinterController extends Controller
         {
             return redirect()->to('login');
         }
-      /*  if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }
-        $validacion=$request->validate([
-            'nombre'=>'required|max:50',
-            'recurso_compartido'=>'required|max:50',
-            'tamaño_fuente_encabezado'=>'required|numeric',
-            'tamaño_fuente_contenido'=>'required|numeric',
-            'codigo'=>'required|max:50|unique:impresoras,codigo,'.$id,
-        ]);*/
         $this->_impresoraRepository->Update( $id,(object)$request->all());
         return redirect()->to(url('/impresoras'));
         //
     }
-
     /**
      * Remove the specified resource from storage.
      */

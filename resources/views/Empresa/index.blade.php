@@ -25,23 +25,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>nit</th>
-                    <th>nombre</th>
-                    <th>Camara de comercio</th>
-                    <th>Direccion</th>
-                    <th>Telefono</th>
-                    <th>Email</th>
-                    <th>Contacto</th>
-                    <th>Logo</th>
-                    <th>slogan</th>
-                    <th>Tipo de regimen</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($empresas as $item)
                 <tr>

@@ -20,6 +20,7 @@ class MesaSeeder extends Seeder
                 'nombre'=>'Mesa '.$i+1,
                 'codigo'=>'0'.$i+1,
                 'imagen'=>'mesa.png',
+                'dependencia_id'=>1,
                 'capacidad_maxima'=>4,
             ];
 

@@ -36,6 +36,7 @@ class UpdateRequest extends FormRequest
                 'precio'=>'required|numeric',
                 'categoria'=>'required' ,
                 'impresora'=>'required' ,
+                'imagen'=>'image|mimes:jpeg,png,jpg,gif|max:2048',
             //
             ];
         }
@@ -48,6 +49,7 @@ class UpdateRequest extends FormRequest
             'preparacion'=>'required',
             'tiempo_coccion'=>'required|numeric',
             'impresora'=>'required' ,
+            'imagen'=>'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
     public function messages()
@@ -68,6 +70,9 @@ class UpdateRequest extends FormRequest
             'preparacion.required'=>'El campo :attribute es obligatorio',
             'tiempo_coccion.required'=>'El campo :attribute es obligatorio',
             'tiempo_coccion.numeric'=>'El campo :attribute debe ser un número',
+            'imagen.image'=>'El campo :attribute debe ser una imagen',
+            'imagen.mimes'=>'El campo :attribute debe ser de tipo jpeg, png, jpg o gif',
+            'imagen.max'=>'El campo :attribute no debe ser mayor a 2048 kilobytes',
 
         ];
     }
@@ -81,7 +86,9 @@ class UpdateRequest extends FormRequest
             'categoria'=>'Categoria',
             'impresora'=>'Impresora',
             'preparacion'=>'Preparacion',
-            'tiempo_coccion'=>'Tiempo de Coccion'
+            'tiempo_coccion'=>'Tiempo de Coccion',
+            'imagen'=>'Imagen',
+
         ];
     }
 }

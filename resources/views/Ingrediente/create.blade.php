@@ -17,18 +17,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Codigo </th>
-                    <th>Nombre</th>
-                    <th>Descripcion</th>
-                    <th>Costo unitario</th>
-                    <th>Unidad medida</th>
-                    <th>Categoria</th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($materiaprimas as $item)
                 <tr>

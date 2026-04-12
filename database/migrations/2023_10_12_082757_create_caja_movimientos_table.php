@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('caja_movimientos', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha_hora');
+            $table->date('fecha');
             $table->time('hora');
             $table->string('concepto',50);
             $table->decimal('valor',10);

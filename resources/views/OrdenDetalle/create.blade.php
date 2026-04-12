@@ -14,16 +14,7 @@
                 <th>Descripcion</th>
                 <th>Precio</th>
                 <th>Imagen</th>
-
             </thead>
-            <tfoot>
-                <th></th>
-                <th>Id</th>
-                <th>Detalle</th>
-                <th>Descripcion</th>
-                <th>Precio</th>
-                <th>Imagen</th>
-            </tfoot>
             <tbody>
                 @foreach($productos as $item)
                 <tr>

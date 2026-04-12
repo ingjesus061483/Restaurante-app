@@ -46,8 +46,6 @@
         </a>
     </div>
     <div style="padding: 10px">
-
-
         <table id="datatablesSimple">
             <thead>
                 <tr>
@@ -72,29 +70,6 @@
                     <th>Estado</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>Id</th>
-                    <th>Mesa</th>
-                    <th>Fecha hora </th>
-                    <th>Hora de entrega</th>
-                    <th>Codigo </th>
-                    <th>Cliente</th>
-                    <th>Mesero</th>
-                    <th>Total</th>
-                    <th>Cantidad de productos ordenados</th>
-                    <th>Credito</th>
-                    <th>Domicilio</th>
-                    <th>Estado</th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($ordenes as $item)
                 <tr style="{{$item->estado_id==2?'color:green':'color:black'}}">
@@ -111,13 +86,13 @@
                         </a>
                     </td>
                     <td>
-                        <a  class="btn btn-warning" style="font-size: 10px" href="{{url('/reportes/printordenservicio/'.$item->id)}}">
-                            <i class="fa-solid fa-print"></i> &nbsp; Orden
+                        <a  class="btn btn-warning" title="Imprimir orden"  href="{{url('/reportes/printordenservicio/'.$item->id)}}">
+                            <i class="fa-solid fa-clipboard-list"></i>
                         </a>
                     </td>
                     <td>
-                        <a class="btn btn-warning" style="font-size: 10px" href="{{url('/reportes/printComanda/'.$item->id)}}">
-                            <i class="fa-solid fa-print"></i> &nbsp;  Comanda
+                        <a class="btn btn-warning" title="Imprimir comanda"  href="{{url('/reportes/printComanda/'.$item->id)}}">
+                           <i class="fa-solid fa-kitchen-set"></i>
                         </a>
                     </td>
                     <td>

@@ -39,8 +39,19 @@
                 </label>
                 <input type="text" name="capacidad" value="{{old('capacidad')}}" class="form-control" id="capacidad">
             </div>
-
-
+            <div class="mb-3">
+                <label class="form-label" for="dependencia_id">
+                    Dependencia
+                </label>
+                <select name="dependencia" id="dependencia" class="form-select">
+                    <option value="">Seleccione una dependencia</option>
+                    @foreach($dependencias as $item)
+                    <option value="{{$item->id}}" {{old('dependencia_id')==$item->id?'selected':''}}>
+                        {{$item->nombre}}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
             <a title="Regresar" class="btn btn-primary" href="{{url('/mesas')}}">
                 <i class="fa-solid fa-arrow-left"></i>
 

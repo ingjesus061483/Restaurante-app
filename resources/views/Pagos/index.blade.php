@@ -60,25 +60,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Codigo </th>
-                    <th>Fecha </th>
-                    <th>Mesa</th>
-                    <th>Cliente</th>
-                    <th>Mesero</th>
-                    <th>Sub total</th>
-                    <th>Impuesto</th>
-                    <th>Descuento  </th>
-                    <th>Total pagar</th>
-                    <th>Servicio voluntario</th>
-                    <th>Recibido</th>
-                    <th>Cambio</th>
-                    <th></th>
-
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($pagos as $item)
                 <tr>

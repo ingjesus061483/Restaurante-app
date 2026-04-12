@@ -11,5 +11,9 @@ class Mesa extends Model
     public function ordens(){
         return $this->hasMany(OrdenEncabezado::class,'mesa_id');
     }
+    public function dependencia()
+    {
+        return $this->belongsTo(Dependencia::class,'dependencia_id');
+    }
 
 }

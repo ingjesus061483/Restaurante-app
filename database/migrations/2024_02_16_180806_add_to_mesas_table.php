@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('mesas',function(Blueprint $table){
             $table->dropColumn('precio');
-            $table->string('imagen')->nullable();
+            $table->after('ocupado',function($table){
+                $table->string('imagen')->default('mesa.png');
+            });
 
         });
         //

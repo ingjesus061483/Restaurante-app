@@ -31,6 +31,7 @@ class UpdateRequest extends FormRequest
             'nombre'=>'required|max:50',
             'imagen'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'capacidad'=>'required|numeric',
+            'dependencia'=>'required|exists:dependencias,id',
         ];
     }
     public function messages()
@@ -47,6 +48,8 @@ class UpdateRequest extends FormRequest
             'imagen.image'=>'El campo :attribute debe ser una imagen',
             'imagen.mimes'=>'El campo :attribute debe ser de tipo jpeg, png, jpg, gif o svg',
             'imagen.max'=>'El campo :attribute no debe ser mayor a 2048 kilobytes',
+            'dependencia.required'=>'El campo :attribute es obligatorio',
+            'dependencia.exists'=>'El campo :attribute no es válido',
         ];
     }
     public function attributes()
@@ -56,6 +59,7 @@ class UpdateRequest extends FormRequest
             'nombre'=>'Nombre',
             'capacidad'=>'Capacidad',
             'imagen'=>'Imagen',
+            'dependencia'=>'Dependencia',
         ];
     }
 }

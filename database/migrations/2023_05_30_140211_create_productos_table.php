@@ -14,24 +14,24 @@ return new class extends Migration
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
             $table->string ('codigo',100)->unique();
-            $table->string('nombre',255);            
+            $table->string('nombre',255);
             $table->text('descripcion')->nullable();
             $table->text('preparacion')->nullable();
             $table->decimal('costo_unitario',10);
             $table->decimal('precio',10);
-            $table->string('imagen',100)->nullable();            
+            $table->string('imagen',255);
             $table->tinyInteger('foraneo')->default(0);
             $table->integer('tiempo_coccion')->nullable();
             $table->foreignId('unidad_medida_id')->nullable()
             ->constrained('unidad_medidas')
             ->onUpdate('cascade')
             ->onDelete('cascade');
- 
+
             $table->foreignId('categoria_id')
             ->constrained('categorias')
             ->onUpdate('cascade')
             ->onDelete('cascade');
- 
+
             $table->timestamps();
         });
     }

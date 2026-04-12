@@ -22,18 +22,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Identificacion</th>
-                    <th>Nombre completo </th>
-                    <th>Direccion</th>
-                    <th>Telefono</th>
-                    <th>Email</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($clientes as $item)
                 <tr>

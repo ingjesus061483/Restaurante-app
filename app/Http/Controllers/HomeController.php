@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dependencia;
 use App\Repositories\MesaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,8 +24,12 @@ class HomeController extends Controller
         {
             return redirect()->to('login');
         }
+        $dependencias=Dependencia::all();
         $cabanas=$this->_cabanaRepository->GetAll();
-        $data=["cabanas"=>$cabanas];
+        $data=[
+            "cabanas"=>$cabanas,
+            "dependencias"=>$dependencias,
+        ];
         return view('Home.index',$data);
         //
     }

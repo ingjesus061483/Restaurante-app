@@ -14,6 +14,10 @@
 <script src="{{url('/')}}/js/restaurante-app.js"></script>
 <script  type="text/javascript">
     console.log($("#errors"))
+     $( "#accordion" ).accordion({
+                collapsible: true,
+                heightStyle: "content",
+    });
     //const myTimeout = setTimeout(myGreeting, 5000);
     if( $("#errors").length>0 )
             {
@@ -546,9 +550,10 @@
     function existencias (button,tipo){
         var tr=button.parentElement.parentElement;
         var tdcolection=tr.children;
-        var id=tdcolection[0].innerHTML;
-        var codigo= tdcolection[1].innerHTML;
-        var nombre= tdcolection[2].innerHTML;
+        console.log(tdcolection);
+        var id=tdcolection[4].innerHTML;
+        var codigo= tdcolection[5].innerHTML;
+        var nombre= tdcolection[6].innerHTML;
         $("#materiaprima_id").val(id);
         document.getElementById('tipo_ex').innerHTML=tipo
         document.getElementById('codigo_ex').innerHTML=codigo;

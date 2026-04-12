@@ -33,17 +33,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Fecha</th>
-                    <th>Codigo orden</th>
-                    <th>Tiempo</th>
-                    <th>Monto interes</th>
-                    <th>Tipo cobro</th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($cuentasCobrar as $item)
                 <tr>

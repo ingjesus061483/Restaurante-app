@@ -2,7 +2,6 @@
 @section('title','Listado de categorias')
 @section('content')
 <div class="card mb-4">
-
     <div class="card-body">
         <div style="padding-bottom: 10px">
             <a title="Crear categorias" href="{{url('/categorias/create')}}" class="btn btn-primary">
@@ -19,15 +18,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Descripcion</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($categorias as $item)
                 <tr>

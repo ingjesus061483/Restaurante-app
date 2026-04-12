@@ -34,6 +34,7 @@ class StoreRequest extends FormRequest
                 'nombre'=>'required|max:255|min:3',
                 'costo_unitario'=>'required|numeric',
                 'precio'=>'required|numeric',
+                 'imagen'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'categoria'=>'required' ,
                 'impresora'=>'required' ,
                 'existencias'=>'required|numeric'
@@ -47,6 +48,7 @@ class StoreRequest extends FormRequest
                 'precio'=>'required|numeric',
                 'categoria'=>'required' ,
                 'preparacion'=>'required',
+                 'imagen'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'tiempo_coccion'=>'required|numeric',
                 'impresora'=>'required' ,
         ];
@@ -72,6 +74,10 @@ class StoreRequest extends FormRequest
             'impresora.required'=>'El campo :attribute es obligatorio',
             'existencias.required'=>'El campo :attribute es obligatorio',
             'existencias.numeric'=>'El campo :attribute debe ser un número',
+            'imagen.required'=>'El campo :attribute es obligatorio',
+            'imagen.image'=>'El campo :attribute debe ser una imagen',
+            'imagen.mimes'=>'El campo :attribute debe ser de tipo jpeg, png, jpg o gif',
+            'imagen.max'=>'El campo :attribute no debe ser mayor a 2048 kilobytes',
 
         ];
     }
@@ -86,6 +92,7 @@ class StoreRequest extends FormRequest
             'preparacion'=>'Preparacion',
             'tiempo_coccion'=>'Tiempo Coccion',
             'impresora'=>'Impresora',
+            'imagen'=>'Imagen',
             'existencias'=>'Existencias'
         ];
     }

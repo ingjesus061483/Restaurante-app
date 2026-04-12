@@ -23,19 +23,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Codigo</th>
-                    <th>Nombre</th>
-                    <th>Recurso compartido</th>
-                    <th>Tamaño fuente encabezado</th>
-                    <th>Tamaño fuente contnido</th>
-                    <th>Descripcion</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($impresoras as $item)
                 <tr>

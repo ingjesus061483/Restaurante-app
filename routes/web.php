@@ -29,6 +29,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\DependenciaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +47,7 @@ use Illuminate\Support\Facades\Route;
     $data=['empresa_nombre'=>'los girasoles'];
     return view('Home.index',$data);
 });*/
+Route::resource('dependencias', DependenciaController::class);
 Route::resource('movimientocaja',CajaMovimientoController::class);
 Route::resource('cajas',CajaController::class);
 Route::resource('formapagos', FormaPagoController::class);

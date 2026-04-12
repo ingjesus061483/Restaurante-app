@@ -8,40 +8,23 @@
                 <i class="fa-solid fa-circle-plus"></i>
             </a>
         </div>
-        <table  id="datatablesSimple">
+        <table class="table" id="datatablesSimple">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Codigo</th>
-                    <th>Nombre</th>
-                    <th>Descripcion</th>
-                    <th>Valor inicial</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                     <th style="text-align: center"></th>
+                    <th style="text-align: center"></th>
+                    <th style="text-align: center"></th>
+                    <th style="text-align: center">Id</th>
+                    <th style="text-align: center">Codigo</th>
+                    <th style="text-align: center">Nombre</th>
+                    <th style="text-align: center">Descripcion</th>
+                    <th style="text-align: center">Valor inicial</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Codigo</th>
-                    <th>Nombre</th>
-                    <th>Descripcion</th>
-                    <th>Valor inicial</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($cajas as $item)
                 <tr>
-                    <td>{{$item->id}}</td>
-                    <td>{{$item->codigo}}</td>
-                    <td>{{$item->nombre}}</td>
-                    <td>{{$item->descripcion}}</td>
-                    <td>${{number_format($item->valor_inicial)}}</td>
-                    <td>
+                            <td>
                         <a title="Ver detalles" class="btn btn-success" href="{{url('/cajas')}}/{{$item->id}}">
                             <i class="fa-solid fa-eye"></i>
                         </a>
@@ -61,6 +44,11 @@
                             </button>
                         </form>
                     </td>
+                    <td>{{$item->id}}</td>
+                    <td>{{$item->codigo}}</td>
+                    <td>{{$item->nombre}}</td>
+                    <td>{{$item->descripcion}}</td>
+                    <td>${{number_format($item->valor_inicial)}}</td>
                 </tr>
                 @endforeach
             </tbody>

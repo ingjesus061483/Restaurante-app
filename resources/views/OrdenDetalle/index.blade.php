@@ -33,16 +33,6 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Id</th>
-                            <th>Cantidad  </th>
-                            <th>Detalle</th>
-                            <th>Valor Unitario </th>
-                            <th>Total</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
                     <tbody>
                         @foreach( $orden_detalle as $item)
                             <tr>

@@ -29,23 +29,6 @@
                     <th></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Identificacion</th>
-                    <th>Nombre completo </th>
-                    <th>Fecha nacimiento</th>
-                    <th>Direccion</th>
-                    <th>Telefono</th>
-                    <th>Email</th>
-                    <th>Usuario</th>
-                    <th>Role</th>
-                    <th>Caja</th>
-                    <th>Empresa</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($empleados as $item)
                 <tr>

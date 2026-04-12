@@ -61,20 +61,6 @@ class EmpresaController extends Controller
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }
-        /*$validacion=$request->validate([
-            'nit'=>'required|unique:empresas|max:50',
-            'nombre'=>'required|max:50',
-            'camara_de_comercio'=>'required|max:50',
-            'direccion'=>'required|max:50',
-            'telefono'=>'required|max:50',
-            'email'=>'required|email|max:255',
-            'contacto'=>'required',
-            'tipo_regimen'=>'required',
-        ]);*/
         $this->_empresaRepository->Store($request);
         return redirect()->to(url('/empresas'));
         //
@@ -114,20 +100,6 @@ class EmpresaController extends Controller
         {
             return redirect()->to('login');
         }
-        if(!$this-> autorizar(Auth::user()))
-        {
-            return back();
-        }
-        /*$validacion=$request->validate([
-            'nit'=>'required|max:50|unique:empresas,nit,'.$id,
-            'nombre'=>'required|max:50',
-            'camara_de_comercio'=>'required|max:50',
-            'direccion'=>'required|max:50',
-            'telefono'=>'required|max:50',
-            'email'=>'required|email|max:255',
-            'contacto'=>'required',
-            'tipo_regimen'=>'required',
-        ]);*/
         $this->_empresaRepository->Update($id,$request);
         return redirect()->to(url('/empresas'));
         //

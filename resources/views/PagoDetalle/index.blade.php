@@ -60,12 +60,6 @@
                     <th> Total valor recibido</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Forma  pago</th>
-                    <th> Total valor recibido</th>
-                </tr>
-            </tfoot>
             <tbody>
                 @foreach($pagosdetalles as $item)
                 <tr>
