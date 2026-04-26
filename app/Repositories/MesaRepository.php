@@ -51,7 +51,7 @@ class MesaRepository implements IRepository
         return Mesa::select ("mesas.id","mesas.codigo","mesas.nombre","mesas.ocupado","mesas.descripcion","mesas.capacidad_maxima","mesas.imagen","dep.nombre as dependencia")
                      ->join('dependencias as dep', 'mesas.dependencia_id', '=', 'dep.id')
                      ->selectRaw("IFNULL((SELECT  SUM(orden_encabezados.total) FROM orden_encabezados WHERE mesa_id=mesas.id AND fecha=CURDATE() AND  estado_id=3),0) as venta_diaria")
-                     ->orderby('mesas.id','asc') ->get();
+                     ->orderby('mesas.dependencia_id','asc') ->get();
     }
     public function desocuparCabana($cabaña)
     {

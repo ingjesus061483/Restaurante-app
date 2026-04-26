@@ -1,12 +1,12 @@
 <div id="accordion">
-    @foreach ( $dependencias as $item)
+    @for ($i=0;$i<=count($dependencias)-1;$i++)
      <h3>
         <i class="fa-solid fa-id-card"></i>
-         {{$item->nombre}}
+         {{$dependencias[$i]->dependencia->nombre}}
     </h3>
     <div>
          <div class="row">
-        @foreach ($item->mesas as $mesa)
+        @foreach ($dependencias[$i]->Mesas as $mesa)
             <div class="col-4">
                 <div style="padding: 5px">
                     <a title="{{$mesa->ocupado==1?'La mesa esta ocupada':'La mesa esta libre'}}" class ="{{$mesa->ocupado==1?'btn btn-danger':'btn btn-primary'}}" href="{{url('/mesas')}}/{{$mesa->id}}">
@@ -25,16 +25,16 @@
                         <div style="font-size: 10px" >
                             <strong>Cap. max:</strong>  {{$mesa->capacidad_maxima}}
                         </div>
-                    <!-- @if(auth()->user()->role_id==1||auth()->user()->role_id==2)
+                        @if(auth()->user()->role_id==1||auth()->user()->role_id==2)
                         <div style="font-size: 8px" >
                             <strong>Venta:</strong> ${{number_format($mesa->venta_diaria)}}
                          </div>
-                        @endif-->
+                        @endif
                     </a>
                 </div>
             </div>
             @endforeach
         </div>
     </div>
-    @endforeach
+    @endfor
 </div>
