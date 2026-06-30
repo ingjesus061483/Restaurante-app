@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AutorizeRequest;
-use App\Http\Requests\caja\ShowRequest;
+use App\Http\Requests\Caja\ShowRequest;
 use App\Http\Requests\Caja\StoreRequest;
 use App\Http\Requests\Caja\UpdateRequest;
 use App\Repositories\CajaMovimientoRepository;
